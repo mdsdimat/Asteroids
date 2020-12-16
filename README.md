@@ -70,6 +70,6 @@ https://games.aarp.org/games/atari-asteroids
 
 Все объекты за исключением корабля исчезают, если выходят за пределы поля. 
 
-![Схема игры](https://yadi.sk/i/1uAjD2KI0OPpwA)
+![Схема игры](game_references/shema.png)
 		 
 
