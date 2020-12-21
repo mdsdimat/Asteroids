@@ -1,6 +1,6 @@
 //core
 import React from "react";
-import {Button, Card, Form, Input} from "antd";
+import {Button, Card, Col, Form, Input, Row} from "antd";
 import {useForm} from "antd/es/form/Form";
 import {useHistory} from "react-router";
 
@@ -50,22 +50,26 @@ const AuthorizationForm: React.FC<FormProps> = ({
             initialValues={{password, userName}}
             form={form}
         >
-            <Card title={'Форма авторизации'} extra={extra}>
-                <Form.Item
-                    name={'userName'}
-                    rules={[{required: true, message: "Нужен логин!"}]}>
-                    <Input />
-                </Form.Item>
-                <Form.Item
-                    name={'password'}
-                    rules={[{required: true, message: "Без пароля не пройдёшь"}]}>
-                    {passwordSeen?
-                        <Input /> :
-                        <Input.Password/>
-                    }
-                </Form.Item>
-                <Button htmlType={'submit'}>login</Button>
-            </Card>
+            <Row >
+                <Col span={12} offset={6}>
+                    <Card title={'Форма авторизации'} extra={extra}>
+                        <Form.Item
+                            name={'userName'}
+                            rules={[{required: true, message: "Нужен логин!"}]}>
+                            <Input />
+                        </Form.Item>
+                        <Form.Item
+                            name={'password'}
+                            rules={[{required: true, message: "Без пароля не пройдёшь"}]}>
+                            {passwordSeen?
+                                <Input /> :
+                                <Input.Password/>
+                            }
+                        </Form.Item>
+                        <Button htmlType={'submit'}>login</Button>
+                    </Card>
+                </Col>
+            </Row>
         </Form>
     )
 }

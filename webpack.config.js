@@ -32,20 +32,15 @@ module.exports =
                 {
                     test: /\.less$/,
                     use: [
-                        {
-                            loader: MiniCssExtractPlugin.loader,
-                            options: {
-                                publicPath: ''
-                            }
-                        },
+                        {loader: MiniCssExtractPlugin.loader},
                         {loader: 'css-loader', options: {modules: 'global'}},
                         {
                             loader: 'less-loader',
                             options: {
                                 lessOptions: {
-                                    javascriptEnabled: true
-                                }
-                            }
+                                    javascriptEnabled: true,
+                                },
+                            },
                         }
                     ],
                 },
@@ -53,6 +48,7 @@ module.exports =
                     test: /\.css$/,
                     use: [
                         {loader: MiniCssExtractPlugin.loader},
+                        {loader: "style-loader"},
                         {loader: 'css-loader', options: {modules: 'global'}},
                     ],
                 },
