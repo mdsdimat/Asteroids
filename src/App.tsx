@@ -1,10 +1,9 @@
 import React from 'react';
+import AuthorizationForm from "./components/AutorisationForm";
 
 const App: React.FC = () => {
     return (
-        <div>
-            Hello from Assteroids
-        </div>
+        <AuthorizationForm id={'myId'}/>
     )
 }
 
