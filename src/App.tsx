@@ -1,9 +1,9 @@
 import React from 'react';
-import AuthorizationForm from "./components/AutorisationForm";
+import RegistrationForm from "./components/RegistrationForm/RegistrationForm";
 
 const App: React.FC = () => {
     return (
-        <AuthorizationForm id={'myId'}/>
+        <RegistrationForm/>
     )
 }
 
