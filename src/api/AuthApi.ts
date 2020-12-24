@@ -30,3 +30,5 @@ class AuthApi {
         return await axios.post(url);
     }
 }
+
+export default AuthApi;

@@ -26,3 +26,10 @@ export interface LeaderboardNewLeaderRequest {
     data: unknown;
     ratingFieldName: string;
 }
+
+export type UserRequest = Partial<SignUpRequest>;
+
+export interface PasswordRequest {
+    oldPassword: string;
+    newPassword: string;
+}
