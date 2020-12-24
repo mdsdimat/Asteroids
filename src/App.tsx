@@ -6,10 +6,12 @@ import {
     Link
 } from 'react-router-dom';
 
+import ProfileForm from "./components/ProfileForm";
+import RegistrationForm from './components/RegistrationForm/RegistrationForm';
+
 const App: React.FC = () => {
     return (
         <div>
-            Hello from Assteroids
             <Router>
                 <nav>
                     <ul>
@@ -29,8 +31,8 @@ const App: React.FC = () => {
                 </nav>
                 <Switch>
                     <Route path="/" exact>Главная она же страница игры</Route>
-                    <Route path="/auth">Здесь будет авторизация</Route>
-                    <Route path="/register">Здесь будет регистрация</Route>
+                    <Route path="/login" component={ProfileForm} />
+                    <Route path="/register" component={RegistrationForm} />
                     <Route path="/about">О компании</Route>
                     <Route>Здесь будет 404</Route>
                 </Switch>
