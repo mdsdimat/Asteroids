@@ -38,3 +38,5 @@ class UserApi {
         return response.data;
     }
 }
+
+export default UserApi;
