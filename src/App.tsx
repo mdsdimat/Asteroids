@@ -19,7 +19,7 @@ const App: React.FC = () => {
                             <Link to="/">Главная</Link>
                         </li>
                         <li>
-                            <Link to="/auth">авторизация</Link>
+                            <Link to="/login">авторизация</Link>
                         </li>
                         <li>
                             <Link to="/register">регистрация</Link>
