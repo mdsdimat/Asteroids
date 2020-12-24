@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Form, Input, Button, Row, Col, Card, Select,
 } from 'antd';
@@ -106,9 +107,11 @@ const RegistrationForm = (): JSX.Element => {
             </Form.Item>
 
             <Form.Item {...tailLayout}>
-              <Button htmlType="button" onClick={toRegistration}>
-                Войти
-              </Button>
+              <Link to="/login">
+                <Button htmlType="button" onClick={toRegistration}>
+                  Войти
+                </Button>
+              </Link>
             </Form.Item>
           </Card>
         </Col>

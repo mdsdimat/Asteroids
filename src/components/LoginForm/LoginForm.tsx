@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Form, Input, Button, Row, Col, Card,
 } from 'antd';
@@ -21,10 +22,6 @@ const LoginForm = (): JSX.Element => {
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
-  };
-
-  const toRegistration = () => {
-    console.log('redirect');
   };
 
   return (
@@ -63,9 +60,11 @@ const LoginForm = (): JSX.Element => {
             </Form.Item>
 
             <Form.Item {...tailLayout}>
-              <Button htmlType="button" onClick={toRegistration}>
-                Нет аккаунта?
-              </Button>
+              <Link to="/register">
+                <Button htmlType="button">
+                  Нет аккаунта?
+                </Button>
+              </Link>
             </Form.Item>
           </Card>
         </Col>

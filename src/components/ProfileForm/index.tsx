@@ -1,5 +1,5 @@
 import React from "react";
-import {Redirect} from 'react-router-dom';
+import { Redirect, Link } from 'react-router-dom';
 
 import {Avatar, Form, Input, Button, Row, Col, Card, Select} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
@@ -108,9 +108,11 @@ const ProfileForm = () => {
                         </Form.Item>
 
                         <Form.Item {...tailLayout}>
-                        	<Button htmlType="button" onClick={toMain}>
-                                Назад
+                          <Link to="/">
+                        	  <Button htmlType="button" onClick={toMain}>
+                                На главную
                             </Button>
+                          </Link>
                             <Button type="primary" htmlType="submit">
                                 Сохранить
                             </Button>
