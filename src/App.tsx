@@ -12,6 +12,7 @@ import { Layout, Menu } from 'antd';
 import ProfileForm from './components/ProfileForm';
 import LoginForm from './components/LoginForm/LoginForm';
 import RegistrationForm from './components/RegistrationForm/RegistrationForm';
+import Leaderboard from './components/Leaderboard/Leaderboard';
 
 const { Header, Footer, Content } = Layout;
 
@@ -44,10 +45,10 @@ const App: React.FC = () => {
             <Content>
               <Switch>
                 <Route path="/" exact>Главная она же страница игры</Route>
-                  <Route path="/login" component={LoginForm} />
-                  <Route path="/register" component={RegistrationForm} />
-                  <Route path="/profile" component={ProfileForm}>Профиль</Route>
-                  <Route path="/dashboard">Доска</Route>
+                  <Route path="/login" component={LoginForm} exact />
+                  <Route path="/register" component={RegistrationForm} exact />
+                  <Route path="/profile" component={ProfileForm} exact />
+                  <Route path="/dashboard" component={Leaderboard} exact></Route>
                   <Route>
                     <Redirect to="/login" />
                   </Route>
