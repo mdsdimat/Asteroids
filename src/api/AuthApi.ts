@@ -3,14 +3,14 @@ import {buildUrl} from "../helpers/ApiHelpers";
 import axios from "axios";
 
 class AuthApi {
-    static signUp = async (data: SignUpRequest) => {
+    static signUp = async (data: SignUpRequest): Promise<void> => {
         const url = buildUrl('auth/signup');
         const response = await axios.post(url, data);
 
         return response.data
     }
 
-    static signIn = async (data: SignUser) => {
+    static signIn = async (data: SignUser): Promise<void> => {
         const url = buildUrl('auth/signin');
         const response = await axios.post(url, data);
 
@@ -24,7 +24,7 @@ class AuthApi {
         return response.data
     }
 
-    static logout = async () => {
+    static logout = async (): Promise<void> => {
         const url = buildUrl('auth/loguot');
 
         return await axios.post(url);
