@@ -26,7 +26,7 @@ class UserApi {
 
     static getUser = async (id: string): Promise<UserResponse> => {
         const url = buildUrl(`user/${id}`);
-        const response = await axios.get(url);
+        const response = await axios.get(url, {withCredentials: true});
 
         return response.data;
     }

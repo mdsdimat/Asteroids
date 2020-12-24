@@ -19,7 +19,7 @@ class AuthApi {
 
     static getUser = async (): Promise<UserResponse> => {
         const url = buildUrl('auth/user');
-        const response = await axios.get(url);
+        const response = await axios.get(url, {withCredentials: true});
 
         return response.data
     }

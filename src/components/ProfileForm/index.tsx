@@ -1,9 +1,11 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {Redirect} from 'react-router-dom';
 
 import {Avatar, Form, Input, Button, Row, Col, Card, Select} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import {useForm} from "antd/es/form/Form";
+
+import AuthApi from "../../api/AuthApi";
 
 const {Option} = Select;
 
@@ -17,6 +19,22 @@ const tailLayout = {
 
 const ProfileForm = () => {
     const [form] = useForm();
+
+    useEffect(() => {
+      AuthApi.getUser().then(r => {
+        form.setFieldsValue({
+          avatar: r.avatar,
+          first_name: r.first_name,
+          second_name: r.second_name,
+          display_name: r.display_name,
+          login: r.login,
+          phone: r.phone,
+          email: r.email,
+        });
+      }).catch(error => {
+        console.log(error);
+      });
+    }, []);
 
     const onFinish = (values: any) => {
         console.log('Success:', values);
@@ -61,7 +79,7 @@ const ProfileForm = () => {
                         </Form.Item>
                         <Form.Item
                             label="Имя"
-                            name="name"
+                            name="first_name"
                             rules={[{required: true, message: 'Заполните поле!'}]}
                         >
                             <Input/>
