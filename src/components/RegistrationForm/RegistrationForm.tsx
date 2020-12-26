@@ -32,7 +32,7 @@ const RegistrationForm = (): JSX.Element => {
 
   const prefixSelector = (
     <Form.Item name="prefix" noStyle>
-      <Select style={{ width: 70 }}>
+      <Select style={{ width: 100 }}>
         <Option value="375">+375</Option>
         <Option value="7">+7</Option>
       </Select>

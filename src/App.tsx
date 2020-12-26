@@ -54,10 +54,8 @@ const App: React.FC = () => {
                 <Route path="/login" component={LoginForm} exact />
                 <Route path="/register" component={RegistrationForm} exact />
                 <Route path="/profile" component={ProfileForm} exact />
-                <Route path="/dashboard" component={Leaderboard} exact></Route>
-                <Route>
-                  <Redirect to="/login" />
-                </Route>
+                <Route path="/dashboard" component={Leaderboard} exact />
+                <Redirect to="/login" />
             </Switch>
           </Content>
           <Footer style={{ textAlign: 'center' }}>Game &copy; 2020 Created by Helsinki</Footer>
