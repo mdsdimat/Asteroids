@@ -1,9 +1,12 @@
-import React from "react";
-import { Redirect, Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import {Redirect, Link} from 'react-router-dom';
 
 import {Avatar, Form, Input, Button, Row, Col, Card, Select} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import {useForm} from "antd/es/form/Form";
+
+import AuthApi from "../../api/AuthApi";
+import UserApi from "../../api/UserApi";
 
 const {Option} = Select;
 
@@ -18,9 +21,42 @@ const tailLayout = {
 const ProfileForm = () => {
     const [form] = useForm();
 
+    const [avatar, setAvatar] = useState('');
+
+    useEffect(() => {
+      AuthApi.getUser().then(r => {
+        setAvatar('https://ya-praktikum.tech' + r.avatar);
+
+        form.setFieldsValue({
+          first_name: r.first_name,
+          second_name: r.second_name,
+          display_name: r.display_name,
+          login: r.login,
+          phone: r.phone,
+          email: r.email,
+        });
+      }).catch(error => {
+        console.log(error);
+      });
+    });
+
     const onFinish = (values: any) => {
         console.log('Success:', values);
+        UserApi.editProfile(values);
+
+        if(values.oldPassword && values.newPassword) {
+          UserApi.changePassword({
+            oldPassword : values.oldPassword,
+            newPassword: values.newPassword
+          });
+        }
     };
+
+    const onAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) : void => {
+      if(e.target.files) {
+        UserApi.uploadAvatar(e.target.files[0]);
+      }
+    }
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -29,15 +65,6 @@ const ProfileForm = () => {
     const toMain = () => {
         return <Redirect to="/" />
     }
-
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-            <Select style={{width: 70}}>
-                <Option value="375">+375</Option>
-                <Option value="7">+7</Option>
-            </Select>
-        </Form.Item>
-    );
 
     return (
         <Form
@@ -52,16 +79,23 @@ const ProfileForm = () => {
             <Row>
                 <Col span={12} offset={6}>
                     <Card title={'Профиль пользователя'}>
-                    	<Avatar shape="square" size={64} icon={<UserOutlined />} />
+                      {avatar ? <Avatar shape="square" size={64}  src={avatar} /> : <Avatar shape="square" size={64} icon={<UserOutlined />} />}
                     	<Form.Item
                             label="Аватар"
                             name="avatar"
-                        >                        	
-                            <Input type="file"/>
+                        >
+                            <Input type="file" onChange={onAvatarUpload}/>
+                        </Form.Item>
+                        <Form.Item
+                            label="Отображаемое имя"
+                            name="display_name"
+                            rules={[{required: true, message: 'Заполните поле!'}]}
+                        >
+                            <Input/>
                         </Form.Item>
                         <Form.Item
                             label="Имя"
-                            name="name"
+                            name="first_name"
                             rules={[{required: true, message: 'Заполните поле!'}]}
                         >
                             <Input/>
@@ -96,20 +130,26 @@ const ProfileForm = () => {
                             name="phone"
                             rules={[{required: true, message: 'Заполните поле!'}]}
                         >
-                            <Input maxLength={9} addonBefore={prefixSelector}/>
+                            <Input maxLength={12}/>
                         </Form.Item>
 
                         <Form.Item
-                            label="Пароль"
-                            name="password"
-                            rules={[{required: true, message: 'Введите пароль!'}]}
+                            label="Старый пароль"
+                            name="oldPassword"
+                        >
+                            <Input.Password/>
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Новый пароль"
+                            name="newPassword"
                         >
                             <Input.Password/>
                         </Form.Item>
 
                         <Form.Item {...tailLayout}>
                           <Link to="/">
-                        	  <Button htmlType="button" onClick={toMain}>
+                        	  <Button htmlType="button">
                                 На главную
                             </Button>
                           </Link>

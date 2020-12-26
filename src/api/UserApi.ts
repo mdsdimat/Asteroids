@@ -5,28 +5,52 @@ import {buildUrl} from "../helpers/ApiHelpers";
 class UserApi {
     static editProfile = async (data: UserRequest): Promise<UserRequest> => {
         const url = buildUrl('user/profile');
-        const response = await axios.put(url, data);
+        
+        const response = await axios({
+          method: 'put',
+          url: url,
+          withCredentials: true,
+          data: data
+        });
 
         return response.data;
     }
 
     static uploadAvatar = async (avatar: File): Promise<void> => {
         const url = buildUrl('user/profile/avatar');
-        await axios.put(url, avatar);
+
+        const formData = new FormData();
+        formData.append("avatar", avatar);
+
+        const response = await axios({
+          method: 'put',
+          headers: {
+            'Content-Type': avatar.type
+          },
+          url: url,
+          withCredentials: true,
+          data: formData
+        });
 
         return;
     }
 
     static changePassword = async (data: PasswordRequest): Promise<void> => {
         const url = buildUrl('user/password');
-        await axios.put(url, data);
+
+        const response = await axios({
+          method: 'put',
+          url: url,
+          withCredentials: true,
+          data: data
+        });
 
         return;
     }
 
     static getUser = async (id: string): Promise<UserResponse> => {
         const url = buildUrl(`user/${id}`);
-        const response = await axios.get(url);
+        const response = await axios.get(url, {withCredentials: true});
 
         return response.data;
     }
