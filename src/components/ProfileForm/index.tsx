@@ -6,6 +6,7 @@ import { UserOutlined } from '@ant-design/icons';
 import {useForm} from "antd/es/form/Form";
 
 import AuthApi from "../../api/AuthApi";
+import UserApi from "../../api/UserApi";
 
 const {Option} = Select;
 
@@ -20,10 +21,13 @@ const tailLayout = {
 const ProfileForm = () => {
     const [form] = useForm();
 
+    const [avatar, setAvatar] = useState('');
+
     useEffect(() => {
       AuthApi.getUser().then(r => {
+        setAvatar('https://ya-praktikum.tech' + r.avatar);
+
         form.setFieldsValue({
-          avatar: r.avatar,
           first_name: r.first_name,
           second_name: r.second_name,
           display_name: r.display_name,
@@ -34,11 +38,18 @@ const ProfileForm = () => {
       }).catch(error => {
         console.log(error);
       });
-    }, []);
+    });
 
     const onFinish = (values: any) => {
         console.log('Success:', values);
+        UserApi.editProfile(values);
     };
+
+    const onAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) : void => {
+      if(e.target.files) {
+        UserApi.uploadAvatar(e.target.files[0]);
+      }
+    }
 
     const onFinishFailed = (errorInfo: any) => {
         console.log('Failed:', errorInfo);
@@ -70,12 +81,19 @@ const ProfileForm = () => {
             <Row>
                 <Col span={12} offset={6}>
                     <Card title={'Профиль пользователя'}>
-                    	<Avatar shape="square" size={64} icon={<UserOutlined />} />
+                      {avatar ? <Avatar shape="square" size={64}  src={avatar} /> : <Avatar shape="square" size={64} icon={<UserOutlined />} />}
                     	<Form.Item
                             label="Аватар"
                             name="avatar"
-                        >                        	
-                            <Input type="file"/>
+                        >
+                            <Input type="file" onChange={onAvatarUpload}/>
+                        </Form.Item>
+                        <Form.Item
+                            label="Отображаемое имя"
+                            name="display_name"
+                            rules={[{required: true, message: 'Заполните поле!'}]}
+                        >
+                            <Input/>
                         </Form.Item>
                         <Form.Item
                             label="Имя"
