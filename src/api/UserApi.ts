@@ -37,7 +37,13 @@ class UserApi {
 
     static changePassword = async (data: PasswordRequest): Promise<void> => {
         const url = buildUrl('user/password');
-        await axios.put(url, data);
+
+        const response = await axios({
+          method: 'put',
+          url: url,
+          withCredentials: true,
+          data: data
+        });
 
         return;
     }

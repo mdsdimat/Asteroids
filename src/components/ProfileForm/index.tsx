@@ -43,6 +43,13 @@ const ProfileForm = () => {
     const onFinish = (values: any) => {
         console.log('Success:', values);
         UserApi.editProfile(values);
+
+        if(values.oldPassword && values.newPassword) {
+          UserApi.changePassword({
+            oldPassword : values.oldPassword,
+            newPassword: values.newPassword
+          });
+        }
     };
 
     const onAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) : void => {
@@ -58,15 +65,6 @@ const ProfileForm = () => {
     const toMain = () => {
         return <Redirect to="/" />
     }
-
-    const prefixSelector = (
-        <Form.Item name="prefix" noStyle>
-            <Select style={{width: 70}}>
-                <Option value="375">+375</Option>
-                <Option value="7">+7</Option>
-            </Select>
-        </Form.Item>
-    );
 
     return (
         <Form
@@ -132,13 +130,19 @@ const ProfileForm = () => {
                             name="phone"
                             rules={[{required: true, message: 'Заполните поле!'}]}
                         >
-                            <Input maxLength={9} addonBefore={prefixSelector}/>
+                            <Input maxLength={12}/>
                         </Form.Item>
 
                         <Form.Item
-                            label="Пароль"
-                            name="password"
-                            rules={[{required: true, message: 'Введите пароль!'}]}
+                            label="Старый пароль"
+                            name="oldPassword"
+                        >
+                            <Input.Password/>
+                        </Form.Item>
+
+                        <Form.Item
+                            label="Новый пароль"
+                            name="newPassword"
                         >
                             <Input.Password/>
                         </Form.Item>
