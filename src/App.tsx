@@ -13,6 +13,7 @@ import ProfileForm from './components/ProfileForm';
 import LoginForm from './components/LoginForm/LoginForm';
 import RegistrationForm from './components/RegistrationForm/RegistrationForm';
 import Leaderboard from './components/Leaderboard/Leaderboard';
+import Game from './components/Game';
 
 const { Header, Footer, Content } = Layout;
 
@@ -50,7 +51,7 @@ const App: React.FC = () => {
           </Col>
           <Content>
             <Switch>
-              <Route path="/" exact>Главная она же страница игры</Route>
+              <Route path="/" component={Game} exact />
                 <Route path="/login" component={LoginForm} exact />
                 <Route path="/register" component={RegistrationForm} exact />
                 <Route path="/profile" component={ProfileForm} exact />
