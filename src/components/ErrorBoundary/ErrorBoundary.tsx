@@ -26,7 +26,7 @@ export default class ErrorBoundary extends Component {
     if (this.state.errorInfo) {
       return (
         <div>
-          <h2>Something went wrong.</h2>
+          <h2>Что-то пошло не так.</h2>
           <details style={{ whiteSpace: 'pre-wrap' }}>
             {errorStr}
             <br />
