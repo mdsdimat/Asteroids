@@ -1,19 +1,21 @@
-import React, { useState, useEffect } from "react";
-import {Redirect, Link} from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Redirect, Link } from 'react-router-dom';
 
-import {Avatar, Form, Input, Button, Row, Col, Card} from 'antd';
+import {
+  Avatar, Form, Input, Button, Row, Col, Card,
+} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import {useForm} from "antd/es/form/Form";
+import { useForm } from 'antd/es/form/Form';
 
-import AuthApi from "../../api/AuthApi";
-import UserApi from "../../api/UserApi";
+import AuthApi from '../../api/AuthApi';
+import UserApi from '../../api/UserApi';
 
 const layout = {
-  labelCol: {span: 8},
-  wrapperCol: {span: 16},
+  labelCol: { span: 8 },
+  wrapperCol: { span: 16 },
 };
 const tailLayout = {
-  wrapperCol: {offset: 8, span: 16},
+  wrapperCol: { offset: 8, span: 16 },
 };
 
 const ProfileForm = () => {
@@ -22,8 +24,8 @@ const ProfileForm = () => {
   const [avatar, setAvatar] = useState('');
 
   useEffect(() => {
-    AuthApi.getUser().then(user => {
-      setAvatar('https://ya-praktikum.tech' + user.avatar);
+    AuthApi.getUser().then((user) => {
+      setAvatar(`https://ya-praktikum.tech${user.avatar}`);
 
       form.setFieldsValue({
         first_name: user.first_name,
@@ -33,7 +35,7 @@ const ProfileForm = () => {
         phone: user.phone,
         email: user.email,
       });
-    }).catch(error => {
+    }).catch((error) => {
       console.log(error);
     });
   });
@@ -42,27 +44,25 @@ const ProfileForm = () => {
     console.log('Success:', values);
     UserApi.editProfile(values);
 
-    if(values.oldPassword && values.newPassword) {
+    if (values.oldPassword && values.newPassword) {
       UserApi.changePassword({
-        oldPassword : values.oldPassword,
-        newPassword: values.newPassword
+        oldPassword: values.oldPassword,
+        newPassword: values.newPassword,
       });
     }
   };
 
   const onAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) : void => {
-    if(e.target.files) {
+    if (e.target.files) {
       UserApi.uploadAvatar(e.target.files[0]);
     }
-  }
+  };
 
   const onFinishFailed = (errorInfo: any) => {
     console.log('Failed:', errorInfo);
   };
 
-  const toMain = () => {
-    return <Redirect to="/" />
-  }
+  const toMain = () => <Redirect to="/" />;
 
   return (
     <Form
@@ -70,79 +70,79 @@ const ProfileForm = () => {
       name="basic"
       onFinish={onFinish}
       onFinishFailed={onFinishFailed}
-      layout={'vertical'}
+      layout="vertical"
       hideRequiredMark
       form={form}
     >
       <Row>
         <Col span={12} offset={6}>
-          <Card title={'Профиль пользователя'}>
-            {avatar ? <Avatar shape="square" size={64}  src={avatar} /> : <Avatar shape="square" size={64} icon={<UserOutlined />} />}
+          <Card title="Профиль пользователя">
+            {avatar ? <Avatar shape="square" size={64} src={avatar} /> : <Avatar shape="square" size={64} icon={<UserOutlined />} />}
             <Form.Item
               label="Аватар"
               name="avatar"
             >
-              <Input type="file" onChange={onAvatarUpload}/>
+              <Input type="file" onChange={onAvatarUpload} />
             </Form.Item>
             <Form.Item
               label="Отображаемое имя"
               name="display_name"
-              rules={[{required: true, message: 'Заполните поле!'}]}
+              rules={[{ required: true, message: 'Заполните поле!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
             <Form.Item
               label="Имя"
               name="first_name"
-              rules={[{required: true, message: 'Заполните поле!'}]}
+              rules={[{ required: true, message: 'Заполните поле!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Фамилия"
               name="second_name"
-              rules={[{required: true, message: 'Заполните поле!'}]}
+              rules={[{ required: true, message: 'Заполните поле!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Логин"
               name="login"
-              rules={[{required: true, message: 'Заполните поле!'}]}
+              rules={[{ required: true, message: 'Заполните поле!' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Почта"
               name="email"
-              rules={[{required: true, type: 'email', message: 'Неверный email'}]}
+              rules={[{ required: true, type: 'email', message: 'Неверный email' }]}
             >
-              <Input/>
+              <Input />
             </Form.Item>
 
             <Form.Item
               label="Телефон"
               name="phone"
-              rules={[{required: true, message: 'Заполните поле!'}]}
+              rules={[{ required: true, message: 'Заполните поле!' }]}
             >
-              <Input maxLength={12}/>
+              <Input maxLength={12} />
             </Form.Item>
 
             <Form.Item
               label="Старый пароль"
               name="oldPassword"
             >
-              <Input.Password/>
+              <Input.Password />
             </Form.Item>
 
             <Form.Item
               label="Новый пароль"
               name="newPassword"
             >
-              <Input.Password/>
+              <Input.Password />
             </Form.Item>
 
             <Form.Item {...tailLayout}>

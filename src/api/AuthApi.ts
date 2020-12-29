@@ -1,33 +1,33 @@
-import {SignUpRequest, SignUser, UserResponse} from "../types/types";
-import {buildUrl} from "../helpers/ApiHelpers";
-import axios from "axios";
+import axios from 'axios';
+import { SignUpRequest, SignUser, UserResponse } from '../types/types';
+import { buildUrl } from '../helpers/ApiHelpers';
 
 class AuthApi {
     static signUp = async (data: SignUpRequest): Promise<void> => {
-        const url = buildUrl('auth/signup');
-        const response = await axios.post(url, data);
+      const url = buildUrl('auth/signup');
+      const response = await axios.post(url, data);
 
-        return response.data
+      return response.data;
     }
 
     static signIn = async (data: SignUser): Promise<void> => {
-        const url = buildUrl('auth/signin');
-        const response = await axios.post(url, data);
+      const url = buildUrl('auth/signin');
+      const response = await axios.post(url, data);
 
-        return response.data
+      return response.data;
     }
 
     static getUser = async (): Promise<UserResponse> => {
-        const url = buildUrl('auth/user');
-        const response = await axios.get(url, {withCredentials: true});
+      const url = buildUrl('auth/user');
+      const response = await axios.get(url, { withCredentials: true });
 
-        return response.data
+      return response.data;
     }
 
     static logout = async (): Promise<void> => {
-        const url = buildUrl('auth/loguot');
+      const url = buildUrl('auth/loguot');
 
-        return await axios.post(url);
+      return await axios.post(url);
     }
 }
 

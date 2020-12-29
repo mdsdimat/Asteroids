@@ -10,18 +10,18 @@ export default class ErrorBoundary extends Component {
     error: null,
     errorInfo: null,
   }
-  
+
   componentDidCatch(error: object, errorInfo: React.ErrorInfo) {
     this.setState({
-      error: error,
-      errorInfo: errorInfo
-    })
+      error,
+      errorInfo,
+    });
   }
-  
-  render() {
-    const error = this.state.error;
 
-    const errorStr = error ? error.toString() : "";
+  render() {
+    const { error } = this.state;
+
+    const errorStr = error ? error.toString() : '';
 
     if (this.state.errorInfo) {
       return (
@@ -35,7 +35,7 @@ export default class ErrorBoundary extends Component {
         </div>
       );
     }
-    
+
     return this.props.children;
-  }  
+  }
 }
