@@ -7,17 +7,17 @@ import { useHistory } from 'react-router';
 import LeaderboardApi from '../../api/LeaderboardApi';
 
 export interface IRequestData {
-    ratingFieldName: string,
-    cursor: number,
-    limit: number,
+  ratingFieldName: string,
+  cursor: number,
+  limit: number,
 }
 
 export interface ColumnType {
-    key?: number,
-    name: string,
-    points: number,
-    date: string,
-    country: string,
+  key?: number,
+  name: string,
+  points: number,
+  date: string,
+  country: string,
 }
 
 const columns = [
@@ -62,7 +62,10 @@ const Leaderboard = (): JSX.Element => {
 
   useEffect(() => {
     leaderboardApi.getAllLeaderboard(requestData).then((response) => {
-      const newData = response.map((data, index): ColumnType => ({ key: index, ...data.data }));
+      const newData = response.map((data, index): ColumnType => (
+        {
+          key: index, ...data.data,
+        }));
       setData(newData);
     })
       .catch((err: AxiosError) => {
@@ -70,7 +73,7 @@ const Leaderboard = (): JSX.Element => {
           history.push('/login');
         }
       });
-  });
+  }, []);
 
   return (
     <Row>

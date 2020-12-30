@@ -9,7 +9,7 @@ import {
 
 import { Layout, Menu, Col } from 'antd';
 
-import ErrorBoundary from "./components/ErrorBoundary";
+import ErrorBoundary from './components/ErrorBoundary';
 import ProfileForm from './components/ProfileForm';
 import LoginForm from './components/LoginForm/LoginForm';
 import RegistrationForm from './components/RegistrationForm/RegistrationForm';
@@ -54,24 +54,24 @@ const App: React.FC = () => (
               </Menu.Item>
             </Menu>
           </Header>
-          </Col>
-          <Content>
-          	<ErrorBoundary>
-	            <Switch>
-                <Route path="/" component={Game} exact />
-                <Route path="/login" component={LoginForm} exact />
-                <Route path="/register" component={RegistrationForm} exact />
-                <Route path="/profile" component={ProfileForm} exact />
-                <Route path="/dashboard" component={Leaderboard} exact />
-                <Route path="/forum" component={ForumList} exact />
-                <Route path="/forum-page/:id" component={ForumPage} exact />
-                <Redirect to="/login" />
-	            </Switch>
-            </ErrorBoundary>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>Game &copy; 2020 Created by Helsinki</Footer>
-        </Router>
-      </Layout>
+        </Col>
+        <Content>
+          <ErrorBoundary>
+            <Switch>
+              <Route path="/" component={Game} exact />
+              <Route path="/login" component={LoginForm} exact />
+              <Route path="/register" component={RegistrationForm} exact />
+              <Route path="/profile" component={ProfileForm} exact />
+              <Route path="/dashboard" component={Leaderboard} exact />
+              <Route path="/forum" component={ForumList} exact />
+              <Route path="/forum-page/:id" component={ForumPage} exact />
+              <Redirect to="/login" />
+            </Switch>
+          </ErrorBoundary>
+        </Content>
+        <Footer style={{ textAlign: 'center' }}>Game &copy; 2020 Created by Helsinki</Footer>
+      </Router>
+    </Layout>
   </>
 );
 

@@ -1,65 +1,61 @@
 import axios from 'axios';
-import {PasswordRequest, UserRequest, UserResponse} from "../types/types";
-import {buildUrl} from "../helpers/ApiHelpers";
+import { PasswordRequest, UserRequest, UserResponse } from '../types/types';
+import { buildUrl } from '../helpers/ApiHelpers';
 
 class UserApi {
     static editProfile = async (data: UserRequest): Promise<UserRequest> => {
-        const url = buildUrl('user/profile');
-        
-        const response = await axios({
-          method: 'put',
-          url: url,
-          withCredentials: true,
-          data: data
-        });
+      const url = buildUrl('user/profile');
 
-        return response.data;
+      const response = await axios({
+        method: 'put',
+        url,
+        withCredentials: true,
+        data,
+      });
+
+      return response.data;
     }
 
     static uploadAvatar = async (avatar: File): Promise<void> => {
-        const url = buildUrl('user/profile/avatar');
+      const url = buildUrl('user/profile/avatar');
 
-        const formData = new FormData();
-        formData.append("avatar", avatar);
+      const formData = new FormData();
+      formData.append('avatar', avatar);
 
-        const response = await axios({
-          method: 'put',
-          headers: {
-            'Content-Type': avatar.type
-          },
-          url: url,
-          withCredentials: true,
-          data: formData
-        });
-
-        return;
+      const response = await axios({
+        method: 'put',
+        headers: {
+          'Content-Type': avatar.type,
+        },
+        url,
+        withCredentials: true,
+        data: formData,
+      });
     }
 
     static changePassword = async (data: PasswordRequest): Promise<void> => {
-        const url = buildUrl('user/password');
+      const url = buildUrl('user/password');
 
-        const response = await axios({
-          method: 'put',
-          url: url,
-          withCredentials: true,
-          data: data
-        });
-
-        return;
+      const response = await axios({
+        method: 'put',
+        url,
+        withCredentials: true,
+        data,
+      });
     }
 
     static getUser = async (id: string): Promise<UserResponse> => {
-        const url = buildUrl(`user/${id}`);
-        const response = await axios.get(url, {withCredentials: true});
+      const url = buildUrl(`user/${id}`);
+      const response = await axios.get(url, { withCredentials: true });
 
-        return response.data;
+      return response.data;
     }
 
     static findUsers = async (login: string): Promise<UserResponse[]> => {
-        const url = buildUrl('user/search');
-        const response = await axios.post(url, {login});
+      const url = buildUrl('user/search');
+      const response = await axios.post(url, { login });
 
-        return response.data;
+      return response.data;
     }
 }
 

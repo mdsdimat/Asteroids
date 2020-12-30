@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   Form, Input, Button, Row, Col, Card,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import { useHistory } from 'react-router';
+import AuthApi from '../../api/AuthApi';
+import { SignUser } from '../../types/types';
+import { openNotificationWithIcon } from '../../helpers/NotificationHelper';
 
 const layout = {
   labelCol: { span: 8 },
@@ -15,21 +19,37 @@ const tailLayout = {
 
 const LoginForm = (): JSX.Element => {
   const [form] = useForm();
+  const history = useHistory();
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+  const onFinish = (values: SignUser) => {
+    AuthApi.signIn(values)
+      .then(() => {
+        openNotificationWithIcon('success', 'Успех', '');
+        history.push('/');
+      })
+      .catch((err) => {
+        openNotificationWithIcon('error', 'Ошибка', err.response.data.reason);
+      });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
+  const toRegistration = () => {
+    history.push('/registration');
   };
+
+  useEffect(() => {
+    AuthApi.getUser()
+      .then(() => {
+        history.push('/');
+      })
+      .catch(() => {
+      });
+  });
 
   return (
     <Form
       {...layout}
       name="basic"
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       layout="vertical"
       hideRequiredMark
       form={form}
@@ -61,7 +81,7 @@ const LoginForm = (): JSX.Element => {
 
             <Form.Item {...tailLayout}>
               <Link to="/register">
-                <Button htmlType="button">
+                <Button htmlType="button" onClick={toRegistration}>
                   Нет аккаунта?
                 </Button>
               </Link>
