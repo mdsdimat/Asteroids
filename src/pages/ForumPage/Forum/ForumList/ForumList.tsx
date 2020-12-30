@@ -26,7 +26,7 @@ const data = [
   },
 ];
 
-const ForumList = (): JSX.Element => (
+const ForumList: React.FC = ()=> (
   <Row>
     <Col span={12} offset={6}>
       <List

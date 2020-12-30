@@ -2,7 +2,7 @@
 import React from 'react';
 
 // Components
-import { Form, Input, Col} from 'antd';
+import { Form, Input} from 'antd';
 import PhonePrefixSelector from "@components/PhonePrefixSelector";
 
 const PrefixSelector = (
@@ -63,4 +63,5 @@ const RegistrationForm: React.FC = () => (
   </>
 );
 
+// Exports
 export default RegistrationForm;

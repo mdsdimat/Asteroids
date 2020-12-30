@@ -6,11 +6,10 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import PageLayout from "@components/PageLayout";
 
 // Pages
-import ProfileForm from './pages/ProfilePage/ProfileForm';
-import LoginForm from './pages/LoginPage/LoginForm/LoginForm';
+import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import LoginPage from './pages/LoginPage/LoginPage';
 import RegistrationPage from './pages/RegisterPage/RegistrationPage'
-import RegistrationForm from './pages/RegisterPage/RegistrationForm/RegistrationForm';
-import Leaderboard from './pages/LeaderboardPage/Leaderboard/Leaderboard';
+import LeaderboardTable from './pages/LeaderboardPage/LeaderboardPage';
 import Game from './pages/GamePage/Game';
 import ForumList from './pages/ForumPage/Forum/ForumList';
 import ForumPage from './pages/ForumPage/ForumPage';
@@ -19,10 +18,10 @@ const App: React.FC = () => (
   <PageLayout>
     <Switch>
       <Route path="/" component={Game} exact />
-      <Route path="/login" component={LoginForm} exact />
+      <Route path="/login" component={LoginPage} exact />
       <Route path="/register" component={RegistrationPage} exact />
-      <Route path="/profile" component={ProfileForm} exact />
-      <Route path="/dashboard" component={Leaderboard} exact />
+      <Route path="/profile" component={ProfilePage} exact />
+      <Route path="/dashboard" component={LeaderboardTable} exact />
       <Route path="/forum" component={ForumList} exact />
       <Route path="/forum-page/:id" component={ForumPage} exact />
       <Redirect to="/login" />

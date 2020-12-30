@@ -3,12 +3,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // Components
-import RegistrationForm from './RegistrationForm/RegistrationForm';
+import LoginForm from './LoginForm/LoginForm';
 import { useForm } from 'antd/es/form/Form';
 import { Button, Card, Col, Form, Row, Space } from 'antd';
+
+// Types
 import { SignUpRequest } from '../../types/types';
 
-const RegistrationPage: React.FC = () => {
+const LoginPage: React.FC = () => {
   const [form] = useForm();
 
   const handleOk = React.useCallback((values: SignUpRequest) => {
@@ -25,17 +27,17 @@ const RegistrationPage: React.FC = () => {
     >
       <Row>
         <Col span={12} offset={6}>
-          <Card title='Регистрация'>
-            <RegistrationForm />
+          <Card title='Авторизация'>
+            <LoginForm />
             <Space>
-              <Button type={'primary'} htmlType={'submit'}>
-                Регистрация
-              </Button>
-              <Link to={'./login'}>
-                <Button htmlType={'button'}>
-                  Войти
+              <Link to="/register">
+                <Button htmlType="button">
+                  Нет аккаунта?
                 </Button>
               </Link>
+              <Button type="primary" htmlType="submit">
+                Войти
+              </Button>
             </Space>
           </Card>
         </Col>
@@ -45,4 +47,4 @@ const RegistrationPage: React.FC = () => {
 };
 
 // Exports
-export default RegistrationPage;
+export default LoginPage;
