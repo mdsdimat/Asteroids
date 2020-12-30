@@ -4,7 +4,7 @@ import {
   Table, Row, Col,
 } from 'antd';
 import { useHistory } from 'react-router';
-import LeaderboardApi from '../../api/LeaderboardApi';
+import LeaderboardApi from '../../../api/LeaderboardApi';
 
 export interface IRequestData {
     ratingFieldName: string,

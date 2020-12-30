@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { buildUrl } from '../helpers/ApiHelpers';
-import { ColumnType, IRequestData } from '../components/Leaderboard/Leaderboard';
+import { ColumnType, IRequestData } from '../pages/LeaderboardPage/Leaderboard/Leaderboard';
 
 class LeaderboardApi {
     getAllLeaderboard = async (data: IRequestData): Promise<{ data: ColumnType }[]> => {

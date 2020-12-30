@@ -1,78 +1,33 @@
+// Core
 import React from 'react';
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Redirect,
-  Link,
-} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-import { Layout, Menu, Col } from 'antd';
+// Components
+import PageLayout from "./components/PageLayout";
 
-import ErrorBoundary from "./components/ErrorBoundary";
-import ProfileForm from './components/ProfileForm';
-import LoginForm from './components/LoginForm/LoginForm';
-import RegistrationForm from './components/RegistrationForm/RegistrationForm';
-import Leaderboard from './components/Leaderboard/Leaderboard';
-import Game from './components/Game';
-import ForumList from './components/Forum/ForumList';
-import ForumPage from './components/Forum/ForumPage/ForumPage';
-
-const { Header, Footer, Content } = Layout;
+// Pages
+import ProfileForm from './pages/ProfilePage/ProfileForm';
+import LoginForm from './pages/LoginPage/LoginForm/LoginForm';
+import RegistrationForm from './pages/RegisterPage/RegistrationForm/RegistrationForm';
+import Leaderboard from './pages/LeaderboardPage/Leaderboard/Leaderboard';
+import Game from './pages/GamePage/Game';
+import ForumList from './pages/ForumPage/Forum/ForumList';
+import ForumPage from './pages/ForumPage/ForumPage';
 
 const App: React.FC = () => (
-  <>
-    <Layout>
-      <Router>
-        <Col span={12} offset={6}>
-          <Header>
-            <div className="logo" />
-            <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-              <Menu.Item key="1">
-                Играть
-                <Link to="/" />
-              </Menu.Item>
-              <Menu.Item key="2">
-                Вход
-                <Link to="/login" />
-              </Menu.Item>
-              <Menu.Item key="3">
-                Регистрация
-                <Link to="/register" />
-              </Menu.Item>
-              <Menu.Item key="4">
-                Профиль
-                <Link to="/profile" />
-              </Menu.Item>
-              <Menu.Item key="5">
-                Доска почета
-                <Link to="/dashboard" />
-              </Menu.Item>
-              <Menu.Item key="6">
-                Форум
-                <Link to="/forum" />
-              </Menu.Item>
-            </Menu>
-          </Header>
-          </Col>
-          <Content>
-          	<ErrorBoundary>
-	            <Switch>
-                <Route path="/" component={Game} exact />
-                <Route path="/login" component={LoginForm} exact />
-                <Route path="/register" component={RegistrationForm} exact />
-                <Route path="/profile" component={ProfileForm} exact />
-                <Route path="/dashboard" component={Leaderboard} exact />
-                <Route path="/forum" component={ForumList} exact />
-                <Route path="/forum-page/:id" component={ForumPage} exact />
-                <Redirect to="/login" />
-	            </Switch>
-            </ErrorBoundary>
-          </Content>
-          <Footer style={{ textAlign: 'center' }}>Game &copy; 2020 Created by Helsinki</Footer>
-        </Router>
-      </Layout>
-  </>
+  <PageLayout>
+    <Switch>
+      <Route path="/" component={Game} exact />
+      <Route path="/login" component={LoginForm} exact />
+      <Route path="/register" component={RegistrationForm} exact />
+      <Route path="/profile" component={ProfileForm} exact />
+      <Route path="/dashboard" component={Leaderboard} exact />
+      <Route path="/forum" component={ForumList} exact />
+      <Route path="/forum-page/:id" component={ForumPage} exact />
+      <Redirect to="/login" />
+    </Switch>
+  </PageLayout>
 );
 
+// Exports
 export default App;
