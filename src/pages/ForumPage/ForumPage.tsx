@@ -6,22 +6,23 @@ import { useForm } from 'antd/es/form/Form';
 
 const { TextArea } = Input;
 
-const ForumPage = (): JSX.Element => {
-  const data = [
-    {
-      id: 1,
-      text: 'Сообщение пользателя холивар холивар холивар.',
-    },
-    {
-      id: 2,
-      text: 'Сообщение пользателя холивар холивар холивар.',
-    },
-    {
-      id: 3,
-      text: 'Сообщение пользателя холивар холивар холивар.',
-    },
-  ];
+const data = [
+  {
+    id: 1,
+    text: 'Сообщение пользателя холивар холивар холивар.',
+  },
+  {
+    id: 2,
+    text: 'Сообщение пользателя холивар холивар холивар.',
+  },
+  {
+    id: 3,
+    text: 'Сообщение пользателя холивар холивар холивар.',
+  },
+];
 
+
+const ForumPage: React.FC = () => {
   const [form] = useForm();
 
   const onFinish = (values: any) => {

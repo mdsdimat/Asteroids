@@ -4,6 +4,10 @@ import {
   Form, Input, Button, Row, Col, Card, Select,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
+import { useHistory } from 'react-router';
+import AuthApi from '../../api/AuthApi';
+import { SignUpRequest } from '../../types/types';
+import { openNotificationWithIcon } from '../../helpers/NotificationHelper';
 
 const { Option } = Select;
 
@@ -17,17 +21,21 @@ const tailLayout = {
 
 const RegistrationForm = (): JSX.Element => {
   const [form] = useForm();
+  const history = useHistory();
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+  const onFinish = (values: SignUpRequest) => {
+    AuthApi.signUp(values)
+      .then(() => {
+        openNotificationWithIcon('success', 'Успех', 'Пользователь успешно создан!');
+        history.push('/');
+      })
+      .catch((err) => {
+        openNotificationWithIcon('error', 'Ошибка', err.response.data.reason);
+      });
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-
-  const toRegistration = () => {
-    console.log('redirect');
+  const toLogin = () => {
+    history.push('/login');
   };
 
   const prefixSelector = (
@@ -44,7 +52,6 @@ const RegistrationForm = (): JSX.Element => {
       {...layout}
       name="basic"
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       layout="vertical"
       hideRequiredMark
       form={form}
@@ -54,7 +61,7 @@ const RegistrationForm = (): JSX.Element => {
           <Card title="Регистрация">
             <Form.Item
               label="Имя"
-              name="name"
+              name="first_name"
               rules={[{ required: true, message: 'Заполните поле!' }]}
             >
               <Input />
@@ -108,7 +115,7 @@ const RegistrationForm = (): JSX.Element => {
 
             <Form.Item {...tailLayout}>
               <Link to="/login">
-                <Button htmlType="button" onClick={toRegistration}>
+                <Button htmlType="button" onClick={toLogin}>
                   Войти
                 </Button>
               </Link>

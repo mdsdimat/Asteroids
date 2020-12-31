@@ -2,8 +2,14 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import './index.less';
+import ErrorBoundary from "@components/ErrorBoundary";
+import {BrowserRouter as Router} from "react-router-dom";
 
 ReactDOM.render(
-  <App />,
+  <ErrorBoundary>
+    <Router>
+      <App />
+    </Router>
+  </ErrorBoundary>,
   document.getElementById('root'),
 );
