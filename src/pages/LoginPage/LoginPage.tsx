@@ -1,6 +1,8 @@
 // Core
 import React from 'react';
 import { Link } from 'react-router-dom';
+import {useHistory} from "react-router";
+
 
 // Components
 import LoginForm from './LoginForm/LoginForm';
@@ -8,19 +10,33 @@ import { useForm } from 'antd/es/form/Form';
 import { Button, Card, Col, Form, Row, Space } from 'antd';
 
 // Types
-import { SignUpRequest } from '../../types/types';
+import { SignUser } from '../../types/types';
+
+// Api
+import AuthApi from "../../api/AuthApi";
+
+// Helpers
+import {openNotificationWithIcon} from "@helpers/NotificationHelper";
 
 const LoginPage: React.FC = () => {
   const [form] = useForm();
+  const history = useHistory();
 
-  const handleOk = React.useCallback((values: SignUpRequest) => {
-    console.log('succeeded:', values)
-  }, [])
+  const onFinish = (values: SignUser) => {
+    AuthApi.signIn(values)
+      .then(() => {
+        openNotificationWithIcon('success', 'Успех', '');
+        history.push('/');
+      })
+      .catch((err) => {
+        openNotificationWithIcon('error', 'Ошибка', err.response.data.reason);
+      });
+  };
 
   return (
     <Form
       name='basic'
-      onFinish={handleOk}
+      onFinish={onFinish}
       layout='vertical'
       hideRequiredMark
       form={form}
