@@ -16,7 +16,12 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
-    "jsx": "react"
+    "jsx": "react",
+    "baseUrl": "./",
+    "paths": {
+      "@components/*": ["./src/components/*"],
+      "@helpers/*": ["./src/helpers/*"],
+    }
   },
   "include": [
     "./src"
