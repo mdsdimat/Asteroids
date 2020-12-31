@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import {Redirect, Link} from 'react-router-dom';
+// Core
+import React from "react";
 
-import {Avatar, Form, Input, Button, Row, Col, Card} from 'antd';
+// Components
+import {Avatar, Form, Input} from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import {useForm} from "antd/es/form/Form";
 
-import AuthApi from "../../../api/AuthApi";
+// Api
 import UserApi from "../../../api/UserApi";
 
+// Types
 export interface ProfileFormProps {
   avatar: string;
 }
