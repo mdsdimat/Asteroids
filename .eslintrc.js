@@ -66,5 +66,6 @@ module.exports = {
     '@typescript-eslint/no-var-requires': 0,
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
+    'no-plusplus': 0,
   },
 };

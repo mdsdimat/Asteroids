@@ -11,21 +11,32 @@ const GameTotal = (): JSX.Element => (
   </>
 );
 
+const GameOver = (): JSX.Element => (
+  <>
+    <div className="game__message">
+      <h1 className="game__message--title">GAME OVER</h1>
+      <h2 className="game__message--text">Поздравляем! Ваш счет</h2>
+      <div className="game__message--score">1024</div>
+    </div>
+  </>
+);
+
+const GamePause = (): JSX.Element => (
+  <>
+    <div className="game__message">
+      <h1 className="game__message--title">Пауза</h1>
+      <h2 className="game__message--text">Для продолжения нажмите ENTER</h2>
+    </div>
+  </>
+);
+
 const Game = (): JSX.Element => (
 
   <div className="game">
-    {/* <div className="game__overlay"> */}
-    {/*  <div className="game__message"> */}
-    {/*    <h1 className="game__message--title" >GAME OVER</h1> */}
-    {/*    <h2 className="game__message--text">Поздравляем! Ваш счет</h2> */}
-    {/*    <div className="game__message--score">1024</div> */}
-    {/*    Для продолжения нажмите ENTER */}
-    {/*  </div> */}
 
-    {/*  <div className="score-right"> */}
-    {/*    <GameTotal /> */}
-    {/*  </div> */}
-    {/* </div> */}
+    <div className="score-right">
+      <GameTotal />
+    </div>
     <Canvas />
   </div>
 

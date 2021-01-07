@@ -1,7 +1,7 @@
 .game{
   position: relative;
   margin: auto;
-  width: 1366px;
+  width: 1300px;
   height: 768px;
 }
 
@@ -20,6 +20,7 @@
 }
 
 .score-right{
+  color: white;
   position: absolute;
   text-align: right;
   width: 100px;
@@ -29,11 +30,19 @@
 }
 
 .game__message{
-  margin-top: 200px;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 40%;
   text-align: center;
+  transform: translate(-50%,-50%)
 }
 .game__message--title{
+  color: white;
   font-size: 96px;
+}
+.game__message--text{
+  color: white;
 }
 .game__message--score{
   font-size: 72px;

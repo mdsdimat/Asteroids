@@ -1,10 +1,12 @@
 import { randomNumBetween, rotatePoint } from '../../helpers/GameHelper';
+import { Coord } from '../../types/game';
 import Particle from '../Particle/Particle';
+import Bullet from '../Bullet/Bullet';
 
 export default class Ship {
   private position: any;
 
-  private velocity: { x: number; y: number };
+  private velocity: Coord;
 
   private args: any;
 
@@ -24,6 +26,8 @@ export default class Ship {
 
   private onDie: unknown;
 
+  private delete: boolean;
+
   constructor(args: Record<string, unknown>) {
     this.args = args;
     this.position = args.position;
@@ -39,23 +43,32 @@ export default class Ship {
     this.lastShot = 0;
     this.create = args.create;
     this.onDie = args.onDie;
+    this.delete = false;
   }
 
   rotate(dir: string) {
-    if (dir == 'LEFT') {
+    if (dir === 'LEFT') {
       this.rotation -= this.rotationSpeed;
     }
-    if (dir == 'RIGHT') {
+    if (dir === 'RIGHT') {
       this.rotation += this.rotationSpeed;
     }
   }
 
-  accelerate = () => {
-    this.velocity.x -= Math.sin(-this.rotation * Math.PI / 180) * this.speed;
-    this.velocity.y -= Math.cos(-this.rotation * Math.PI / 180) * this.speed;
+  destroy(): void {
+    this.delete = true;
+  }
+
+  accelerate = (): void => {
+    this.velocity.x -= Math.sin(-this.rotation * (Math.PI / 180)) * this.speed;
+    this.velocity.y -= Math.cos(-this.rotation * (Math.PI / 180)) * this.speed;
 
     // Thruster particles
-    const posDelta = rotatePoint({ x: 0, y: -10 }, { x: 0, y: 0 }, (this.rotation - 180) * Math.PI / 180);
+    const posDelta = rotatePoint(
+      { x: 0, y: -10 },
+      { x: 0, y: 0 },
+      (this.rotation - 180) * (Math.PI / 180),
+    );
     const particle = new Particle({
       lifeSpan: randomNumBetween(20, 40),
       size: randomNumBetween(1, 3),
@@ -81,6 +94,19 @@ export default class Ship {
     }
     if (state.keys.right) {
       this.rotate('RIGHT');
+    }
+
+    if (state.keys.space) {
+      if (this.lastShot == 0 || Date.now() - this.lastShot > 200) {
+        const bullet = new Bullet({ position: this.position, rotation: this.rotation });
+
+        this.velocity.x += Math.sin(-this.rotation * (Math.PI / 180)) * 0.1;
+        this.velocity.y += Math.cos(-this.rotation * (Math.PI / 180)) * 0.1;
+
+        this.create(bullet, 'bullets');
+
+        this.lastShot = Date.now();
+      }
     }
 
     // Move
