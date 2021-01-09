@@ -46,11 +46,12 @@ function useTimer() {
   }, []);
 
   return {
-    str: timeFormat(seconds), start, pause, reset, isRunning,
+    seconds, start, pause, reset, isRunning,
   };
 }
 
 type GameTotalProps = {
+  seconds: number;
   score: number;
 }
 
@@ -58,15 +59,11 @@ type GameOverProps = {
   score: number;
 }
 
-const GameTotal : React.FC<GameTotalProps> = (props) => {
-  const { score } = props;
-  const {
-    str,
-  } = useTimer();
-
+const GameTotal : React.FC<GameTotalProps> = (props:GameTotalProps) => {
+  const { score, seconds } = props;
   return (
     <>
-      <div className="score-right__timer">{str}</div>
+      <div className="score-right__timer">{timeFormat(seconds)}</div>
       <div className="score-right__score">{score.toString().padStart(8, '0')}</div>
     </>
   );
@@ -108,7 +105,7 @@ const KEY = {
 
 const Game: React.FC = () => {
   const [score, setScore] = useState(0);
-  const [isGameOver] = useState(true);
+  const [isGameOver, setIsGameOver] = useState(false);
 
   let isPause = false;
 
@@ -129,8 +126,9 @@ const Game: React.FC = () => {
     space: false,
   });
 
+  const timer = useTimer();
+
   let asteroidsCount = 2;
-  let inGame: boolean;
 
   const objects: objectsMap = {
     ships: [],
@@ -197,7 +195,6 @@ const Game: React.FC = () => {
           y: randomNumBetween(0, screen.height),
         },
         create: createObject,
-        onDie: gameOver,
         addScore,
       });
       createObject(asteroid, 'asteroids');
@@ -205,13 +202,16 @@ const Game: React.FC = () => {
   };
 
   const start = () => {
-    inGame = true;
+    timer.reset();
+    timer.start();
+
     const ship = new Ship({
       position: {
         x: screen.width / 2,
         y: screen.height / 2,
       },
       create: createObject,
+      onDie: gameOver,
     });
     createObject(ship, 'ships');
     generateAsteroids(asteroidsCount);
@@ -219,6 +219,7 @@ const Game: React.FC = () => {
 
   const pause = (): void => {
     isPause = !isPause;
+    timer.pause();
 
     if (!isPause) {
       requestAnimationFrame(() => {
@@ -228,9 +229,10 @@ const Game: React.FC = () => {
   };
 
   const gameOver = () => {
-    inGame = false;
-  };
+    setIsGameOver(true);
 
+    timer.pause();
+  };
 
   const update = () => {
     const contextVal = context;
@@ -314,7 +316,7 @@ const Game: React.FC = () => {
       {isPause ? <GamePause /> : '' }
       {isGameOver ? <GameOver score={score} /> : ''}
       <div className="score-right">
-        <GameTotal score={score} />
+        <GameTotal score={score} seconds={timer.seconds} />
       </div>
 
       <canvas

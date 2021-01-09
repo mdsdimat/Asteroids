@@ -24,11 +24,11 @@ export default class Ship {
 
   private readonly create: any;
 
-  private onDie: unknown;
+  private onDie: () => void;
 
   private delete: boolean;
 
-  constructor(args: Record<string, unknown>) {
+  constructor(args: any) {
     this.args = args;
     this.position = args.position;
     this.velocity = {
@@ -46,7 +46,7 @@ export default class Ship {
     this.delete = false;
   }
 
-  rotate(dir: string) {
+  rotate(dir: string): void {
     if (dir === 'LEFT') {
       this.rotation -= this.rotationSpeed;
     }
@@ -57,6 +57,7 @@ export default class Ship {
 
   destroy(): void {
     this.delete = true;
+    this.onDie();
   }
 
   accelerate = (): void => {
