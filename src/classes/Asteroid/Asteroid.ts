@@ -1,11 +1,11 @@
 import { randomNumBetween, rotatePoint, asteroidVertices } from '../../helpers/GameHelper';
 import Particle from '../Particle/Particle';
-import { Coord } from '../../types/game';
+import { Coord, Vector } from '../../types/game';
 
 export default class Asteroid {
   private position: Coord;
 
-  private velocity: Coord;
+  private velocity: Vector;
 
   private args: any;
 
@@ -20,6 +20,8 @@ export default class Asteroid {
   private rotationSpeed: number;
 
   private readonly create: any;
+
+  private addScore: (score: number) => void;
 
   private vertices: Coord[];
 
@@ -45,6 +47,8 @@ export default class Asteroid {
     this.score = (80 / this.radius) * 5;
     this.vertices = asteroidVertices(8, args.size);
 
+    this.addScore = args.addScore;
+
     this.create = args.create;
 
     this.delete = false;
@@ -53,7 +57,7 @@ export default class Asteroid {
   destroy(): void {
     this.delete = true;
 
-    // добавить очки
+    this.addScore(this.score);
 
     // Explode
     for (let i = 0; i < this.radius; i++) {
@@ -83,14 +87,14 @@ export default class Asteroid {
             y: randomNumBetween(-10, 20) + this.position.y,
           },
           create: this.create.bind(this),
-          // addScore: this.addScore.bind(this)
+          addScore: this.addScore.bind(this)
         });
         this.create(asteroid, 'asteroids');
       }
     }
   }
 
-  render(state: any) {
+  render(state: any): void {
     // Move
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
@@ -114,7 +118,7 @@ export default class Asteroid {
     const { context } = state;
     context.save();
     context.translate(this.position.x, this.position.y);
-    context.rotate(this.rotation * Math.PI / 180);
+    context.rotate(this.rotation * (Math.PI / 180));
     context.strokeStyle = '#FFF';
     context.lineWidth = 2;
     context.beginPath();
