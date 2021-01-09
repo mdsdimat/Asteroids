@@ -112,6 +112,8 @@ const Game: React.FC = () => {
 
   let isPause = false;
 
+  const scoreRef = useRef(0);
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [context, setContext] = useState(canvasRef.current?.getContext('2d'));
   const [screen] = useState({
@@ -150,11 +152,8 @@ const Game: React.FC = () => {
   const handleKeyDown = (event: KeyboardEvent) => {
     handleKeys(event, true);
 
-    if (event.key === KEY.ESCAPE) {
-      pauseGame();
-    }
-    if (event.key === KEY.ENTER) {
-      pauseGame();
+    if (event.key === KEY.ESCAPE || event.key === KEY.ENTER) {
+      pause();
     }
   };
 
@@ -166,7 +165,7 @@ const Game: React.FC = () => {
     const context = canvasRef.current?.getContext('2d');
     if (context !== undefined && context !== null) {
       setContext(context);
-      startGame();
+      start();
 
       window.addEventListener('keydown', handleKeyDown);
       window.addEventListener('keyup', handleKeyUp);
@@ -180,10 +179,12 @@ const Game: React.FC = () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.addEventListener('keyup', handleKeyUp);
     };
-  }, [context]);// надо сюда функции добавить?
+  }, [context]);// надо сюда функции добавить. Они не меняются?
 
   const addScore = (s: number): void => {
-    setScore(score + s);
+    // не нашел простого способа запомнить счет
+    scoreRef.current += s;
+    setScore(scoreRef.current);
   };
 
   const generateAsteroids = (count: number): void => {
@@ -203,7 +204,7 @@ const Game: React.FC = () => {
     }
   };
 
-  const startGame = () => {
+  const start = () => {
     inGame = true;
     const ship = new Ship({
       position: {
@@ -215,6 +216,21 @@ const Game: React.FC = () => {
     createObject(ship, 'ships');
     generateAsteroids(asteroidsCount);
   };
+
+  const pause = (): void => {
+    isPause = !isPause;
+
+    if (!isPause) {
+      requestAnimationFrame(() => {
+        update();
+      });
+    }
+  };
+
+  const gameOver = () => {
+    inGame = false;
+  };
+
 
   const update = () => {
     const contextVal = context;
@@ -251,20 +267,6 @@ const Game: React.FC = () => {
         update();
       }
     });
-  };
-
-  const gameOver = () => {
-    inGame = false;
-  };
-
-  const pauseGame = (): void => {
-    isPause = !isPause;
-
-    if (!isPause) {
-      requestAnimationFrame(() => {
-        update();
-      });
-    }
   };
 
   const updateObjects = (items: any, group: 'ships' | 'bullets' | 'asteroids' | 'particles') => {
