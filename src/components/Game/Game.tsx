@@ -199,6 +199,8 @@ const Game: React.FC = () => {
 
   const gameOver = () => {
     setIsGameOver(true);
+    setIsPause(false);
+    stopGame = false;
     timer.pause();
   };
 
@@ -207,7 +209,7 @@ const Game: React.FC = () => {
 
     // тут не тот isPause что нужен
 
-    if (contextVal !== undefined && contextVal !== null) {
+    if (!stopGame && contextVal !== undefined && contextVal !== null) {
       contextVal.save();
       contextVal.scale(screen.ratio, screen.ratio);
 
