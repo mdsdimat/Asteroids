@@ -75,7 +75,7 @@ const Game: React.FC = () => {
 
   const [isPause, setIsPause] = useState(false);
 
-  let stopGame = false;
+  let stopGame = useRef(false);
 
   const scoreRef = useRef(0);
   const animationId = useRef(0);
@@ -164,7 +164,7 @@ const Game: React.FC = () => {
 
     setIsPause(false);
     setIsGameOver(false);
-    stopGame = false;
+    stopGame.current = false;
 
     scoreRef.current = 0;
     setScore(scoreRef.current);
@@ -185,12 +185,12 @@ const Game: React.FC = () => {
   };
 
   const pause = (): void => {
-    stopGame = !stopGame;
-    setIsPause(stopGame);
+    stopGame.current = !stopGame.current;
+    setIsPause(stopGame.current);
 
-    console.log('Пауза', stopGame);
+    console.log('Пауза', stopGame.current);
 
-    if (stopGame) {
+    if (stopGame.current) {
       timer.pause();
     } else {
       timer.start();
@@ -200,7 +200,7 @@ const Game: React.FC = () => {
   const gameOver = () => {
     setIsGameOver(true);
     setIsPause(false);
-    stopGame = false;
+    stopGame.current = false;
     timer.pause();
   };
 
@@ -209,7 +209,7 @@ const Game: React.FC = () => {
 
     // тут не тот isPause что нужен
 
-    if (!stopGame && contextVal !== undefined && contextVal !== null) {
+    if (!stopGame.current && contextVal !== undefined && contextVal !== null) {
       contextVal.save();
       contextVal.scale(screen.ratio, screen.ratio);
 
