@@ -33,7 +33,7 @@ const GameTotal : React.FC<GameTotalProps> = (props:GameTotalProps) => {
   );
 };
 
-const GameOver: React.FC<GameOverProps> = (props) => {
+const GameOver: React.FC<GameOverProps> = (props: GameOverProps) => {
   const { score, handlerStart } = props;
 
   return (
@@ -42,7 +42,7 @@ const GameOver: React.FC<GameOverProps> = (props) => {
         <h1 className="game__message--title">GAME OVER</h1>
         <h2 className="game__message--text">Поздравляем! Ваш счет</h2>
         <div className="game__message--score">{score}</div>
-        <button className="game__message--start" onClick={handlerStart}>Начать все с начала</button>
+        <button className="game__message--start" type="button" onClick={handlerStart}>Начать все с начала</button>
       </div>
     </>
   );
@@ -75,7 +75,9 @@ const Game: React.FC = () => {
 
   const [isPause, setIsPause] = useState(false);
 
-  let stopGame = useRef(false);
+  // похоже рефов много, как по другому запомнить состояние не разобрался
+  const stopGame = useRef(false);
+  const endGame = useRef(false);
 
   const scoreRef = useRef(0);
   const animationId = useRef(0);
@@ -165,6 +167,7 @@ const Game: React.FC = () => {
     setIsPause(false);
     setIsGameOver(false);
     stopGame.current = false;
+    endGame.current = false;
 
     scoreRef.current = 0;
     setScore(scoreRef.current);
@@ -185,21 +188,24 @@ const Game: React.FC = () => {
   };
 
   const pause = (): void => {
-    stopGame.current = !stopGame.current;
-    setIsPause(stopGame.current);
+    if (!endGame.current) {
+      stopGame.current = !stopGame.current;
+      setIsPause(stopGame.current);
 
-    console.log('Пауза', stopGame.current);
+      console.log('Пауза', stopGame.current);
 
-    if (stopGame.current) {
-      timer.pause();
-    } else {
-      timer.start();
+      if (stopGame.current) {
+        timer.pause();
+      } else {
+        timer.start();
+      }
     }
   };
 
   const gameOver = () => {
     setIsGameOver(true);
     setIsPause(false);
+    endGame.current = true;
     stopGame.current = false;
     timer.pause();
   };
@@ -235,16 +241,9 @@ const Game: React.FC = () => {
       contextVal.restore();
     }
 
-    //console.log('pause=', isPause);
-
-    // Next frame
-
     animationId.current = requestAnimationFrame(() => {
       update();
     });
-
-
-
   };
 
   const updateObjects = (items: any, group: 'ships' | 'bullets' | 'asteroids' | 'particles') => {
