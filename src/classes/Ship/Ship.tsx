@@ -98,7 +98,7 @@ export default class Ship {
     }
 
     if (state.keys.space) {
-      if (this.lastShot == 0 || Date.now() - this.lastShot > 200) {
+      if (this.lastShot === 0 || Date.now() - this.lastShot > 200) {
         const bullet = new Bullet({ position: this.position, rotation: this.rotation });
 
         this.velocity.x += Math.sin(-this.rotation * (Math.PI / 180)) * 0.1;
@@ -134,7 +134,7 @@ export default class Ship {
     const { context } = state;
     context.save();
     context.translate(this.position.x, this.position.y);
-    context.rotate(this.rotation * Math.PI / 180);
+    context.rotate(this.rotation * (Math.PI / 180));
     context.strokeStyle = '#ffffff';
     context.fillStyle = '#000000';
     context.lineWidth = 2;

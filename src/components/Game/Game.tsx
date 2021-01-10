@@ -11,44 +11,7 @@ import { randomNumBetween } from '../../helpers/GameHelper';
 import { timeFormat } from '../../helpers/TimeHelper';
 import { objectsMap } from '../../types/game';
 
-function useTimer() {
-  const [seconds, setSeconds] = useState(0);
-  const [isRunning, setIsRunning] = useState(true);
-
-  const intervalRef = useRef(0);
-
-  function clearIntervalRef() {
-    setIsRunning(false);
-    clearInterval(intervalRef.current);
-    intervalRef.current = 0;
-  }
-
-  function start() {
-    if (intervalRef.current === 0) {
-      setIsRunning(true);
-      intervalRef.current = window.setInterval(() => setSeconds((s) => (s + 1)), 1000);
-    }
-  }
-
-  function pause() {
-    setIsRunning(false);
-    clearIntervalRef();
-  }
-
-  function reset() {
-    clearIntervalRef();
-    setSeconds(0);
-  }
-
-  useEffect(() => {
-    start();
-    return clearIntervalRef;
-  }, []);
-
-  return {
-    seconds, start, pause, reset, isRunning,
-  };
-}
+import useTimer from '../../helpers/Timer';
 
 type GameTotalProps = {
   seconds: number;
@@ -57,6 +20,7 @@ type GameTotalProps = {
 
 type GameOverProps = {
   score: number;
+  handlerStart: () => void;
 }
 
 const GameTotal : React.FC<GameTotalProps> = (props:GameTotalProps) => {
@@ -70,13 +34,15 @@ const GameTotal : React.FC<GameTotalProps> = (props:GameTotalProps) => {
 };
 
 const GameOver: React.FC<GameOverProps> = (props) => {
-  const { score } = props;
+  const { score, handlerStart } = props;
+
   return (
     <>
       <div className="game__message">
         <h1 className="game__message--title">GAME OVER</h1>
         <h2 className="game__message--text">Поздравляем! Ваш счет</h2>
         <div className="game__message--score">{score}</div>
+        <button className="game__message--start" onClick={handlerStart}>Начать все с начала</button>
       </div>
     </>
   );
@@ -107,9 +73,10 @@ const Game: React.FC = () => {
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
 
-  let isPause = false;
+  const isPause = false;
 
   const scoreRef = useRef(0);
+  const animationId = useRef(0);
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [context, setContext] = useState(canvasRef.current?.getContext('2d'));
@@ -125,6 +92,8 @@ const Game: React.FC = () => {
     down: false,
     space: false,
   });
+
+  const [test, setTest] = useState(1);
 
   const timer = useTimer();
 
@@ -159,26 +128,6 @@ const Game: React.FC = () => {
     handleKeys(event, false);
   };
 
-  useEffect(() => {
-    const context = canvasRef.current?.getContext('2d');
-    if (context !== undefined && context !== null) {
-      setContext(context);
-      start();
-
-      window.addEventListener('keydown', handleKeyDown);
-      window.addEventListener('keyup', handleKeyUp);
-
-      requestAnimationFrame(() => {
-        update();
-      });
-    }
-
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.addEventListener('keyup', handleKeyUp);
-    };
-  }, [context]);// надо сюда функции добавить. Они не меняются?
-
   const addScore = (s: number): void => {
     // не нашел простого способа запомнить счет
     scoreRef.current += s;
@@ -201,7 +150,24 @@ const Game: React.FC = () => {
     }
   };
 
+  const restart = () => {
+    cancelAnimationFrame(animationId.current);
+    start();
+
+    animationId.current = requestAnimationFrame(() => {
+      update();
+    });
+  };
+
   const start = () => {
+    console.log('start');
+    setIsGameOver(false);
+    localStorage.setItem('gameOver', '0');
+    localStorage.setItem('pause', '0');
+
+    scoreRef.current = 0;
+    setScore(scoreRef.current);
+
     timer.reset();
     timer.start();
 
@@ -218,11 +184,13 @@ const Game: React.FC = () => {
   };
 
   const pause = (): void => {
-    isPause = !isPause;
-    timer.pause();
-
-    if (!isPause) {
-      requestAnimationFrame(() => {
+    if (animationId.current !== 0) {
+      timer.pause();
+      cancelAnimationFrame(animationId.current);
+      animationId.current = 0;
+    } else {
+      timer.start();
+      animationId.current = requestAnimationFrame(() => {
         update();
       });
     }
@@ -230,6 +198,7 @@ const Game: React.FC = () => {
 
   const gameOver = () => {
     setIsGameOver(true);
+    localStorage.setItem('gameOver', '1');
 
     timer.pause();
   };
@@ -264,15 +233,15 @@ const Game: React.FC = () => {
     }
 
     // Next frame
-    requestAnimationFrame(() => {
-      if (!isPause) {
-        update();
-      }
+
+    animationId.current = requestAnimationFrame(() => {
+      update();
     });
   };
 
   const updateObjects = (items: any, group: 'ships' | 'bullets' | 'asteroids' | 'particles') => {
     let index = 0;
+
     for (const item of items) {
       if (item.delete) {
         objects[group].splice(index, 1);
@@ -311,10 +280,31 @@ const Game: React.FC = () => {
     return false;
   };
 
+  useEffect(() => {
+    const context = canvasRef.current?.getContext('2d');
+
+    if (context !== undefined && context !== null) {
+      setContext(context);
+      start();
+
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+
+      animationId.current = requestAnimationFrame(() => {
+        update();
+      });
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+    };
+  }, [context]);// надо сюда функции добавить. Они не меняются?
+
   return (
     <div className="game">
       {isPause ? <GamePause /> : '' }
-      {isGameOver ? <GameOver score={score} /> : ''}
+      {isGameOver ? <GameOver score={score} handlerStart={restart} /> : ''}
       <div className="score-right">
         <GameTotal score={score} seconds={timer.seconds} />
       </div>
