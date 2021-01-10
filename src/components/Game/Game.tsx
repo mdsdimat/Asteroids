@@ -73,7 +73,9 @@ const Game: React.FC = () => {
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
 
-  const isPause = false;
+  const [isPause, setIsPause] = useState(false);
+
+  let stopGame = false;
 
   const scoreRef = useRef(0);
   const animationId = useRef(0);
@@ -92,8 +94,6 @@ const Game: React.FC = () => {
     down: false,
     space: false,
   });
-
-  const [test, setTest] = useState(1);
 
   const timer = useTimer();
 
@@ -161,9 +161,10 @@ const Game: React.FC = () => {
 
   const start = () => {
     console.log('start');
+
+    setIsPause(false);
     setIsGameOver(false);
-    localStorage.setItem('gameOver', '0');
-    localStorage.setItem('pause', '0');
+    stopGame = false;
 
     scoreRef.current = 0;
     setScore(scoreRef.current);
@@ -184,27 +185,27 @@ const Game: React.FC = () => {
   };
 
   const pause = (): void => {
-    if (animationId.current !== 0) {
+    stopGame = !stopGame;
+    setIsPause(stopGame);
+
+    console.log('Пауза', stopGame);
+
+    if (stopGame) {
       timer.pause();
-      cancelAnimationFrame(animationId.current);
-      animationId.current = 0;
     } else {
       timer.start();
-      animationId.current = requestAnimationFrame(() => {
-        update();
-      });
     }
   };
 
   const gameOver = () => {
     setIsGameOver(true);
-    localStorage.setItem('gameOver', '1');
-
     timer.pause();
   };
 
   const update = () => {
     const contextVal = context;
+
+    // тут не тот isPause что нужен
 
     if (contextVal !== undefined && contextVal !== null) {
       contextVal.save();
@@ -232,11 +233,16 @@ const Game: React.FC = () => {
       contextVal.restore();
     }
 
+    //console.log('pause=', isPause);
+
     // Next frame
 
     animationId.current = requestAnimationFrame(() => {
       update();
     });
+
+
+
   };
 
   const updateObjects = (items: any, group: 'ships' | 'bullets' | 'asteroids' | 'particles') => {
@@ -303,7 +309,7 @@ const Game: React.FC = () => {
 
   return (
     <div className="game">
-      {isPause ? <GamePause /> : '' }
+      {isPause && !isGameOver ? <GamePause /> : '' }
       {isGameOver ? <GameOver score={score} handlerStart={restart} /> : ''}
       <div className="score-right">
         <GameTotal score={score} seconds={timer.seconds} />
