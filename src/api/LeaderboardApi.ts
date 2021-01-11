@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { buildUrl } from '../helpers/ApiHelpers';
+import { buildUrl } from '@helpers/ApiHelpers';
 import { ColumnType, IRequestData } from '../pages/LeaderboardPage/Table/LeaderboardTable';
 
 class LeaderboardApi {
