@@ -1,32 +1,22 @@
-import { Coord } from '../../types/game';
-import { randomNumBetween, rotatePoint } from '../../helpers/GameHelper';
-
-/* type Coord = {
-  x: number
-  y: number
-}
-
-type params = {
-  rotation: number,
-  position: Coord
-} */
+import {
+  Coord, Vector, renderState, IBulletProps,
+} from '../../types/game';
+import { rotatePoint } from '../../helpers/GameHelper';
 
 export default class Bullet {
-  private position: Coord;
+  public position: Coord;
 
-  private velocity: { x: number; y: number };
+  private velocity: Vector;
 
-  private args: any;
+  private args?: IBulletProps;
 
   private rotation: number;
 
-  private radius: number;
+  public radius: number;
 
   private delete: boolean;
 
-  private readonly create: any;
-
-  constructor(args: any) {
+  constructor(args: IBulletProps) {
     const posDelta = rotatePoint(
       { x: 0, y: -20 },
       { x: 0, y: 0 },
@@ -50,16 +40,18 @@ export default class Bullet {
     this.delete = false;
   }
 
+  isDelete(): boolean {
+    return this.delete;
+  }
+
   destroy(): void {
     this.delete = true;
   }
 
-  render(state: any) {
-    // Move
+  render(state: renderState): void {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
-    // Delete if it goes out of bounds
     if (this.position.x < 0
       || this.position.y < 0
       || this.position.x > state.screen.width
@@ -67,7 +59,6 @@ export default class Bullet {
       this.destroy();
     }
 
-    // Draw
     const { context } = state;
     context.save();
     context.translate(this.position.x, this.position.y);

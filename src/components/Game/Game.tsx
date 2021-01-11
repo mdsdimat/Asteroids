@@ -9,7 +9,7 @@ import {
 import { randomNumBetween } from '../../helpers/GameHelper';
 
 import { timeFormat } from '../../helpers/TimeHelper';
-import { objectsMap } from '../../types/game';
+import { objectsMap, gameObjects, objectGroups } from '../../types/game';
 
 import useTimer from '../../helpers/Timer';
 
@@ -137,7 +137,6 @@ const Game: React.FC = () => {
   };
 
   const generateAsteroids = (count: number): void => {
-    const ship = objects.ships[0];
     for (let i = 0; i < count; i++) {
       const asteroid = new Asteroid({
         size: 80,
@@ -162,8 +161,6 @@ const Game: React.FC = () => {
   };
 
   const start = () => {
-    console.log('start');
-
     setIsPause(false);
     setIsGameOver(false);
     stopGame.current = false;
@@ -192,8 +189,6 @@ const Game: React.FC = () => {
       stopGame.current = !stopGame.current;
       setIsPause(stopGame.current);
 
-      console.log('Пауза', stopGame.current);
-
       if (stopGame.current) {
         timer.pause();
       } else {
@@ -212,8 +207,6 @@ const Game: React.FC = () => {
 
   const update = () => {
     const contextVal = context;
-
-    // тут не тот isPause что нужен
 
     if (!stopGame.current && contextVal !== undefined && contextVal !== null) {
       contextVal.save();
@@ -246,24 +239,25 @@ const Game: React.FC = () => {
     });
   };
 
-  const updateObjects = (items: any, group: 'ships' | 'bullets' | 'asteroids' | 'particles') => {
+  const updateObjects = (items: gameObjects[], group: objectGroups) => {
     let index = 0;
 
     for (const item of items) {
-      if (item.delete) {
+      if (item.isDelete()) {
         objects[group].splice(index, 1);
-      } else {
+      } else if (context) {
         items[index].render({ screen, context, keys });
       }
       index++;
     }
   };
 
-  const createObject = (item: any, group: 'ships' | 'bullets' | 'asteroids' | 'particles'): void => {
+  // тут не смог указать gameObjects typescript говорит что тип never
+  const createObject = (item: any, group: objectGroups): void => {
     objects[group].push(item);
   };
 
-  const checkCollisionsWith = (items1: any, items2: any) => {
+  const checkCollisionsWith = (items1: gameObjects[], items2: gameObjects[]) => {
     for (let i = 0; i < items1.length; i++) {
       for (let j = 0; j < items2.length; j++) {
         const item1 = items1[i];
@@ -277,7 +271,7 @@ const Game: React.FC = () => {
     }
   };
 
-  const checkCollision = (obj1: any, obj2: any) => {
+  const checkCollision = (obj1: gameObjects, obj2: gameObjects) => {
     const vx = obj1.position.x - obj2.position.x;
     const vy = obj1.position.y - obj2.position.y;
     const length = Math.sqrt(vx * vx + vy * vy);

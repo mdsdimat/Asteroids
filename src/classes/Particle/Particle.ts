@@ -1,18 +1,15 @@
-interface IParticleProps {
-  position: {x: number, y: number},
-  velocity: {x: number, y: number},
-  size: any,
-  lifeSpan: any
-}
+import {
+  Coord, Vector, renderState, IParticleProps,
+} from '../../types/game';
 
 export default class Particle {
-  private position: {x: number, y: number};
+  public position: Coord;
 
-  private velocity: {x: number, y: number};
+  private velocity: Vector;
 
-  private radius: any;
+  public radius: number;
 
-  private lifeSpan: any;
+  private lifeSpan: number;
 
   private readonly inertia: number;
 
@@ -27,18 +24,20 @@ export default class Particle {
     this.delete = false;
   }
 
-  destroy() {
+  isDelete(): boolean {
+    return this.delete;
+  }
+
+  destroy(): void {
     this.delete = true;
   }
 
-  render(state: any) {
-    // Move
+  render(state: renderState): void {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     this.velocity.x *= this.inertia;
     this.velocity.y *= this.inertia;
 
-    // Shrink
     this.radius -= 0.1;
     if (this.radius < 0.1) {
       this.radius = 0.1;
@@ -47,7 +46,6 @@ export default class Particle {
       this.destroy();
     }
 
-    // Draw
     const { context } = state;
     context.save();
     context.translate(this.position.x, this.position.y);

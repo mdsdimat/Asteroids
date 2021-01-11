@@ -1,14 +1,14 @@
 import { randomNumBetween, rotatePoint } from '../../helpers/GameHelper';
-import { Coord } from '../../types/game';
+import { Coord, Vector, renderState, IShipProps, objectGroups } from '../../types/game';
 import Particle from '../Particle/Particle';
 import Bullet from '../Bullet/Bullet';
 
 export default class Ship {
-  private position: any;
+  public position: Coord;
 
-  private velocity: Coord;
+  private velocity: Vector;
 
-  private args: any;
+  private args?: IShipProps;
 
   private rotation: number;
 
@@ -18,17 +18,17 @@ export default class Ship {
 
   private readonly inertia: number;
 
-  private radius: number;
+  public radius: number;
 
   private lastShot: number;
 
-  private readonly create: any;
+  private readonly create: (item: any, group: objectGroups) => void;
 
   private onDie: () => void;
 
   private delete: boolean;
 
-  constructor(args: any) {
+  constructor(args: IShipProps) {
     this.args = args;
     this.position = args.position;
     this.velocity = {
@@ -55,6 +55,10 @@ export default class Ship {
     }
   }
 
+  isDelete(): boolean {
+    return this.delete;
+  }
+
   destroy(): void {
     this.delete = true;
     this.onDie();
@@ -64,7 +68,6 @@ export default class Ship {
     this.velocity.x -= Math.sin(-this.rotation * (Math.PI / 180)) * this.speed;
     this.velocity.y -= Math.cos(-this.rotation * (Math.PI / 180)) * this.speed;
 
-    // Thruster particles
     const posDelta = rotatePoint(
       { x: 0, y: -10 },
       { x: 0, y: 0 },
@@ -85,11 +88,11 @@ export default class Ship {
     this.create(particle, 'particles');
   }
 
-  render(state: any) {
+  render(state: renderState): void {
     if (state.keys.up) {
       this.accelerate();
     }
-    // Controls
+
     if (state.keys.left) {
       this.rotate('LEFT');
     }
@@ -110,13 +113,11 @@ export default class Ship {
       }
     }
 
-    // Move
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
     this.velocity.x *= this.inertia;
     this.velocity.y *= this.inertia;
 
-    // Rotation
     if (this.rotation >= 360) {
       this.rotation -= 360;
     }
@@ -124,13 +125,11 @@ export default class Ship {
       this.rotation += 360;
     }
 
-    // Screen edges
     if (this.position.x > state.screen.width) this.position.x = 0;
     else if (this.position.x < 0) this.position.x = state.screen.width;
     if (this.position.y > state.screen.height) this.position.y = 0;
     else if (this.position.y < 0) this.position.y = state.screen.height;
 
-    // Draw
     const { context } = state;
     context.save();
     context.translate(this.position.x, this.position.y);

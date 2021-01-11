@@ -1,9 +1,11 @@
-import { randomNumBetween, rotatePoint, asteroidVertices } from '../../helpers/GameHelper';
+import { randomNumBetween, asteroidVertices } from '../../helpers/GameHelper';
 import Particle from '../Particle/Particle';
-import { Coord, Vector } from '../../types/game';
+import {
+  Coord, Vector, renderState, IAsteroidProps,
+} from '../../types/game';
 
 export default class Asteroid {
-  private position: Coord;
+  public position: Coord;
 
   private velocity: Vector;
 
@@ -11,7 +13,7 @@ export default class Asteroid {
 
   private rotation: number;
 
-  private radius: number;
+  public radius: number;
 
   private delete: boolean;
 
@@ -25,13 +27,7 @@ export default class Asteroid {
 
   private vertices: Coord[];
 
-  constructor(args: any) {
-    const posDelta = rotatePoint(
-      { x: 0, y: -20 },
-      { x: 0, y: 0 },
-      (args.rotation * Math.PI) / 180,
-    );
-
+  constructor(args: IAsteroidProps) {
     this.radius = args.size;
 
     this.velocity = {
@@ -54,12 +50,15 @@ export default class Asteroid {
     this.delete = false;
   }
 
+  isDelete(): boolean {
+    return this.delete;
+  }
+
   destroy(): void {
     this.delete = true;
 
     this.addScore(this.score);
 
-    // Explode
     for (let i = 0; i < this.radius; i++) {
       const particle = new Particle({
         lifeSpan: randomNumBetween(60, 100),
@@ -76,7 +75,6 @@ export default class Asteroid {
       this.create(particle, 'particles');
     }
 
-    // Break into smaller asteroids
     if (this.radius > 10) {
       for (let i = 0; i < 2; i++) {
         const asteroid = new Asteroid({
@@ -87,19 +85,17 @@ export default class Asteroid {
             y: randomNumBetween(-10, 20) + this.position.y,
           },
           create: this.create.bind(this),
-          addScore: this.addScore.bind(this)
+          addScore: this.addScore.bind(this),
         });
         this.create(asteroid, 'asteroids');
       }
     }
   }
 
-  render(state: any): void {
-    // Move
+  render(state: renderState): void {
     this.position.x += this.velocity.x;
     this.position.y += this.velocity.y;
 
-    // Rotation
     this.rotation += this.rotationSpeed;
     if (this.rotation >= 360) {
       this.rotation -= 360;
@@ -108,13 +104,11 @@ export default class Asteroid {
       this.rotation += 360;
     }
 
-    // Screen edges
     if (this.position.x > state.screen.width + this.radius) this.position.x = -this.radius;
     else if (this.position.x < -this.radius) this.position.x = state.screen.width + this.radius;
     if (this.position.y > state.screen.height + this.radius) this.position.y = -this.radius;
     else if (this.position.y < -this.radius) this.position.y = state.screen.height + this.radius;
 
-    // Draw
     const { context } = state;
     context.save();
     context.translate(this.position.x, this.position.y);
