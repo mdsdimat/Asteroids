@@ -1,9 +1,9 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import { requestLeaderboard, requestLeaderboardError, requestLeaderboardSuccess } from '../actionCreators/leaderboard';
-import { GOT_LEADERBOARD } from '../actions/leaderboard';
 import LeaderboardApi from '../../api/LeaderboardApi';
 import { ColumnType, IRequestData } from '../../pages/LeaderboardPage/Table/LeaderboardTable';
+import leaderboardActions from '../actions/leaderboard';
 
 interface ILeadBoardSaga {
   type: string,
@@ -11,7 +11,7 @@ interface ILeadBoardSaga {
 }
 
 export default function* watchGotLeaderboard(): SagaIterator {
-  yield takeEvery(GOT_LEADERBOARD, gotLeaderboardAsync);
+  yield takeEvery(leaderboardActions.got_leaderboard, gotLeaderboardAsync);
 }
 
 function* gotLeaderboardAsync(sagaData: ILeadBoardSaga) {

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 import leaderboardReducer from './leaderboard';
 
 const reducers = combineReducers({
-  leaderboardReducer,
+  leaderboard: leaderboardReducer,
 });
 
 export default reducers;

@@ -1,12 +1,7 @@
 import { AxiosError } from 'axios';
-import {
-  GOT_LEADERBOARD,
-  REQUESTED_LEADERBOARD,
-  REQUESTED_LEADERBOARD_FAILED,
-  REQUESTED_LEADERBOARD_SUCCEEDED,
-} from '../actions/leaderboard';
 import { ColumnType, IRequestData } from '../../pages/LeaderboardPage/Table/LeaderboardTable';
 import { ILeadBoardRequestData } from '../../pages/LeaderboardPage/LeaderboardPage';
+import leaderboardActions from '../actions/leaderboard';
 
 interface ISuccessType {
   type: string,
@@ -23,16 +18,16 @@ interface IGotLeaderboard {
   leaderboardRequestData: ILeadBoardRequestData
 }
 
-export const requestLeaderboard = (): { type: string } => ({ type: REQUESTED_LEADERBOARD });
+export const requestLeaderboard = (): { type: string } => ({ type: leaderboardActions.requested });
 
 export const requestLeaderboardSuccess = (data: ColumnType): ISuccessType => ({
-  type: REQUESTED_LEADERBOARD_SUCCEEDED,
+  type: leaderboardActions.succeeded,
   data,
 });
 
-export const requestLeaderboardError = (error: AxiosError): IErrorType => ({ type: REQUESTED_LEADERBOARD_FAILED, error });
+export const requestLeaderboardError = (error: AxiosError): IErrorType => ({ type: leaderboardActions.failed, error });
 
 export const gotLeaderboard = (leaderboardRequestData: IRequestData): IGotLeaderboard => ({
-  type: GOT_LEADERBOARD,
+  type: leaderboardActions.got_leaderboard,
   leaderboardRequestData,
 });

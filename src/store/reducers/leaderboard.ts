@@ -1,8 +1,4 @@
-import {
-  REQUESTED_LEADERBOARD,
-  REQUESTED_LEADERBOARD_FAILED,
-  REQUESTED_LEADERBOARD_SUCCEEDED,
-} from '../actions/leaderboard';
+import leaderboardActions from '../actions/leaderboard';
 
 interface BaseActionType {
   type: string,
@@ -17,19 +13,19 @@ const initialState = {
 };
 const leaderboardReducer = (state = initialState, action: BaseActionType): Record<string, unknown> => {
   switch (action.type) {
-    case REQUESTED_LEADERBOARD:
+    case leaderboardActions.requested:
       return {
         data: [],
         loading: true,
         error: false,
       };
-    case REQUESTED_LEADERBOARD_SUCCEEDED:
+    case leaderboardActions.succeeded:
       return {
         data: action.data,
         loading: false,
         error: false,
       };
-    case REQUESTED_LEADERBOARD_FAILED:
+    case leaderboardActions.failed:
       return {
         data: [],
         loading: false,
