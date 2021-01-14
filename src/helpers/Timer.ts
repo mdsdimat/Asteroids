@@ -6,28 +6,28 @@ export default function useTimer() {
 
   const intervalRef = useRef(0);
 
-  function clearIntervalRef() {
+  const clearIntervalRef = () => {
     setIsRunning(false);
     clearInterval(intervalRef.current);
     intervalRef.current = 0;
-  }
+  };
 
-  function start() {
+  const start = () => {
     if (intervalRef.current === 0) {
       setIsRunning(true);
       intervalRef.current = window.setInterval(() => setSeconds((s) => (s + 1)), 1000);
     }
-  }
+  };
 
-  function pause() {
+  const pause = () => {
     setIsRunning(false);
     clearIntervalRef();
-  }
+  };
 
-  function reset() {
+  const reset = () => {
     clearIntervalRef();
     setSeconds(0);
-  }
+  };
 
   useEffect(() => {
     start();
