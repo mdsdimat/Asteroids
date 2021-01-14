@@ -9,7 +9,9 @@ import {
 import { randomNumBetween } from '../../helpers/GameHelper';
 
 import { timeFormat } from '../../helpers/TimeHelper';
-import { objectsMap, gameObjects, objectGroups } from '../../types/game';
+import {
+  objectsMap, gameObjects, objectGroups, screenType,
+} from '../../types/game';
 
 import useTimer from '../../helpers/Timer';
 
@@ -82,13 +84,14 @@ const Game: React.FC = () => {
   const scoreRef = useRef(0);
   const animationId = useRef(0);
 
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [context, setContext] = useState(canvasRef.current?.getContext('2d'));
-  const [screen] = useState({
-    width: 1300,
-    height: 600,
+  const screen = useRef<screenType>({
+    width: window.innerWidth,
+    height: window.innerHeight - 150,
     ratio: window.devicePixelRatio || 1,
   });
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [context, setContext] = useState(canvasRef.current?.getContext('2d'));
   const [keys, setKeys] = useState({
     left: false,
     right: false,
@@ -141,8 +144,8 @@ const Game: React.FC = () => {
       const asteroid = new Asteroid({
         size: 80,
         position: {
-          x: randomNumBetween(0, screen.width),
-          y: randomNumBetween(0, screen.height),
+          x: randomNumBetween(0, screen.current.width),
+          y: randomNumBetween(0, screen.current.height),
         },
         create: createObject,
         addScore,
@@ -174,8 +177,8 @@ const Game: React.FC = () => {
 
     const ship = new Ship({
       position: {
-        x: screen.width / 2,
-        y: screen.height / 2,
+        x: screen.current.width / 2,
+        y: screen.current.height / 2,
       },
       create: createObject,
       onDie: gameOver,
@@ -210,11 +213,11 @@ const Game: React.FC = () => {
 
     if (!stopGame.current && contextVal !== undefined && contextVal !== null) {
       contextVal.save();
-      contextVal.scale(screen.ratio, screen.ratio);
+      contextVal.scale(screen.current.ratio, screen.current.ratio);
 
       contextVal.fillStyle = '#000';
       contextVal.globalAlpha = 0.4;
-      contextVal.fillRect(0, 0, screen.width, screen.height);
+      contextVal.fillRect(0, 0, screen.current.width, screen.current.height);
       contextVal.globalAlpha = 1;
 
       if (objects.asteroids.length === 0) {
@@ -246,7 +249,8 @@ const Game: React.FC = () => {
       if (item.isDelete()) {
         objects[group].splice(index, 1);
       } else if (context) {
-        items[index].render({ screen, context, keys });
+        const tmp = screen.current;
+        items[index].render({ screen: tmp, context, keys });
       }
       index++;
     }
@@ -281,6 +285,20 @@ const Game: React.FC = () => {
     return false;
   };
 
+  const resize = () => {
+    screen.current = {
+      width: window.innerWidth,
+      height: window.innerHeight - 150,
+      ratio: window.devicePixelRatio || 1,
+    };
+  };
+
+  useEffect(() => {
+    window.addEventListener('resize', resize);
+
+    return () => window.removeEventListener('resize', resize);
+  });
+
   useEffect(() => {
     const context = canvasRef.current?.getContext('2d');
 
@@ -313,8 +331,8 @@ const Game: React.FC = () => {
       <canvas
         ref={canvasRef}
         tabIndex={0}
-        width={screen.width * screen.ratio}
-        height={screen.height * screen.ratio}
+        width={screen.current.width * screen.current.ratio}
+        height={screen.current.height * screen.current.ratio}
       />
 
     </div>
