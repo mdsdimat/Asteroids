@@ -91,7 +91,6 @@ const Game: React.FC = () => {
   });
 
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [context, setContext] = useState(canvasRef.current?.getContext('2d'));
   const [keys, setKeys] = useState({
     left: false,
     right: false,
@@ -209,16 +208,16 @@ const Game: React.FC = () => {
   };
 
   const update = () => {
-    const contextVal = context;
+    const context = canvasRef.current?.getContext('2d');
 
-    if (!stopGame.current && contextVal !== undefined && contextVal !== null) {
-      contextVal.save();
-      contextVal.scale(screen.current.ratio, screen.current.ratio);
+    if (!stopGame.current && context !== undefined && context !== null) {
+      context.save();
+      context.scale(screen.current.ratio, screen.current.ratio);
 
-      contextVal.fillStyle = '#000';
-      contextVal.globalAlpha = 0.4;
-      contextVal.fillRect(0, 0, screen.current.width, screen.current.height);
-      contextVal.globalAlpha = 1;
+      context.fillStyle = '#000';
+      context.globalAlpha = 0.4;
+      context.fillRect(0, 0, screen.current.width, screen.current.height);
+      context.globalAlpha = 1;
 
       if (objects.asteroids.length === 0) {
         asteroidsCount++;
@@ -234,7 +233,7 @@ const Game: React.FC = () => {
       checkCollisionsWith(objects.bullets, objects.asteroids);
       checkCollisionsWith(objects.ships, objects.asteroids);
 
-      contextVal.restore();
+      context.restore();
     }
 
     animationId.current = requestAnimationFrame(() => {
@@ -244,6 +243,7 @@ const Game: React.FC = () => {
 
   const updateObjects = (items: gameObjects[], group: objectGroups) => {
     let index = 0;
+    const context = canvasRef.current?.getContext('2d');
 
     for (const item of items) {
       if (item.isDelete()) {
@@ -302,25 +302,22 @@ const Game: React.FC = () => {
   });
 
   useEffect(() => {
-    const context = canvasRef.current?.getContext('2d');
+    start();
 
-    if (context !== undefined && context !== null) {
-      setContext(context);
-      start();
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
 
-      window.addEventListener('keydown', handleKeyDown);
-      window.addEventListener('keyup', handleKeyUp);
-
-      animationId.current = requestAnimationFrame(() => {
-        update();
-      });
-    }
+    animationId.current = requestAnimationFrame(() => {
+      update();
+    });
 
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.addEventListener('keyup', handleKeyUp);
+      window.cancelAnimationFrame(animationId.current);
+      animationId.current = 0;
     };
-  }, [context]);// надо сюда функции добавить. Они не меняются?
+  }, []);
 
   return (
     <div className="game">
