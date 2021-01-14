@@ -6,7 +6,7 @@ import {
   Asteroid, Ship,
 } from '../../classes';
 
-import { randomNumBetween } from '../../helpers/GameHelper';
+import { randomNumBetween, throttle } from '../../helpers/GameHelper';
 
 import { timeFormat } from '../../helpers/TimeHelper';
 import {
@@ -293,10 +293,12 @@ const Game: React.FC = () => {
     };
   };
 
-  useEffect(() => {
-    window.addEventListener('resize', resize);
+  const resizeThrottle = throttle(resize, 1000);
 
-    return () => window.removeEventListener('resize', resize);
+  useEffect(() => {
+    window.addEventListener('resize', resizeThrottle);
+
+    return () => window.removeEventListener('resize', resizeThrottle);
   });
 
   useEffect(() => {

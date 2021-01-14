@@ -28,3 +28,32 @@ export function asteroidVertices(count: number, rad: number): Coord[] {
   }
   return p;
 }
+
+export function throttle(func: any, ms: number): any {
+  let isThrottled = false;
+  let savedArgs: any;
+  let savedThis: any;
+
+  function wrapper(this: any, ...args: any) {
+    if (isThrottled) {
+      savedArgs = args;
+      savedThis = this;
+      return;
+    }
+
+    func.apply(this, args);
+
+    isThrottled = true;
+
+    setTimeout(() => {
+      isThrottled = false;
+      if (savedArgs) {
+        wrapper.apply(savedThis, savedArgs);
+        savedArgs = null;
+        savedThis = null;
+      }
+    }, ms);
+  }
+
+  return wrapper;
+}
