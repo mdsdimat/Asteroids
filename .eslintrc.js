@@ -34,7 +34,10 @@ module.exports = {
       custom: 'ignore',
       exceptions: [''],
     }],
-    'no-unused-vars': 2,
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': [
+      'error',
+    ],
     'max-params': [2, 3],
     indent: 2,
     'import/extensions': [

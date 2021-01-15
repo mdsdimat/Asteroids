@@ -25,7 +25,9 @@ export const requestLeaderboardSuccess = (data: ColumnType): ISuccessType => ({
   data,
 });
 
-export const requestLeaderboardError = (error: AxiosError): IErrorType => ({ type: leaderboardActions.failed, error });
+export const requestLeaderboardError = (error: AxiosError): IErrorType => (
+  { type: leaderboardActions.failed, error }
+);
 
 export const gotLeaderboard = (leaderboardRequestData: IRequestData): IGotLeaderboard => ({
   type: leaderboardActions.got_leaderboard,

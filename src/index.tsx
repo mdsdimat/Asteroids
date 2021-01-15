@@ -7,8 +7,10 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store, { sagaMiddleware } from './store/store';
 import watchGotLeaderboard from './store/sagas/leaderboard';
+import watchLogin from './store/sagas/auth';
 
 sagaMiddleware.run(watchGotLeaderboard);
+sagaMiddleware.run(watchLogin);
 
 ReactDOM.render(
   <ErrorBoundary>
