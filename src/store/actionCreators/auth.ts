@@ -1,31 +1,10 @@
 import { AxiosError } from 'axios';
 import authActions from '../actions/auth';
-import { SignUser } from '../../types/types';
-
-interface ISuccessType {
-  type: string,
-  isAuth: boolean
-}
-
-interface IErrorType {
-  type: string,
-  error: AxiosError
-}
-
-interface ILoginResult {
-  type: string,
-  values: SignUser
-}
-
-interface IAuthSuccess {
-  type: string,
-  isAuth: boolean,
-  userData: Record<string, unknown>
-}
+import {IAuthSuccess, IErrorType, ILoginResult, ILoginSuccessType, SignUser} from '../../types/types';
 
 export const requestAuth = (): { type: string } => ({ type: authActions.requested });
 
-export const requestAuthSuccess = (isAuth: boolean): ISuccessType => ({
+export const requestAuthSuccess = (isAuth: boolean): ILoginSuccessType => ({
   type: authActions.succeeded,
   isAuth,
 });
