@@ -29,12 +29,12 @@ export function asteroidVertices(count: number, rad: number): Coord[] {
   return p;
 }
 
-export function throttle(func: any, ms: number): any {
+export function throttle(func: () => void, ms: number): () => void {
   let isThrottled = false;
-  let savedArgs: any;
-  let savedThis: any;
+  let savedArgs: [] | null;
+  let savedThis: Function | null;
 
-  function wrapper(this: any, ...args: any) {
+  function wrapper(this: Function, ...args: []): void {
     if (isThrottled) {
       savedArgs = args;
       savedThis = this;
@@ -47,7 +47,7 @@ export function throttle(func: any, ms: number): any {
 
     setTimeout(() => {
       isThrottled = false;
-      if (savedArgs) {
+      if (savedArgs && savedThis) {
         wrapper.apply(savedThis, savedArgs);
         savedArgs = null;
         savedThis = null;

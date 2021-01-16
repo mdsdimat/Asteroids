@@ -6,58 +6,17 @@ import {
   Asteroid, Ship,
 } from '@classes';
 
+import GameTotal from './GameTotal';
+import GameOver from './GameOver';
+import GamePause from './GamePause';
+
 import { randomNumBetween, throttle } from '@helpers/GameHelper';
 
-import { timeFormat } from '@helpers/TimeHelper';
 import {
   objectsMap, gameObjects, objectGroups, screenType,
 } from '../../../types/game';
 
 import useTimer from '@helpers/Timer';
-
-type GameTotalProps = {
-  seconds: number;
-  score: number;
-}
-
-type GameOverProps = {
-  score: number;
-  handlerStart: () => void;
-}
-
-const GameTotal : React.FC<GameTotalProps> = (props:GameTotalProps) => {
-  const { score, seconds } = props;
-  return (
-    <>
-      <div className="score-right__timer">{timeFormat(seconds)}</div>
-      <div className="score-right__score">{score.toString().padStart(8, '0')}</div>
-    </>
-  );
-};
-
-const GameOver: React.FC<GameOverProps> = (props: GameOverProps) => {
-  const { score, handlerStart } = props;
-
-  return (
-    <>
-      <div className="game__message">
-        <h1 className="game__message--title">GAME OVER</h1>
-        <h2 className="game__message--text">Поздравляем! Ваш счет</h2>
-        <div className="game__message--score">{score}</div>
-        <button className="game__message--start" type="button" onClick={handlerStart}>Начать все с начала</button>
-      </div>
-    </>
-  );
-};
-
-const GamePause = (): JSX.Element => (
-  <>
-    <div className="game__message">
-      <h1 className="game__message--title">Пауза</h1>
-      <h2 className="game__message--text">Для продолжения нажмите ENTER</h2>
-    </div>
-  </>
-);
 
 const KEY = {
   LEFT: 'ArrowLeft',
