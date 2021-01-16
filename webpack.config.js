@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const ServiceWorkerPlugin = require('serviceworker-webpack-plugin');
 const path = require('path');
 
 const mode = process.env.NODE_ENV || 'development';
@@ -9,9 +10,13 @@ module.exports = {
   entry: ['./src/index.tsx'],
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.css', '.less'],
+    alias: {
+      '@components': path.resolve(__dirname, './src/components'),
+      '@helpers': path.resolve(__dirname, './src/helpers'),
+    },
   },
   output: {
-    path: path.join(__dirname, '/static'),
+    path: path.join(__dirname, '/build'),
     filename: isDev ? 'bundle.js' : 'bundle.min.[hash].js',
   },
   mode,
@@ -68,5 +73,8 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: './public/index.html',
     }),
+    new ServiceWorkerPlugin({
+      entry: path.resolve(__dirname, 'src/sw.js'),
+    })
   ],
 };

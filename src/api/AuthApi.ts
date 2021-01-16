@@ -12,7 +12,7 @@ class AuthApi {
 
     static signIn = async (data: SignUser): Promise<void> => {
       const url = buildUrl('auth/signin');
-      const response = await axios.post(url, data);
+      const response = await axios.post(url, data, { withCredentials: true });
 
       return response.data;
     }

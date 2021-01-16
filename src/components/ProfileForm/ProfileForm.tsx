@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Redirect, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import {
   Avatar, Form, Input, Button, Row, Col, Card,
@@ -18,7 +18,18 @@ const tailLayout = {
   wrapperCol: { offset: 8, span: 16 },
 };
 
-const ProfileForm = () => {
+interface FormValues {
+  first_name?: string,
+  second_name?: string,
+  display_name?: string,
+  login?: string,
+  phone?: string,
+  email?: string,
+  oldPassword?: string,
+  newPassword?: string
+}
+
+const ProfileForm = (): JSX.Element => {
   const [form] = useForm();
 
   const [avatar, setAvatar] = useState('');
@@ -35,13 +46,10 @@ const ProfileForm = () => {
         phone: user.phone,
         email: user.email,
       });
-    }).catch((error) => {
-      console.log(error);
     });
   });
 
-  const onFinish = (values: any) => {
-    console.log('Success:', values);
+  const onFinish = (values: FormValues) => {
     UserApi.editProfile(values);
 
     if (values.oldPassword && values.newPassword) {
@@ -58,18 +66,11 @@ const ProfileForm = () => {
     }
   };
 
-  const onFinishFailed = (errorInfo: any) => {
-    console.log('Failed:', errorInfo);
-  };
-
-  const toMain = () => <Redirect to="/" />;
-
   return (
     <Form
       {...layout}
       name="basic"
       onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
       layout="vertical"
       hideRequiredMark
       form={form}

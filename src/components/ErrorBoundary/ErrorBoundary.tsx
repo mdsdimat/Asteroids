@@ -1,36 +1,40 @@
-import React, { Component } from 'react';
+import React, { Component, ReactNode } from 'react';
 
-interface state {
-  error: object | null,
-  errorInfo: React.ErrorInfo | null
+interface Props {
+  children: ReactNode;
 }
 
-export default class ErrorBoundary extends Component {
-  state: state = {
-    error: null,
-    errorInfo: null,
+interface State {
+  error?: Error,
+  errorInfo?: React.ErrorInfo
+}
+
+export default class ErrorBoundary extends Component<Props, State> {
+  constructor(props: Props) {
+    super(props);
+    this.state = {};
   }
 
-  componentDidCatch(error: object, errorInfo: React.ErrorInfo) {
+  componentDidCatch(error: Error, errorInfo: React.ErrorInfo): void {
     this.setState({
       error,
       errorInfo,
     });
   }
 
-  render() {
-    const { error } = this.state;
+  render(): React.ReactNode {
+    const { error, errorInfo } = this.state;
 
     const errorStr = error ? error.toString() : '';
 
-    if (this.state.errorInfo) {
+    if (errorInfo) {
       return (
         <div>
           <h2>Что-то пошло не так.</h2>
           <details style={{ whiteSpace: 'pre-wrap' }}>
             {errorStr}
             <br />
-            {this.state.errorInfo.componentStack}
+            {errorInfo.componentStack}
           </details>
         </div>
       );
