@@ -4,7 +4,6 @@ import React from 'react';
 // Components
 import { Form, Input } from 'antd';
 
-
 const LoginForm = (): JSX.Element => (
   <>
     <Form.Item

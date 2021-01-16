@@ -1,49 +1,51 @@
 // Core
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {useHistory} from "react-router";
-
 
 // Components
-import LoginForm from './LoginForm/LoginForm';
 import { useForm } from 'antd/es/form/Form';
-import { Button, Card, Col, Form, Row, Space } from 'antd';
+import {
+  Button, Card, Col, Form, Row, Space,
+} from 'antd';
+import { useDispatch, useSelector } from 'react-redux';
+import LoginForm from './LoginForm/LoginForm';
 
 // Types
 import { SignUser } from '../../types/types';
 
-// Api
-import AuthApi from "../../api/AuthApi";
-
 // Helpers
-import {openNotificationWithIcon} from "@helpers/NotificationHelper";
+import useAuth from '../../hooks/useAuth';
+import { login } from '../../store/actionCreators/auth';
+import authSelector from '../../store/selectors/auth';
 
 const LoginPage: React.FC = () => {
   const [form] = useForm();
-  const history = useHistory();
+
+  const dispatch = useDispatch();
+
+  const [authUser] = useAuth();
+
+  const selector = useSelector(authSelector);
 
   const onFinish = (values: SignUser) => {
-    AuthApi.signIn(values)
-      .then(() => {
-        openNotificationWithIcon('success', 'Успех', '');
-        history.push('/');
-      })
-      .catch((err) => {
-        openNotificationWithIcon('error', 'Ошибка', err.response.data.reason);
-      });
+    dispatch(login(values));
   };
+
+  React.useEffect(() => {
+    authUser();
+  }, [selector]);
 
   return (
     <Form
-      name='basic'
+      name="basic"
       onFinish={onFinish}
-      layout='vertical'
+      layout="vertical"
       hideRequiredMark
       form={form}
     >
       <Row>
         <Col span={12} offset={6}>
-          <Card title='Авторизация'>
+          <Card title="Авторизация">
             <LoginForm />
             <Space>
               <Link to="/register">
@@ -59,7 +61,7 @@ const LoginPage: React.FC = () => {
         </Col>
       </Row>
     </Form>
-  )
+  );
 };
 
 // Exports
