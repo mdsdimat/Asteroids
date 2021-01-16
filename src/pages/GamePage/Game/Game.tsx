@@ -6,17 +6,15 @@ import {
   Asteroid, Ship,
 } from '@classes';
 
+import { randomNumBetween, throttle, maxGameHeight } from '@helpers/GameHelper';
+import useTimer from '@helpers/Timer';
 import GameTotal from './GameTotal';
 import GameOver from './GameOver';
 import GamePause from './GamePause';
 
-import { randomNumBetween, throttle } from '@helpers/GameHelper';
-
 import {
   objectsMap, gameObjects, objectGroups, screenType,
 } from '../../../types/game';
-
-import useTimer from '@helpers/Timer';
 
 const KEY = {
   LEFT: 'ArrowLeft',
@@ -28,6 +26,7 @@ const KEY = {
   SPACE: ' ',
   ESCAPE: 'Escape',
   ENTER: 'Enter',
+  F: ['f', 'а'],
 };
 
 const Game: React.FC = () => {
@@ -45,7 +44,7 @@ const Game: React.FC = () => {
 
   const screen = useRef<screenType>({
     width: window.innerWidth,
-    height: window.innerHeight - 150,
+    height: maxGameHeight(),
     ratio: window.devicePixelRatio || 1,
   });
 
@@ -56,6 +55,7 @@ const Game: React.FC = () => {
     up: false,
     down: false,
     space: false,
+    f: false,
   });
 
   const timer = useTimer();
@@ -84,6 +84,9 @@ const Game: React.FC = () => {
 
     if (event.key === KEY.ESCAPE || event.key === KEY.ENTER) {
       pause();
+    }
+    if (KEY.F.includes(event.key)) {
+      toggleFullScreen();
     }
   };
 
@@ -247,9 +250,20 @@ const Game: React.FC = () => {
   const resize = () => {
     screen.current = {
       width: window.innerWidth,
-      height: window.innerHeight - 150,
+      height: maxGameHeight(),
       ratio: window.devicePixelRatio || 1,
     };
+  };
+
+  const toggleFullScreen = (): void => {
+    const gameBlock = document.querySelector('.game');
+    if (!document.fullscreenElement) {
+      if (gameBlock) {
+        gameBlock.requestFullscreen();
+      }
+    } else {
+      document.exitFullscreen();
+    }
   };
 
   const resizeThrottle = throttle(resize, 1000);

@@ -57,3 +57,7 @@ export function throttle(func: () => void, ms: number): () => void {
 
   return wrapper;
 }
+
+export function maxGameHeight(): number {
+  return document.fullscreenElement ? window.innerHeight : window.innerHeight - 150;
+}
