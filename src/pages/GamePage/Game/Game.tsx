@@ -4,16 +4,16 @@ import './game.less';
 
 import {
   Asteroid, Ship,
-} from '../../classes';
+} from '@classes';
 
-import { randomNumBetween, throttle } from '../../helpers/GameHelper';
+import { randomNumBetween, throttle } from '@helpers/GameHelper';
 
-import { timeFormat } from '../../helpers/TimeHelper';
+import { timeFormat } from '@helpers/TimeHelper';
 import {
   objectsMap, gameObjects, objectGroups, screenType,
-} from '../../types/game';
+} from '../../../types/game';
 
-import useTimer from '../../helpers/Timer';
+import useTimer from '@helpers/Timer';
 
 type GameTotalProps = {
   seconds: number;

@@ -19,8 +19,15 @@
     "jsx": "react",
     "baseUrl": "./",
     "paths": {
-      "@components/*": ["./src/components/*"],
-      "@helpers/*": ["./src/helpers/*"],
+      "@components/*": [
+        "./src/components/*"
+      ],
+      "@helpers/*": [
+        "./src/helpers/*"
+      ],
+      "@classes": [
+        "./src/classes"
+      ]
     }
   },
   "include": [
