@@ -13,6 +13,7 @@ module.exports = {
     alias: {
       '@components': path.resolve(__dirname, './src/components'),
       '@helpers': path.resolve(__dirname, './src/helpers'),
+      '@classes': path.resolve(__dirname, './src/classes'),
     },
   },
   output: {
@@ -35,8 +36,8 @@ module.exports = {
       {
         test: /\.less$/,
         use: [
-          { loader: MiniCssExtractPlugin.loader },
-          { loader: 'css-loader', options: { modules: 'global' } },
+          {loader: MiniCssExtractPlugin.loader},
+          {loader: 'css-loader', options: {modules: 'global'}},
           {
             loader: 'less-loader',
             options: {
@@ -50,9 +51,9 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          { loader: MiniCssExtractPlugin.loader },
-          { loader: 'style-loader' },
-          { loader: 'css-loader', options: { modules: 'global' } },
+          {loader: MiniCssExtractPlugin.loader},
+          {loader: 'style-loader'},
+          {loader: 'css-loader', options: {modules: 'global'}},
         ],
       },
       {

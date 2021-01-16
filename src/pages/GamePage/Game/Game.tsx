@@ -1,38 +1,340 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import './game.less';
 
-const GameTotal = (): JSX.Element => {
+import {
+  Asteroid, Ship,
+} from '@classes';
+
+import { randomNumBetween, throttle } from '@helpers/GameHelper';
+
+import { timeFormat } from '@helpers/TimeHelper';
+import {
+  objectsMap, gameObjects, objectGroups, screenType,
+} from '../../../types/game';
+
+import useTimer from '@helpers/Timer';
+
+type GameTotalProps = {
+  seconds: number;
+  score: number;
+}
+
+type GameOverProps = {
+  score: number;
+  handlerStart: () => void;
+}
+
+const GameTotal : React.FC<GameTotalProps> = (props:GameTotalProps) => {
+  const { score, seconds } = props;
   return (
     <>
-    <div className="score-right__timer">00:12</div>
-    <div className="score-right__score">00001024</div>
-    <div className="score-right__lifes">AAAA</div>
+      <div className="score-right__timer">{timeFormat(seconds)}</div>
+      <div className="score-right__score">{score.toString().padStart(8, '0')}</div>
     </>
   );
 };
 
-const Game = (): JSX.Element => {
+const GameOver: React.FC<GameOverProps> = (props: GameOverProps) => {
+  const { score, handlerStart } = props;
 
   return (
-    
-      <div className="game">
-        <div className="game__overlay">
-          <div className="game__message">
-            <h1 className="game__message--title" >GAME OVER</h1>
-            <h2 className="game__message--text">Поздравляем! Ваш счет</h2>
-            <div className="game__message--score">1024</div>
-            Для продолжения нажмите ENTER
-          </div>
-
-          <div className="score-right">
-            <GameTotal />
-          </div>
-        </div>
-        <canvas className="game__canvas" />
+    <>
+      <div className="game__message">
+        <h1 className="game__message--title">GAME OVER</h1>
+        <h2 className="game__message--text">Поздравляем! Ваш счет</h2>
+        <div className="game__message--score">{score}</div>
+        <button className="game__message--start" type="button" onClick={handlerStart}>Начать все с начала</button>
       </div>
-    
+    </>
   );
 };
 
+const GamePause = (): JSX.Element => (
+  <>
+    <div className="game__message">
+      <h1 className="game__message--title">Пауза</h1>
+      <h2 className="game__message--text">Для продолжения нажмите ENTER</h2>
+    </div>
+  </>
+);
+
+const KEY = {
+  LEFT: 'ArrowLeft',
+  RIGHT: 'ArrowRight',
+  UP: 'ArrowUp',
+  A: 'KeyA',
+  D: 'KeyD',
+  W: 'KeyW',
+  SPACE: ' ',
+  ESCAPE: 'Escape',
+  ENTER: 'Enter',
+};
+
+const Game: React.FC = () => {
+  const [score, setScore] = useState(0);
+  const [isGameOver, setIsGameOver] = useState(false);
+
+  const [isPause, setIsPause] = useState(false);
+
+  // похоже рефов много, как по другому запомнить состояние не разобрался
+  const stopGame = useRef(false);
+  const endGame = useRef(false);
+
+  const scoreRef = useRef(0);
+  const animationId = useRef(0);
+
+  const screen = useRef<screenType>({
+    width: window.innerWidth,
+    height: window.innerHeight - 150,
+    ratio: window.devicePixelRatio || 1,
+  });
+
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [keys, setKeys] = useState({
+    left: false,
+    right: false,
+    up: false,
+    down: false,
+    space: false,
+  });
+
+  const timer = useTimer();
+
+  let asteroidsCount = 2;
+
+  const objects: objectsMap = {
+    ships: [],
+    bullets: [],
+    asteroids: [],
+    particles: [],
+  };
+
+  const handleKeys = (event: KeyboardEvent, value: boolean) => {
+    const keysVal = keys;
+
+    if (event.key === KEY.LEFT || event.key === KEY.A) keysVal.left = value;
+    if (event.key === KEY.RIGHT || event.key === KEY.D) keysVal.right = value;
+    if (event.key === KEY.UP || event.key === KEY.W) keysVal.up = value;
+    if (event.key === KEY.SPACE) keysVal.space = value;
+    setKeys(keysVal);
+  };
+
+  const handleKeyDown = (event: KeyboardEvent) => {
+    handleKeys(event, true);
+
+    if (event.key === KEY.ESCAPE || event.key === KEY.ENTER) {
+      pause();
+    }
+  };
+
+  const handleKeyUp = (event: KeyboardEvent) => {
+    handleKeys(event, false);
+  };
+
+  const addScore = (s: number): void => {
+    // не нашел простого способа запомнить счет
+    scoreRef.current += s;
+    setScore(scoreRef.current);
+  };
+
+  const generateAsteroids = (count: number): void => {
+    for (let i = 0; i < count; i++) {
+      const asteroid = new Asteroid({
+        size: 80,
+        position: {
+          x: randomNumBetween(0, screen.current.width),
+          y: randomNumBetween(0, screen.current.height),
+        },
+        create: createObject,
+        addScore,
+      });
+      createObject(asteroid, 'asteroids');
+    }
+  };
+
+  const restart = () => {
+    cancelAnimationFrame(animationId.current);
+    start();
+
+    animationId.current = requestAnimationFrame(() => {
+      update();
+    });
+  };
+
+  const start = () => {
+    setIsPause(false);
+    setIsGameOver(false);
+    stopGame.current = false;
+    endGame.current = false;
+
+    scoreRef.current = 0;
+    setScore(scoreRef.current);
+
+    timer.reset();
+    timer.start();
+
+    const ship = new Ship({
+      position: {
+        x: screen.current.width / 2,
+        y: screen.current.height / 2,
+      },
+      create: createObject,
+      onDie: gameOver,
+    });
+    createObject(ship, 'ships');
+    generateAsteroids(asteroidsCount);
+  };
+
+  const pause = (): void => {
+    if (!endGame.current) {
+      stopGame.current = !stopGame.current;
+      setIsPause(stopGame.current);
+
+      if (stopGame.current) {
+        timer.pause();
+      } else {
+        timer.start();
+      }
+    }
+  };
+
+  const gameOver = () => {
+    setIsGameOver(true);
+    setIsPause(false);
+    endGame.current = true;
+    stopGame.current = false;
+    timer.pause();
+  };
+
+  const update = () => {
+    const context = canvasRef.current?.getContext('2d');
+
+    if (!stopGame.current && context !== undefined && context !== null) {
+      context.save();
+      context.scale(screen.current.ratio, screen.current.ratio);
+
+      context.fillStyle = '#000';
+      context.globalAlpha = 0.4;
+      context.fillRect(0, 0, screen.current.width, screen.current.height);
+      context.globalAlpha = 1;
+
+      if (objects.asteroids.length === 0) {
+        asteroidsCount++;
+
+        generateAsteroids(asteroidsCount);
+      }
+
+      updateObjects(objects.ships, 'ships');
+      updateObjects(objects.asteroids, 'asteroids');
+      updateObjects(objects.bullets, 'bullets');
+      updateObjects(objects.particles, 'particles');
+
+      checkCollisionsWith(objects.bullets, objects.asteroids);
+      checkCollisionsWith(objects.ships, objects.asteroids);
+
+      context.restore();
+    }
+
+    animationId.current = requestAnimationFrame(() => {
+      update();
+    });
+  };
+
+  const updateObjects = (items: gameObjects[], group: objectGroups) => {
+    let index = 0;
+    const context = canvasRef.current?.getContext('2d');
+
+    for (const item of items) {
+      if (item.isDelete()) {
+        objects[group].splice(index, 1);
+      } else if (context) {
+        const tmp = screen.current;
+        items[index].render({ screen: tmp, context, keys });
+      }
+      index++;
+    }
+  };
+
+  // тут не смог указать gameObjects typescript говорит что тип never
+  const createObject = (item: any, group: objectGroups): void => {
+    objects[group].push(item);
+  };
+
+  const checkCollisionsWith = (items1: gameObjects[], items2: gameObjects[]) => {
+    for (let i = 0; i < items1.length; i++) {
+      for (let j = 0; j < items2.length; j++) {
+        const item1 = items1[i];
+        const item2 = items2[j];
+
+        if (checkCollision(item1, item2)) {
+          item1.destroy();
+          item2.destroy();
+        }
+      }
+    }
+  };
+
+  const checkCollision = (obj1: gameObjects, obj2: gameObjects) => {
+    const vx = obj1.position.x - obj2.position.x;
+    const vy = obj1.position.y - obj2.position.y;
+    const length = Math.sqrt(vx * vx + vy * vy);
+    if (length < obj1.radius + obj2.radius) {
+      return true;
+    }
+    return false;
+  };
+
+  const resize = () => {
+    screen.current = {
+      width: window.innerWidth,
+      height: window.innerHeight - 150,
+      ratio: window.devicePixelRatio || 1,
+    };
+  };
+
+  const resizeThrottle = throttle(resize, 1000);
+
+  useEffect(() => {
+    window.addEventListener('resize', resizeThrottle);
+
+    return () => window.removeEventListener('resize', resizeThrottle);
+  });
+
+  useEffect(() => {
+    start();
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
+    animationId.current = requestAnimationFrame(() => {
+      update();
+    });
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+      window.cancelAnimationFrame(animationId.current);
+      animationId.current = 0;
+    };
+  }, []);
+
+  return (
+    <div className="game">
+      {isPause && !isGameOver ? <GamePause /> : '' }
+      {isGameOver ? <GameOver score={score} handlerStart={restart} /> : ''}
+      <div className="score-right">
+        <GameTotal score={score} seconds={timer.seconds} />
+      </div>
+
+      <canvas
+        ref={canvasRef}
+        tabIndex={0}
+        width={screen.current.width * screen.current.ratio}
+        height={screen.current.height * screen.current.ratio}
+      />
+
+    </div>
+  );
+};
 export default Game;

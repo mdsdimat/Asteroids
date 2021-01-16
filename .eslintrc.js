@@ -8,6 +8,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
     'airbnb',
+    'plugin:react-hooks/recommended',
   ],
   parser: '@typescript-eslint/parser',
   settings: {
@@ -23,6 +24,7 @@ module.exports = {
   },
   plugins: [
     '@typescript-eslint',
+    'react-hooks',
   ],
   ignorePatterns: [
     'node_modules',
@@ -62,5 +64,8 @@ module.exports = {
     'no-restricted-syntax': 'off',
     'no-prototype-builtins': 'off',
     '@typescript-eslint/no-var-requires': 0,
+    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/exhaustive-deps': 'warn',
+    'no-plusplus': 0,
   },
 };

@@ -1,8 +1,6 @@
 .game{
   position: relative;
   margin: auto;
-  width: 1366px;
-  height: 768px;
 }
 
 .game__overlay{
@@ -15,11 +13,10 @@
 
 .game__canvas{
   position: absolute;
-  width: 1366px;
-  height: 768px;
 }
 
 .score-right{
+  color: white;
   position: absolute;
   text-align: right;
   width: 100px;
@@ -29,12 +26,32 @@
 }
 
 .game__message{
-  margin-top: 200px;
+  color: white;
+  position: absolute;
+  left: 50%;
+  top: 40%;
   text-align: center;
+  transform: translate(-50%,-50%)
 }
 .game__message--title{
+  color: white;
   font-size: 96px;
+}
+.game__message--text{
+  color: white;
 }
 .game__message--score{
   font-size: 72px;
+}
+.game__message--start{
+  background: none;
+  font-size: 20px;
+  padding: 10px;
+  border: 3px solid #fff;
+  color: #fff;
+  cursor: pointer;
+}
+.game__message--start:hover{
+  background: #fff;
+  color: #000;
 }
