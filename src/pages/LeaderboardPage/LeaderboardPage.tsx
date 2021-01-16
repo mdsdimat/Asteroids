@@ -1,46 +1,54 @@
 // Core
-import React from "react";
-import {useHistory} from "react-router";
+import React from 'react';
+import { useHistory } from 'react-router';
 
-// Types
-import LeaderboardTable, {ColumnType} from "./Table/LeaderboardTable";
-import {AxiosError} from "axios";
+import { Col, Row } from 'antd';
 
-// Api
-import LeaderboardApi from "../../api/LeaderboardApi";
-import {Col, Row} from "antd";
+import { useDispatch, useSelector } from 'react-redux';
+import { openNotificationWithIcon } from '@helpers/NotificationHelper';
+import { gotLeaderboard } from '../../store/actionCreators/leaderboard';
+import LeaderboardTable from './Table/LeaderboardTable';
+import leaderboardSelector from '../../store/selectors/leaderboard';
+
+export interface ILeadBoardRequestData {
+  ratingFieldName: string,
+  cursor: number,
+  limit: number,
+}
+
+export const leaderboardRequestData: ILeadBoardRequestData = {
+  ratingFieldName: 'points',
+  cursor: 0,
+  limit: 10,
+};
 
 const LeaderboardPage: React.FC = () => {
   const history = useHistory();
 
-  const [data, setData] = React.useState<ColumnType[]>([]);
+  const selector = useSelector(leaderboardSelector);
 
-  const requestData = {
-    ratingFieldName: 'points',
-    cursor: 0,
-    limit: 10,
-  };
+  if (selector.error) {
+    if (selector.errorData.response?.status === 401) {
+      history.push('/login');
+    } else {
+      openNotificationWithIcon('error', 'Ошибка', 'Что-то пошло не так');
+    }
+  }
+
+  const dispatch = useDispatch();
 
   React.useEffect(() => {
-    LeaderboardApi.getAllLeaderboard(requestData).then((response) => {
-      const newData = response.map((data, index): ColumnType => ({ key: index, ...data.data }));
-      setData(newData);
-    })
-    .catch((err: AxiosError) => {
-      if (err.response?.status === 401) {
-        history.push('/login');
-      }
-    });
-  });
+    dispatch(gotLeaderboard(leaderboardRequestData));
+  }, []);
 
   return (
     <Row>
       <Col span={12} offset={6}>
-        <LeaderboardTable data={data}/>
+        <LeaderboardTable data={selector.data} />
       </Col>
     </Row>
-  )
-}
+  );
+};
 
 // Exports
 export default LeaderboardPage;

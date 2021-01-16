@@ -11,8 +11,8 @@ module.exports = {
   resolve: {
     extensions: ['.ts', '.tsx', '.js', '.jsx', '.css', '.less'],
     alias: {
-      "@components": path.resolve(__dirname, './src/components'),
-      "@helpers": path.resolve(__dirname, './src/helpers'),
+      '@components': path.resolve(__dirname, './src/components'),
+      '@helpers': path.resolve(__dirname, './src/helpers'),
     },
   },
   output: {

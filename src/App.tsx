@@ -3,12 +3,12 @@ import React from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 // Components
-import PageLayout from "@components/PageLayout";
+import PageLayout from '@components/PageLayout';
 
 // Pages
-import ProfilePage from "./pages/ProfilePage/ProfilePage";
+import ProfilePage from './pages/ProfilePage/ProfilePage';
 import LoginPage from './pages/LoginPage/LoginPage';
-import RegistrationPage from './pages/RegisterPage/RegistrationPage'
+import RegistrationPage from './pages/RegisterPage/RegistrationPage';
 import LeaderboardTable from './pages/LeaderboardPage/LeaderboardPage';
 import Game from './pages/GamePage/Game';
 import ForumList from './pages/ForumPage/Forum/ForumList';

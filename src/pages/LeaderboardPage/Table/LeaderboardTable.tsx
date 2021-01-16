@@ -6,17 +6,17 @@ import { Table } from 'antd';
 
 // Types
 export interface IRequestData {
-    ratingFieldName: string,
-    cursor: number,
-    limit: number,
+  ratingFieldName: string,
+  cursor: number,
+  limit: number,
 }
 
 export interface ColumnType {
-    key?: number,
-    name: string,
-    points: number,
-    date: string,
-    country: string,
+  key?: number,
+  name: string,
+  points: number,
+  date: string,
+  country: string,
 }
 
 interface LeaderboardTableProps {
@@ -50,8 +50,8 @@ const columns = [
   },
 ];
 
-const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data })=> (
-      <Table columns={columns} dataSource={data} />
+const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => (
+  <Table columns={columns} dataSource={data} />
 );
 
 // Exports
