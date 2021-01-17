@@ -1,7 +1,8 @@
-import React from "react";
-import {Col, Layout, Menu} from "antd";
-import {BrowserRouter as Router, Link} from "react-router-dom";
-import {Content, Footer, Header} from "antd/es/layout/layout";
+import React from 'react';
+import { Col, Layout, Menu } from 'antd';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Content, Footer, Header } from 'antd/es/layout/layout';
+import IsAuth from '@helpers/IsAuth';
 
 const PageLayout: React.FC = ({ children }) => (
   <Layout>
@@ -13,26 +14,41 @@ const PageLayout: React.FC = ({ children }) => (
             Играть
             <Link to="/" />
           </Menu.Item>
-          <Menu.Item key="2">
-            Вход
-            <Link to="/login" />
-          </Menu.Item>
-          <Menu.Item key="3">
-            Регистрация
-            <Link to="/register" />
-          </Menu.Item>
-          <Menu.Item key="4">
-            Профиль
-            <Link to="/profile" />
-          </Menu.Item>
-          <Menu.Item key="5">
-            Доска почета
-            <Link to="/dashboard" />
-          </Menu.Item>
-          <Menu.Item key="6">
-            Форум
-            <Link to="/forum" />
-          </Menu.Item>
+          {!IsAuth()
+            && (
+            <Menu.Item key="2">
+              Вход
+              <Link to="/login" />
+            </Menu.Item>
+            )}
+          {!IsAuth()
+            && (
+            <Menu.Item key="3">
+              Регистрация
+              <Link to="/register" />
+            </Menu.Item>
+            )}
+          {IsAuth()
+            && (
+            <Menu.Item key="4">
+              Профиль
+              <Link to="/profile" />
+            </Menu.Item>
+            )}
+          {IsAuth()
+            && (
+            <Menu.Item key="5">
+              Доска почета
+              <Link to="/dashboard" />
+            </Menu.Item>
+            )}
+          {IsAuth()
+            && (
+            <Menu.Item key="6">
+              Форум
+              <Link to="/forum" />
+            </Menu.Item>
+            )}
         </Menu>
       </Header>
     </Col>

@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 
 // Components
 import PageLayout from '@components/PageLayout';
+import PrivateRoute from '@components/PrivateRoute';
 
 // Pages
 import ProfilePage from './pages/ProfilePage/ProfilePage';
@@ -18,12 +19,12 @@ const App: React.FC = () => (
   <PageLayout>
     <Switch>
       <Route path="/" component={GamePage} exact />
-      <Route path="/login" component={LoginPage} exact />
-      <Route path="/register" component={RegistrationPage} exact />
-      <Route path="/profile" component={ProfilePage} exact />
-      <Route path="/dashboard" component={LeaderboardTable} exact />
-      <Route path="/forum" component={ForumList} exact />
-      <Route path="/forum-page/:id" component={ForumPage} exact />
+      <PrivateRoute auth={false} path="/login" component={LoginPage} exact />
+      <PrivateRoute auth={false} path="/register" component={RegistrationPage} exact />
+      <PrivateRoute auth path="/profile" component={ProfilePage} exact />
+      <PrivateRoute auth path="/dashboard" component={LeaderboardTable} exact />
+      <PrivateRoute auth path="/forum" component={ForumList} exact />
+      <PrivateRoute auth path="/forum-page/:id" component={ForumPage} exact />
       <Redirect to="/login" />
     </Switch>
   </PageLayout>
