@@ -14,7 +14,7 @@ import GamePause from './GamePause';
 
 import {
   objectsMap, gameObjects, objectGroups, screenType,
-} from '../../../types/game';
+} from '../../types/game';
 
 const KEY = {
   LEFT: 'ArrowLeft',
