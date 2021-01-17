@@ -8,16 +8,16 @@ import PageLayout from '@components/PageLayout';
 // Pages
 import ProfilePage from './pages/ProfilePage/ProfilePage';
 import LoginPage from './pages/LoginPage/LoginPage';
+import GamePage from './pages/GamePage/GamePage';
 import RegistrationPage from './pages/RegisterPage/RegistrationPage';
 import LeaderboardTable from './pages/LeaderboardPage/LeaderboardPage';
-import Game from './pages/GamePage/Game';
 import ForumList from './pages/ForumPage/Forum/ForumList';
 import ForumPage from './pages/ForumPage/ForumPage';
 
 const App: React.FC = () => (
   <PageLayout>
     <Switch>
-      <Route path="/" component={Game} exact />
+      <Route path="/" component={GamePage} exact />
       <Route path="/login" component={LoginPage} exact />
       <Route path="/register" component={RegistrationPage} exact />
       <Route path="/profile" component={ProfilePage} exact />
