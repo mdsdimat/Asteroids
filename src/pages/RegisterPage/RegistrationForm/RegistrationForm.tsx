@@ -15,7 +15,7 @@ const RegistrationForm: React.FC = () => (
   <>
     <Form.Item
       label="Имя"
-      name="name"
+      name="first_name"
       rules={[{ required: true, message: 'Заполните поле!' }]}
     >
       <Input />

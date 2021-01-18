@@ -10,7 +10,7 @@ interface IAuth {
   errorData: AxiosError
   loading: boolean,
   userData: Record<string, unknown>,
-  isUserInfo: symbol,
+  isUserInfo: boolean,
 }
 
 const authSelector = (state: RootState): IAuth => state.auth;
