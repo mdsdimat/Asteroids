@@ -2,12 +2,12 @@
 import React from 'react';
 
 // Components
-import { Form, Input} from 'antd';
-import PhonePrefixSelector from "@components/PhonePrefixSelector";
+import { Form, Input } from 'antd';
+import PhonePrefixSelector from '@components/PhonePrefixSelector';
 
 const PrefixSelector = (
   <Form.Item name="prefix" noStyle>
-    <PhonePrefixSelector/>
+    <PhonePrefixSelector />
   </Form.Item>
 );
 

@@ -1,5 +1,7 @@
-import { randomNumBetween, rotatePoint } from '../../helpers/GameHelper';
-import { Coord, Vector, renderState, IShipProps, objectGroups } from '../../types/game';
+import { randomNumBetween, rotatePoint } from '@helpers/GameHelper';
+import {
+  Coord, Vector, renderState, IShipProps, objectGroups,
+} from '../../types/game';
 import Particle from '../Particle/Particle';
 import Bullet from '../Bullet/Bullet';
 

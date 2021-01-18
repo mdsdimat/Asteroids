@@ -1,21 +1,23 @@
 // Core
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {useHistory} from "react-router";
+import { useHistory } from 'react-router';
 
 // Components
-import RegistrationForm from './RegistrationForm/RegistrationForm';
 import { useForm } from 'antd/es/form/Form';
-import { Button, Card, Col, Form, Row, Space } from 'antd';
+import {
+  Button, Card, Col, Form, Row, Space,
+} from 'antd';
+import { openNotificationWithIcon } from '@helpers/NotificationHelper';
+import RegistrationForm from './RegistrationForm/RegistrationForm';
 
 // Types
 import { SignUpRequest } from '../../types/types';
 
 // Api
-import AuthApi from "../../api/AuthApi";
+import AuthApi from '../../api/AuthApi';
 
 // Helpers
-import { openNotificationWithIcon } from "@helpers/NotificationHelper";
 
 const RegistrationPage: React.FC = () => {
   const [form] = useForm();
@@ -30,25 +32,25 @@ const RegistrationPage: React.FC = () => {
       .catch((err) => {
         openNotificationWithIcon('error', 'Ошибка', err.response.data.reason);
       });
-  }
+  };
   return (
     <Form
-      name='basic'
+      name="basic"
       onFinish={onFinish}
-      layout='vertical'
+      layout="vertical"
       hideRequiredMark
       form={form}
     >
       <Row>
         <Col span={12} offset={6}>
-          <Card title='Регистрация'>
+          <Card title="Регистрация">
             <RegistrationForm />
             <Space>
-              <Button type={'primary'} htmlType={'submit'}>
+              <Button type="primary" htmlType="submit">
                 Регистрация
               </Button>
-              <Link to={'./login'}>
-                <Button htmlType={'button'}>
+              <Link to="./login">
+                <Button htmlType="button">
                   Войти
                 </Button>
               </Link>
@@ -57,7 +59,7 @@ const RegistrationPage: React.FC = () => {
         </Col>
       </Row>
     </Form>
-  )
+  );
 };
 
 // Exports

@@ -36,8 +36,8 @@ module.exports = {
       {
         test: /\.less$/,
         use: [
-          {loader: MiniCssExtractPlugin.loader},
-          {loader: 'css-loader', options: {modules: 'global'}},
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: 'css-loader', options: { modules: 'global' } },
           {
             loader: 'less-loader',
             options: {
@@ -51,9 +51,9 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {loader: MiniCssExtractPlugin.loader},
-          {loader: 'style-loader'},
-          {loader: 'css-loader', options: {modules: 'global'}},
+          { loader: MiniCssExtractPlugin.loader },
+          { loader: 'style-loader' },
+          { loader: 'css-loader', options: { modules: 'global' } },
         ],
       },
       {
@@ -76,6 +76,6 @@ module.exports = {
     }),
     new ServiceWorkerPlugin({
       entry: path.resolve(__dirname, 'src/sw.js'),
-    })
+    }),
   ],
 };

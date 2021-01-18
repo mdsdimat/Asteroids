@@ -21,7 +21,6 @@ const data = [
   },
 ];
 
-
 const ForumPage: React.FC = () => {
   const [form] = useForm();
 

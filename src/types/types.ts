@@ -1,6 +1,6 @@
-import {AxiosError} from "axios";
-import {ColumnType} from "../pages/LeaderboardPage/Table/LeaderboardTable";
-import {ILeadBoardRequestData} from "../pages/LeaderboardPage/LeaderboardPage";
+import { AxiosError } from 'axios';
+import { ColumnType } from '../pages/LeaderboardPage/Table/LeaderboardTable';
+import { ILeadBoardRequestData } from '../pages/LeaderboardPage/LeaderboardPage';
 
 export interface SignUpRequest {
     first_name: string;

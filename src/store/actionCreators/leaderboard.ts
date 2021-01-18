@@ -1,7 +1,7 @@
 import { AxiosError } from 'axios';
 import { ColumnType, IRequestData } from '../../pages/LeaderboardPage/Table/LeaderboardTable';
 import leaderboardActions from '../actions/leaderboard';
-import {IErrorType, IGotLeaderboard, ISuccessLeaderboardType,} from "../../types/types";
+import { IErrorType, IGotLeaderboard, ISuccessLeaderboardType } from '../../types/types';
 
 export const requestLeaderboard = (): { type: string } => ({ type: leaderboardActions.requested });
 

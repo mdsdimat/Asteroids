@@ -1,58 +1,52 @@
-const { assets } = serviceWorkerOption
+const { assets } = serviceWorkerOption;
 
 const CACHE_NAME = 'Asteroids-v1';
 
-let assetsToCache = [...assets, './']
+let assetsToCache = [...assets, './'];
 
-assetsToCache = assetsToCache.map(path => {
-  return new URL(path, location).toString()
-})
+assetsToCache = assetsToCache.map((path) => new URL(path, location).toString());
 
-self.addEventListener('install', event => {
+self.addEventListener('install', (event) => {
   event.waitUntil(
     caches
       .open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(assetsToCache)
-      })
-      .catch(error => {
-        console.error(error)
-        throw error
-      })
-  )
-})
+      .then((cache) => cache.addAll(assetsToCache))
+      .catch((error) => {
+        console.error(error);
+        throw error;
+      }),
+  );
+});
 
-self.addEventListener('activate', event => {
+self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames.map(cacheName => {
-          if (cacheName.indexOf(CACHE_NAME) === 0) {
-            return null
-          }
+    caches.keys().then((cacheNames) => Promise.all(
+      cacheNames.map((cacheName) => {
+        if (cacheName.indexOf(CACHE_NAME) === 0) {
+          return null;
+        }
 
-          return caches.delete(cacheName)
-        })
-      )
-    })
-  )
-})
+        return caches.delete(cacheName);
+      }),
+    )),
+  );
+});
 
-self.addEventListener('message', event => {
+self.addEventListener('message', (event) => {
   switch (event.data.action) {
     case 'skipWaiting':
       if (self.skipWaiting) {
-        self.skipWaiting()
-        self.clients.claim()
+        self.skipWaiting();
+        self.clients.claim();
       }
       break;
     default:
       break;
   }
-})
+});
 
-self.addEventListener('fetch', event => {
-  const request = event.request
+self.addEventListener('fetch', (event) => {
+  const { request } = event;
 
   if (request.method !== 'GET') {
     return;
@@ -64,36 +58,34 @@ self.addEventListener('fetch', event => {
     return;
   }
 
-  const resource = caches.match(request).then(response => {
+  const resource = caches.match(request).then((response) => {
     if (response) {
       return response;
     }
 
     // Load and cache known assets.
     return fetch(request)
-      .then(responseNetwork => {
+      .then((responseNetwork) => {
         if (!responseNetwork || !responseNetwork.ok) {
-          return responseNetwork
+          return responseNetwork;
         }
 
-        const responseCache = responseNetwork.clone()
+        const responseCache = responseNetwork.clone();
 
         caches
           .open(CACHE_NAME)
-          .then(cache => {
-            return cache.put(request, responseCache)
-          });
+          .then((cache) => cache.put(request, responseCache));
 
         return responseNetwork;
       })
       .catch(() => {
         if (event.request.mode === 'navigate') {
-          return caches.match('./')
+          return caches.match('./');
         }
 
-        return null
-      })
-  })
+        return null;
+      });
+  });
 
-  event.respondWith(resource)
-})
+  event.respondWith(resource);
+});

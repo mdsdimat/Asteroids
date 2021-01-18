@@ -1,6 +1,8 @@
 import { AxiosError } from 'axios';
 import authActions from '../actions/auth';
-import {IAuthSuccess, IErrorType, ILoginResult, ILoginSuccessType, SignUser} from '../../types/types';
+import {
+  IAuthSuccess, IErrorType, ILoginResult, ILoginSuccessType, SignUser,
+} from '../../types/types';
 
 export const requestAuth = (): { type: string } => ({ type: authActions.requested });
 
