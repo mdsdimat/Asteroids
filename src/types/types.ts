@@ -68,3 +68,9 @@ export interface IGotLeaderboard {
   type: string,
   leaderboardRequestData: ILeadBoardRequestData
 }
+
+export interface IAddUserLeaderboard {
+  name: string,
+  points: number,
+  date: string
+}

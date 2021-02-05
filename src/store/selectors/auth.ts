@@ -9,8 +9,19 @@ interface IAuth {
   error: boolean,
   errorData: AxiosError
   loading: boolean,
-  userData: Record<string, unknown>,
+  userData: IUserData,
   isUserInfo: boolean,
+}
+
+interface IUserData {
+  id: number,
+  first_name: string,
+  second_name: string,
+  display_name: string,
+  login: string,
+  email: string,
+  phone: string,
+  avatar: string
 }
 
 const authSelector = (state: RootState): IAuth => state.auth;
