@@ -43,8 +43,8 @@ const Game: React.FC = () => {
   const animationId = useRef(0);
 
   const screen = useRef<screenType>({
-    width: window.innerWidth/2,
-    height: maxGameHeight()/2,
+    width: window.innerWidth,
+    height: maxGameHeight(),
     ratio: window.devicePixelRatio || 1,
   });
 
