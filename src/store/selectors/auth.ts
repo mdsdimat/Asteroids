@@ -1,10 +1,10 @@
 import { AxiosError } from 'axios';
 
-interface RootState {
+type RootState = {
   auth: IAuth
 }
 
-interface IAuth {
+type IAuth = {
   isAuth: boolean,
   error: boolean,
   errorData: AxiosError
@@ -13,7 +13,7 @@ interface IAuth {
   isUserInfo: boolean,
 }
 
-interface IUserData {
+type IUserData = {
   id: number,
   first_name: string,
   second_name: string,

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {useSelector} from "react-redux";
 import authSelector from "../../store/selectors/auth";
 import {IAddUserLeaderboard} from "../../types/types";
@@ -14,7 +14,7 @@ const GameOver: React.FC<GameOverProps> = (props: GameOverProps) => {
   const { score, handlerStart } = props;
   const selector = useSelector(authSelector);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (score !== 0 && selector.isAuth) {
       let today = new Date().toISOString().slice(0, 10)
 
