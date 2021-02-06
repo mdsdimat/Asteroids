@@ -2,7 +2,7 @@ import axios from 'axios';
 import {
   IServiceId, SignUpRequest, SignUser, UserResponse,
 } from '../types/types';
-import { buildUrl } from '../helpers/ApiHelpers';
+import { buildUrl } from '@helpers/ApiHelpers';
 
 class AuthApi {
     static signUp = async (data: SignUpRequest): Promise<void> => {
@@ -39,7 +39,7 @@ class AuthApi {
       return response.data;
     }
 
-    static oAuth = async (code: string): Promise<void> => {
+    static oAuth = async (code: string): Promise<string> => {
       const url = buildUrl('oauth/yandex');
       const response = await axios.post(url, {
         code,
