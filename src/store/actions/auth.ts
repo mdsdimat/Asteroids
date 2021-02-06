@@ -5,6 +5,8 @@ enum authActions {
   login = 'LOGIN',
   getUser = 'GET_USER',
   getUserSucceeded = 'GET_USER_SUCCEEDED',
+  yandexAuth = 'YANDEX_OAUTH',
+  yandexAuthSucceeded = 'OAUTH_SUCCEEDED',
 }
 
 export default authActions;

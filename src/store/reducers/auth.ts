@@ -49,6 +49,13 @@ const authReducer = (state = initialState, action: BaseActionType): Record<strin
         userData: action.userData,
         isUserInfo: true,
       };
+    case authActions.yandexAuthSucceeded:
+      return {
+        isAuth: action.isAuth,
+        loading: false,
+        error: false,
+        isUserInfo: false,
+      };
     default:
       return state;
   }
