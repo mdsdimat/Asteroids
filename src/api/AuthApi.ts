@@ -1,6 +1,8 @@
 import axios from 'axios';
-import { SignUpRequest, SignUser, UserResponse } from '../types/types';
-import { buildUrl } from '../helpers/ApiHelpers';
+import {
+  IServiceId, SignUpRequest, SignUser, UserResponse,
+} from '../types/types';
+import { buildUrl } from '@helpers/ApiHelpers';
 
 class AuthApi {
     static signUp = async (data: SignUpRequest): Promise<void> => {
@@ -28,6 +30,22 @@ class AuthApi {
       const url = buildUrl('auth/loguot');
 
       return await axios.post(url);
+    }
+
+    static getServiceId = async (): Promise<IServiceId> => {
+      const url = buildUrl('oauth/yandex/service-id');
+      const response = await axios.get(url);
+
+      return response.data;
+    }
+
+    static oAuth = async (code: string): Promise<string> => {
+      const url = buildUrl('oauth/yandex');
+      const response = await axios.post(url, {
+        code,
+      }, { withCredentials: true });
+
+      return response.data;
     }
 }
 

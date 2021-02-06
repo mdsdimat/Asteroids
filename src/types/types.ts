@@ -3,39 +3,39 @@ import { ColumnType } from '../pages/LeaderboardPage/Table/LeaderboardTable';
 import { ILeadBoardRequestData } from '../pages/LeaderboardPage/LeaderboardPage';
 
 export interface SignUpRequest {
-    first_name: string;
-    second_name: string;
-    login: string;
-    password: string;
-    phone: string;
+  first_name: string;
+  second_name: string;
+  login: string;
+  password: string;
+  phone: string;
 }
 
 export interface SignUser {
-    login: string;
-    password: string;
+  login: string;
+  password: string;
 }
 
 export interface UserResponse {
-    id: number;
-    first_name: string;
-    second_name: string;
-    display_name: string;
-    login: string;
-    email: string;
-    phone: string;
-    avatar: string;
+  id: number;
+  first_name: string;
+  second_name: string;
+  display_name: string;
+  login: string;
+  email: string;
+  phone: string;
+  avatar: string;
 }
 
 export interface LeaderboardNewLeaderRequest {
-    data: unknown;
-    ratingFieldName: string;
+  data: unknown;
+  ratingFieldName: string;
 }
 
 export type UserRequest = Partial<SignUpRequest>;
 
 export interface PasswordRequest {
-    oldPassword: string;
-    newPassword: string;
+  oldPassword: string;
+  newPassword: string;
 }
 
 export interface ILoginSuccessType {
@@ -73,4 +73,13 @@ export interface IAddUserLeaderboard {
   name: string,
   points: number,
   date: string
+}
+
+export interface IServiceId {
+  service_id: string
+}
+
+export interface IYandexOAuth {
+  type: string,
+  code: string
 }
