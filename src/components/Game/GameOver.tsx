@@ -1,4 +1,9 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useSelector} from "react-redux";
+import authSelector from "../../store/selectors/auth";
+import {IAddUserLeaderboard} from "../../types/types";
+import LeaderboardApi from "../../api/LeaderboardApi";
+import {openNotificationWithIcon} from "@helpers/NotificationHelper";
 
 type GameOverProps = {
   score: number;
@@ -7,6 +12,23 @@ type GameOverProps = {
 
 const GameOver: React.FC<GameOverProps> = (props: GameOverProps) => {
   const { score, handlerStart } = props;
+  const selector = useSelector(authSelector);
+
+  useEffect(() => {
+    if (score !== 0 && selector.isAuth) {
+      let today = new Date().toISOString().slice(0, 10)
+
+      const data: IAddUserLeaderboard = {
+        name: selector.userData.login,
+        points: score,
+        date: today
+      }
+      LeaderboardApi.addLeaderboard(data)
+        .catch(() => {
+          openNotificationWithIcon('error', 'Ошибка', 'Не удалось сохранить результат');
+        });
+    }
+  }, []);
 
   return (
     <>
