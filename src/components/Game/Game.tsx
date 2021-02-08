@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, createRef} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 import './game.less';
 
@@ -98,10 +98,8 @@ const Game: React.FC = () => {
     if (KEY.F.includes(event.key)) {
       toggleFullScreen();
     }
-    if (KEY.SPACE.includes(event.key)) {
-      if (audio.audioLaser) {
-        soundWithInterrupt(audio.audioLaser)
-      }
+    if (KEY.SPACE.includes(event.key) && audio.audioLaser) {
+      soundWithInterrupt(audio.audioLaser)
     }
   };
 
