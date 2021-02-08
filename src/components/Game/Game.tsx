@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
 
 import './game.less';
 
@@ -6,14 +6,14 @@ import {
   Asteroid, Ship,
 } from '@classes';
 
-import { randomNumBetween, throttle, maxGameHeight } from '@helpers/GameHelper';
+import {randomNumBetween, throttle, maxGameHeight, soundWithInterrupt} from '@helpers/GameHelper';
 import useTimer from '@helpers/Timer';
 import GameTotal from './GameTotal';
 import GameOver from './GameOver';
 import GamePause from './GamePause';
 
 import {
-  objectsMap, gameObjects, objectGroups, screenType,
+  objectsMap, gameObjects, objectGroups, screenType, IAudio,
 } from '../../types/game';
 
 const KEY = {
@@ -29,11 +29,21 @@ const KEY = {
   F: ['f', 'а'],
 };
 
+const AUDIO_IDS = {
+  LASER: 'audio_laser',
+  DETONATION: 'audio_detonation'
+}
+
 const Game: React.FC = () => {
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
 
   const [isPause, setIsPause] = useState(false);
+
+  const audio: IAudio = {
+    audioLaser: null,
+    audioDetonation: null
+  }
 
   // похоже рефов много, как по другому запомнить состояние не разобрался
   const stopGame = useRef(false);
@@ -88,6 +98,11 @@ const Game: React.FC = () => {
     if (KEY.F.includes(event.key)) {
       toggleFullScreen();
     }
+    if (KEY.SPACE.includes(event.key)) {
+      if (audio.audioLaser) {
+        soundWithInterrupt(audio.audioLaser)
+      }
+    }
   };
 
   const handleKeyUp = (event: KeyboardEvent) => {
@@ -100,6 +115,12 @@ const Game: React.FC = () => {
     setScore(scoreRef.current);
   };
 
+  const detonation = (): void => {
+    if (audio.audioDetonation) {
+      soundWithInterrupt(audio.audioDetonation)
+    }
+  }
+
   const generateAsteroids = (count: number): void => {
     for (let i = 0; i < count; i++) {
       const asteroid = new Asteroid({
@@ -110,6 +131,7 @@ const Game: React.FC = () => {
         },
         create: createObject,
         addScore,
+        detonation,
       });
       createObject(asteroid, 'asteroids');
     }
@@ -270,6 +292,8 @@ const Game: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener('resize', resizeThrottle);
+    audio.audioLaser = document.querySelector(`#${AUDIO_IDS.LASER}`);
+    audio.audioDetonation = document.querySelector(`#${AUDIO_IDS.DETONATION}`);
 
     return () => window.removeEventListener('resize', resizeThrottle);
   });
@@ -300,6 +324,8 @@ const Game: React.FC = () => {
         <GameTotal score={score} seconds={timer.seconds} />
       </div>
 
+      <audio id={AUDIO_IDS.LASER} src="/src/audio/laser.mp3" preload="auto"/>
+      <audio id={AUDIO_IDS.DETONATION} src="/src/audio/detonation.mp3" preload="auto"/>
       <canvas
         ref={canvasRef}
         tabIndex={0}

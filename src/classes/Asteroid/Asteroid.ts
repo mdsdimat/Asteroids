@@ -27,6 +27,8 @@ export default class Asteroid {
 
   private vertices: Coord[];
 
+  private detonation: () => void;
+
   constructor(args: IAsteroidProps) {
     this.radius = args.size;
 
@@ -47,6 +49,8 @@ export default class Asteroid {
 
     this.create = args.create;
 
+    this.detonation = args.detonation;
+
     this.delete = false;
   }
 
@@ -55,6 +59,7 @@ export default class Asteroid {
   }
 
   destroy(): void {
+    this.detonation();
     this.delete = true;
 
     this.addScore(this.score);
@@ -86,6 +91,7 @@ export default class Asteroid {
           },
           create: this.create.bind(this),
           addScore: this.addScore.bind(this),
+          detonation: this.detonation
         });
         this.create(asteroid, 'asteroids');
       }

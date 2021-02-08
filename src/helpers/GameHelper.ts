@@ -61,3 +61,8 @@ export function throttle(func: () => void, ms: number): () => void {
 export function maxGameHeight(): number {
   return document.fullscreenElement ? window.innerHeight : window.innerHeight - 150;
 }
+
+export function soundWithInterrupt (audio: HTMLAudioElement): void {
+  audio.currentTime = 0;
+  audio.play();
+}
