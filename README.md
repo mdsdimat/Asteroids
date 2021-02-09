@@ -71,5 +71,24 @@ https://games.aarp.org/games/atari-asteroids
 Все объекты за исключением корабля исчезают, если выходят за пределы поля. 
 
 ![Схема игры](game_references/shema.png)
-		 
+
+
+## Docker
+
+создать файл .env из .env.example
+
+для сборки 
+```
+> docker-compose build
+```
+
+для запуска 
+```
+> docker-compose up
+```
+
+для входа в контейнер с приложением 
+```
+> docker-compose exec app bash
+```
 

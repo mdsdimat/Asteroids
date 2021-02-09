@@ -47,7 +47,7 @@
     "webpack-dev-server": "3.11.0"
   },
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --host 0.0.0.0 --inline --content-base .",
     "build": "webpack --mode=production",
     "lint": "node_modules/.bin/eslint . --fix",
     "test": "jest"
