@@ -8,7 +8,9 @@ import Game from '../../components/Game';
 import useAuth from '../../hooks/useAuth';
 import authSelector from '../../store/selectors/auth';
 
-const GamePage: React.FC = () => {
+const GamePage: React.FC = () => <>GamePage</>
+
+/*const GamePage: React.FC = () => {
   const [authUser] = useAuth();
 
   const selector = useSelector(authSelector);
@@ -18,7 +20,7 @@ const GamePage: React.FC = () => {
   }, [selector]);
 
   return (<Game />);
-};
+};*/
 
 // Exports
 export default GamePage;

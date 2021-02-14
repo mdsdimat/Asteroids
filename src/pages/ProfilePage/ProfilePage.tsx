@@ -3,11 +3,11 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 // Components
-import {
+/*import {
   Button, Card, Col, Form, Row, Space,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
-import ProfileForm from './ProfileForm/ProfileForm';
+import ProfileForm from './ProfileForm/ProfileForm';*/
 
 // Types
 import { PasswordRequest, UserResponse } from '../../types/types';
@@ -16,7 +16,9 @@ import { PasswordRequest, UserResponse } from '../../types/types';
 import AuthApi from '../../api/AuthApi';
 import UserApi from '../../api/UserApi';
 
-const ProfilePage: React.FC = () => {
+const ProfilePage: React.FC = () => <>ProfilePage</>
+
+/*const ProfilePage: React.FC = () => {
   const [form] = useForm();
   const [avatar, setAvatar] = React.useState('');
 
@@ -75,7 +77,7 @@ const ProfilePage: React.FC = () => {
       </Row>
     </Form>
   );
-};
+};*/
 
 // Exports
 export default ProfilePage;

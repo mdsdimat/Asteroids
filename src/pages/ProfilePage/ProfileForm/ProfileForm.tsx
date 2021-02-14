@@ -2,8 +2,8 @@
 import React from 'react';
 
 // Components
-import { Avatar, Form, Input } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
+/*import { Avatar, Form, Input } from 'antd';
+import { UserOutlined } from '@ant-design/icons';*/
 
 // Api
 import UserApi from '../../../api/UserApi';

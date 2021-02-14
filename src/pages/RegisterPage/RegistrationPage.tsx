@@ -4,12 +4,12 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 
 // Components
-import { useForm } from 'antd/es/form/Form';
+/*import { useForm } from 'antd/es/form/Form';
 import {
   Button, Card, Col, Form, Row, Space,
 } from 'antd';
 import { openNotificationWithIcon } from '@helpers/NotificationHelper';
-import RegistrationForm from './RegistrationForm/RegistrationForm';
+import RegistrationForm from './RegistrationForm/RegistrationForm';*/
 
 // Types
 import { SignUpRequest } from '../../types/types';
@@ -19,7 +19,9 @@ import AuthApi from '../../api/AuthApi';
 
 // Helpers
 
-const RegistrationPage: React.FC = () => {
+const RegistrationPage: React.FC = () => <>RegistrationPage</>
+
+/*const RegistrationPage: React.FC = () => {
   const [form] = useForm();
   const history = useHistory();
 
@@ -60,7 +62,7 @@ const RegistrationPage: React.FC = () => {
       </Row>
     </Form>
   );
-};
+};*/
 
 // Exports
 export default RegistrationPage;

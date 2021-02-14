@@ -1,10 +1,10 @@
 import React from 'react';
-import {
+/*import {
   Col, Divider, Row, Input, Form, Button,
 } from 'antd';
 import { useForm } from 'antd/es/form/Form';
 
-const { TextArea } = Input;
+const { TextArea } = Input;*/
 
 const data = [
   {
@@ -21,7 +21,9 @@ const data = [
   },
 ];
 
-const ForumPage: React.FC = () => {
+const ForumPage: React.FC = () => <>ForumPage</>
+
+/*const ForumPage: React.FC = () => {
   const [form] = useForm();
 
   const onFinish = (values: any) => {
@@ -62,6 +64,6 @@ const ForumPage: React.FC = () => {
       </Col>
     </Row>
   );
-};
+};*/
 
 export default ForumPage;

@@ -1,7 +1,7 @@
 import React from 'react';
-import { List, Col, Row } from 'antd';
+/*import { List, Col, Row } from 'antd';
 import { Link } from 'react-router-dom';
-import 'antd/lib/style/themes/default.less';
+import 'antd/lib/style/themes/default.less';*/
 
 const data = [
   {
@@ -26,7 +26,9 @@ const data = [
   },
 ];
 
-const ForumList: React.FC = () => (
+const ForumList: React.FC = () => <>ForumList</>
+
+/*const ForumList: React.FC = () => (
   <Row>
     <Col span={12} offset={6}>
       <List
@@ -43,6 +45,6 @@ const ForumList: React.FC = () => (
       />
     </Col>
   </Row>
-);
+);*/
 
 export default ForumList;

@@ -2,12 +2,12 @@
 import React from 'react';
 
 // Components
-import { useForm } from 'antd/es/form/Form';
+/*import { useForm } from 'antd/es/form/Form';
 import {
   Card, Col, Form, Row,
-} from 'antd';
+} from 'antd';*/
 import { useDispatch, useSelector } from 'react-redux';
-import LoginForm from '../../components/LoginForm/LoginForm';
+//import LoginForm from '../../components/LoginForm/LoginForm';
 
 // Types
 import { SignUser } from '../../types/types';
@@ -17,7 +17,9 @@ import useAuth from '../../hooks/useAuth';
 import { login } from '../../store/actionCreators/auth';
 import authSelector from '../../store/selectors/auth';
 
-const LoginPage: React.FC = () => {
+const LoginPage: React.FC = () => <>LoginPage</>
+
+/*const LoginPage: React.FC = () => {
   const [form] = useForm();
 
   const dispatch = useDispatch();
@@ -51,7 +53,7 @@ const LoginPage: React.FC = () => {
       </Row>
     </Form>
   );
-};
+};*/
 
 // Exports
 export default LoginPage;

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
-import {
+/*import {
   Avatar, Form, Input, Button, Row, Col, Card,
 } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
-import { useForm } from 'antd/es/form/Form';
+import { useForm } from 'antd/es/form/Form';*/
 
 import AuthApi from '../../api/AuthApi';
 import UserApi from '../../api/UserApi';

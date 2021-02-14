@@ -2,10 +2,10 @@
 import React from 'react';
 import { useHistory } from 'react-router';
 
-import { Col, Row } from 'antd';
+//import { Col, Row } from 'antd';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { openNotificationWithIcon } from '@helpers/NotificationHelper';
+//import { openNotificationWithIcon } from '@helpers/NotificationHelper';
 import { gotLeaderboard } from '../../store/actionCreators/leaderboard';
 import LeaderboardTable from './Table/LeaderboardTable';
 import leaderboardSelector from '../../store/selectors/leaderboard';
@@ -22,7 +22,9 @@ export const leaderboardRequestData: ILeadBoardRequestData = {
   limit: 10,
 };
 
-const LeaderboardPage: React.FC = () => {
+const LeaderboardPage: React.FC = () => <>LeaderboardPage</>
+
+/*const LeaderboardPage: React.FC = () => {
   const history = useHistory();
 
   const selector = useSelector(leaderboardSelector);
@@ -48,7 +50,7 @@ const LeaderboardPage: React.FC = () => {
       </Col>
     </Row>
   );
-};
+};*/
 
 // Exports
 export default LeaderboardPage;
