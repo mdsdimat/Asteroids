@@ -1,6 +1,7 @@
 // Core
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import Helmet from 'react-helmet';
 
 // Components
 /*import {
@@ -16,7 +17,13 @@ import { PasswordRequest, UserResponse } from '../../types/types';
 import AuthApi from '../../api/AuthApi';
 import UserApi from '../../api/UserApi';
 
-const ProfilePage: React.FC = () => <>ProfilePage</>
+const ProfilePage: React.FC = () =>
+<>
+  <Helmet>
+      <title>ProfilePage title</title>
+  </Helmet>
+  ProfilePage
+</>
 
 /*const ProfilePage: React.FC = () => {
   const [form] = useForm();
