@@ -4,14 +4,17 @@ import ErrorBoundary from '@components/ErrorBoundary';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import App from './App';
-import store, { sagaMiddleware } from './store/store';
-import watchGotLeaderboard from './store/sagas/leaderboard';
-import watchLogin from './store/sagas/auth';
+import { configureStore } from './store/store';
 
-import './index.less';
+const { store, history } = configureStore(window.__INITIAL_STATE__);
 
-sagaMiddleware.run(watchGotLeaderboard);
-sagaMiddleware.run(watchLogin);
+// global redeclared types
+declare global {
+    interface Window {
+        __INITIAL_STATE__: any;
+    }
+}
+
 const worker = require('serviceworker-webpack-plugin/lib/runtime');
 
 if ('serviceWorker' in navigator) {
