@@ -1,39 +1,57 @@
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { StaticRouterContext } from 'react-router';
-import { Provider as ReduxProvider } from 'react-redux';
+import { Provider as ReduxProvider, useDispatch } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { Request, Response } from 'express';
 import Helmet, { HelmetData } from 'react-helmet';
 import App from './App';
 import { configureStore } from './store/store';
-
+import watchLogin from './store/sagas/auth';
+import { getUser } from './store/actionCreators/auth';
 
 export default (req: Request, res: Response) => {
+
   const location = req.url;
   const context: StaticRouterContext = {};
 
   const { store } = configureStore({}, location);
 
-  const jsx = (
-    <ReduxProvider store={store}>
-      <StaticRouter context={context} location={location}>
-        <App />
-      </StaticRouter>
-    </ReduxProvider>
-  );
-  const reactHtml = renderToString(jsx);
-  const reduxState = store.getState();
-  const helmetData = Helmet.renderStatic();
+  function renderApp() {
+    const jsx = (
+      <ReduxProvider store={store}>
+        <StaticRouter context={context} location={location}>
+          <App />
+        </StaticRouter>
+      </ReduxProvider>
+    );
 
-  if (context.url) {
-    res.redirect(context.url);
-    return;
+    const reactHtml = renderToString(jsx);
+    const reduxState = store.getState();
+    const helmetData = Helmet.renderStatic();
+
+    if (context.url) {
+      res.redirect(context.url);
+      return;
+    }
+
+    res
+      .status(context.statusCode || 200)
+      .send(getHtml(reactHtml, reduxState, helmetData));
   }
 
-  res
-    .status(context.statusCode || 200)
-    .send(getHtml(reactHtml, reduxState, helmetData));
+  store
+    .runSaga(watchLogin)
+    .toPromise()
+    .then(() => {
+      store.dispatch(getUser());
+    })
+    .then(() => renderApp())
+    .catch((err) => {
+      throw err;
+    });
+
+  store.close();
 };
 
 function getHtml(reactHtml: string, reduxState = {}, helmetData: HelmetData) {
@@ -50,7 +68,7 @@ function getHtml(reactHtml: string, reduxState = {}, helmetData: HelmetData) {
         <link href="/main.css" rel="stylesheet">
     </head>
     <body>
-        <div id="mount">${reactHtml}</div>
+        <div id="root">${reactHtml}</div>
         <script>
           window.__INITIAL_STATE__ = ${JSON.stringify(reduxState)}
         </script>
