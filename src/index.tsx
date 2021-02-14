@@ -18,7 +18,7 @@ if ('serviceWorker' in navigator) {
   worker.register();
 }
 
-ReactDOM.render(
+ReactDOM.hydrate(
   <ErrorBoundary>
     <Provider store={store}>
       <Router>
