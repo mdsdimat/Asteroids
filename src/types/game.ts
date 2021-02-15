@@ -61,7 +61,8 @@ export interface IAsteroidProps {
 export interface IShipProps {
   position: {x: number, y: number},
   create: (item: any, group: objectGroups) => void
-  onDie: () => void
+  onDie: () => void,
+  audio: IAudio
 }
 
 export interface IBulletProps {

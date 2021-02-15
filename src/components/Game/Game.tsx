@@ -98,9 +98,6 @@ const Game: React.FC = () => {
     if (KEY.F.includes(event.key)) {
       toggleFullScreen();
     }
-    if (KEY.SPACE.includes(event.key) && audio.audioLaser) {
-      soundWithInterrupt(audio.audioLaser)
-    }
   };
 
   const handleKeyUp = (event: KeyboardEvent) => {
@@ -163,6 +160,7 @@ const Game: React.FC = () => {
       },
       create: createObject,
       onDie: gameOver,
+      audio: audio
     });
     createObject(ship, 'ships');
     generateAsteroids(asteroidsCount);
