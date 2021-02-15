@@ -55,15 +55,22 @@ export interface IAsteroidProps {
   // не понимаю почему eslint говорит что параметры не используются. Используются они
   addScore: (s: number) => void,
   create: (item: any, group: objectGroups) => void
+  detonation: () => void
 }
 
 export interface IShipProps {
   position: {x: number, y: number},
   create: (item: any, group: objectGroups) => void
-  onDie: () => void
+  onDie: () => void,
+  audio: IAudio
 }
 
 export interface IBulletProps {
   position: {x: number, y: number},
   rotation: number
+}
+
+export interface IAudio {
+  audioLaser: HTMLAudioElement | null,
+  audioDetonation: HTMLAudioElement | null,
 }
