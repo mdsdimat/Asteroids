@@ -12,7 +12,7 @@ export interface AuthState {
   readonly loading: boolean;
   readonly error: boolean;
   readonly isUserInfo: boolean;
-  readonly userData: Record<string, unknown>;
+  readonly userData?: Record<string, unknown>;
 }
 
 export const initialState: AuthState = {
@@ -22,7 +22,7 @@ export const initialState: AuthState = {
   isUserInfo: false,
   userData: {},
 };
-const authReducer = (state = initialState, action: BaseActionType) => {
+const authReducer = (state = initialState, action: BaseActionType): AuthState => {
   switch (action.type) {
     case authActions.requested:
       return {
@@ -45,7 +45,7 @@ const authReducer = (state = initialState, action: BaseActionType) => {
         isAuth: false,
         loading: false,
         error: true,
-        errorData: action.error,
+        //errorData: action.error,
         isUserInfo: false,
         userData: {},
       };

@@ -17,7 +17,7 @@ export const initialState: LeaderboardState = {
   loading: false,
   error: false,
 };
-const leaderboardReducer = (state = initialState, action: BaseActionType): Record<string, unknown> => {
+const leaderboardReducer = (state = initialState, action: BaseActionType): LeaderboardState => {
   switch (action.type) {
     case leaderboardActions.requested:
       return {

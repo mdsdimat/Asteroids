@@ -8,7 +8,7 @@ import { State } from '../../types';
 
 export default (history: History) =>
   // я combineReducers<State> не могу использовать проблемы с типами
-  combineReducers({
+  combineReducers<State>({
     auth: authReducer,
     leaderboard: leaderboardReducer,
     router: connectRouter(history),
