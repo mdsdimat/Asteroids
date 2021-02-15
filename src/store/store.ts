@@ -1,17 +1,18 @@
 import createSagaMiddleware, { END } from 'redux-saga';
-import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { routerMiddleware, connectRouter } from 'connected-react-router';
+import { createStore, applyMiddleware } from 'redux';
+import { routerMiddleware } from 'connected-react-router';
 import { createBrowserHistory, createMemoryHistory } from 'history';
-import reducers from './reducers';
 import { isServer } from '../helpers/isServer';
 
 import watchGotLeaderboard from './sagas/leaderboard';
 import watchLogin from './sagas/auth';
 
+import createRootReducer from './reducers';
+
 import { AppStore, State } from '../types';
 
 // eslint-disable-next-line import/prefer-default-export
-export function configureStore(initialState: any, url = '/') {
+export function configureStore(initialState: State, url = '/') {
   const history = isServer
     ? createMemoryHistory({ initialEntries: [url] })
     : createBrowserHistory();
@@ -20,10 +21,7 @@ export function configureStore(initialState: any, url = '/') {
   const middlewares = [routerMiddleware(history), sagaMiddleware];
 
   const store = createStore(
-    combineReducers<State>({
-      ...reducers,
-      router: connectRouter(history),
-    }),
+    createRootReducer(history),
     initialState,
     applyMiddleware(...middlewares),
   ) as AppStore;

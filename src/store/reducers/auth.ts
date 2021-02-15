@@ -7,14 +7,22 @@ interface BaseActionType {
   userData: Record<string, unknown>
 }
 
-const initialState = {
+export interface AuthState {
+  readonly isAuth: boolean;
+  readonly loading: boolean;
+  readonly error: boolean;
+  readonly isUserInfo: boolean;
+  readonly userData: Record<string, unknown>;
+}
+
+export const initialState: AuthState = {
   isAuth: false,
   loading: false,
   error: false,
   isUserInfo: false,
   userData: {},
 };
-const authReducer = (state = initialState, action: BaseActionType): Record<string, unknown> => {
+const authReducer = (state = initialState, action: BaseActionType) => {
   switch (action.type) {
     case authActions.requested:
       return {

@@ -1,21 +1,24 @@
 import React from 'react';
 import { StaticRouter } from 'react-router-dom';
 import { StaticRouterContext } from 'react-router';
-import { Provider as ReduxProvider, useDispatch } from 'react-redux';
+import { Provider as ReduxProvider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { Request, Response } from 'express';
 import Helmet, { HelmetData } from 'react-helmet';
 import App from './App';
 import { configureStore } from './store/store';
 import watchLogin from './store/sagas/auth';
+import getInitialState from './store/getInitialState';
 import { getUser } from './store/actionCreators/auth';
 
 export default (req: Request, res: Response) => {
-
   const location = req.url;
   const context: StaticRouterContext = {};
 
-  const { store } = configureStore({}, location);
+  const { store } = configureStore(getInitialState(location), location);
+
+  //по идее тут должен отправиться запрос
+  store.dispatch(getUser());
 
   function renderApp() {
     const jsx = (
@@ -43,9 +46,6 @@ export default (req: Request, res: Response) => {
   store
     .runSaga(watchLogin)
     .toPromise()
-    .then(() => {
-      store.dispatch(getUser());
-    })
     .then(() => renderApp())
     .catch((err) => {
       throw err;

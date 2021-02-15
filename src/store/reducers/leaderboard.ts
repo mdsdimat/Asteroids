@@ -6,7 +6,13 @@ interface BaseActionType {
   error: Record<string, unknown>
 }
 
-const initialState = {
+export interface LeaderboardState {
+  readonly data: {name: string}[];
+  readonly loading: boolean;
+  readonly error: boolean;
+}
+
+export const initialState: LeaderboardState = {
   data: [],
   loading: false,
   error: false,
