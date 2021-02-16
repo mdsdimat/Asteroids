@@ -5,11 +5,20 @@ import { Provider as ReduxProvider } from 'react-redux';
 import { renderToString } from 'react-dom/server';
 import { Request, Response } from 'express';
 import Helmet, { HelmetData } from 'react-helmet';
+import { SnackbarProvider } from 'notistack';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
+
 import App from './App';
 import { configureStore } from './store/store';
 import watchLogin from './store/sagas/auth';
 import getInitialState from './store/getInitialState';
 import { getUser } from './store/actionCreators/auth';
+
+import theme from './theme';
+
+import AuthApi from './api/AuthApi';
 
 export default (req: Request, res: Response) => {
   const location = req.url;
@@ -17,19 +26,23 @@ export default (req: Request, res: Response) => {
 
   const { store } = configureStore(getInitialState(location), location);
 
-  //по идее тут должен отправиться запрос
-  store.dispatch(getUser());
-
   function renderApp() {
     const jsx = (
       <ReduxProvider store={store}>
         <StaticRouter context={context} location={location}>
-          <App />
+          <ThemeProvider theme={theme}>
+            <SnackbarProvider>
+              <CssBaseline />
+              <App />
+            </SnackbarProvider>
+          </ThemeProvider>
         </StaticRouter>
       </ReduxProvider>
     );
 
-    const reactHtml = renderToString(jsx);
+    const sheets = new ServerStyleSheets();
+
+    const reactHtml = renderToString(sheets.collect(jsx));
     const reduxState = store.getState();
     const helmetData = Helmet.renderStatic();
 
@@ -38,9 +51,11 @@ export default (req: Request, res: Response) => {
       return;
     }
 
+    const css = sheets.toString();
+
     res
       .status(context.statusCode || 200)
-      .send(getHtml(reactHtml, reduxState, helmetData));
+      .send(getHtml(reactHtml, css, reduxState, helmetData));
   }
 
   store
@@ -51,10 +66,16 @@ export default (req: Request, res: Response) => {
       throw err;
     });
 
-  store.close();
+  const dataRequirements: (Promise<void> | void)[] = [];
+
+  return Promise.all(dataRequirements)
+    .then(() => store.close())
+    .catch(err => {
+      throw err;
+    });
 };
 
-function getHtml(reactHtml: string, reduxState = {}, helmetData: HelmetData) {
+function getHtml(reactHtml: string, css: string, reduxState = {}, helmetData: HelmetData) {
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -63,6 +84,8 @@ function getHtml(reactHtml: string, reduxState = {}, helmetData: HelmetData) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="shortcut icon" type="image/png" href="/images/favicon.jpg">
+        <style id="jss-server-side">${css}</style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
         ${helmetData.title.toString()}
         ${helmetData.meta.toString()}
         <link href="/main.css" rel="stylesheet">

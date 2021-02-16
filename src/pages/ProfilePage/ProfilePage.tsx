@@ -1,90 +1,45 @@
 // Core
-import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React from 'react';
 import Helmet from 'react-helmet';
 
-// Components
-/*import {
-  Button, Card, Col, Form, Row, Space,
-} from 'antd';
-import { useForm } from 'antd/es/form/Form';
-import ProfileForm from './ProfileForm/ProfileForm';*/
+import { makeStyles } from '@material-ui/core/styles';
 
-// Types
-import { PasswordRequest, UserResponse } from '../../types/types';
+import Container from '@material-ui/core/Container';
 
-// Api
-import AuthApi from '../../api/AuthApi';
-import UserApi from '../../api/UserApi';
+import {
+  Typography,
 
-const ProfilePage: React.FC = () =>
-<>
-  <Helmet>
-      <title>ProfilePage title</title>
-  </Helmet>
-  ProfilePage
-</>
+} from '@material-ui/core';
+import ProfileForm from './ProfileForm/ProfileForm';
 
-/*const ProfilePage: React.FC = () => {
-  const [form] = useForm();
-  const [avatar, setAvatar] = React.useState('');
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+}));
 
-  useEffect(() => {
-    AuthApi.getUser().then((user) => {
-      setAvatar(`https://ya-praktikum.tech${user.avatar}`);
-
-      form.setFieldsValue({
-        first_name: user.first_name,
-        second_name: user.second_name,
-        display_name: user.display_name,
-        login: user.login,
-        phone: user.phone,
-        email: user.email,
-      });
-    }).catch((error) => {
-      console.log(error);
-    });
-  });
-
-  const handleOk = React.useCallback((values: UserResponse & PasswordRequest) => {
-    UserApi.editProfile(values);
-
-    if (values.oldPassword && values.newPassword) {
-      UserApi.changePassword({
-        oldPassword: values.oldPassword,
-        newPassword: values.newPassword,
-      });
-    }
-  }, []);
+const ProfilePage: React.FC = () => {
+  const classes = useStyles();
 
   return (
-    <Form
-      name="basic"
-      onFinish={handleOk}
-      layout="vertical"
-      hideRequiredMark
-      form={form}
-    >
-      <Row>
-        <Col span={12} offset={6}>
-          <Card title="Профиль пользователя">
-            <ProfileForm avatar={avatar} />
-            <Space>
-              <Button type="primary" htmlType="submit">
-                Сохранить
-              </Button>
-              <Link to="/">
-                <Button htmlType="button">
-                  На главную
-                </Button>
-              </Link>
-            </Space>
-          </Card>
-        </Col>
-      </Row>
-    </Form>
-  );
-};*/
+    <>
+      <Helmet>
+        <title>Профиль пользователя</title>
+      </Helmet>
+      <Container component="main" maxWidth="xs">
+        <div className={classes.paper}>
+          <Typography component="h1" variant="h5">
+            Профиль пользователя
+          </Typography>
 
-// Exports
+          <ProfileForm />
+        </div>
+      </Container>
+    </>
+  );
+};
+
 export default ProfilePage;

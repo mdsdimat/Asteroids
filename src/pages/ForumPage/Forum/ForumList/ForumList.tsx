@@ -1,50 +1,75 @@
 import React from 'react';
-/*import { List, Col, Row } from 'antd';
-import { Link } from 'react-router-dom';
-import 'antd/lib/style/themes/default.less';*/
+
+import { makeStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
+import Link from '@material-ui/core/Link';
 
 const data = [
   {
     id: 1,
-    title: 'Тема заголовок',
+    title: 'Тема заголовок 1',
     description: 'Описание первой темы',
   },
   {
     id: 2,
-    title: 'Тема заголовок',
+    title: 'Тема заголовок 2',
     description: 'Описание второй темы',
   },
   {
     id: 3,
-    title: 'Тема заголовок',
+    title: 'Тема заголовок 3',
     description: 'Описание третей темы',
   },
   {
     id: 4,
-    title: 'Тема заголовок',
+    title: 'Тема заголовок 4',
     description: 'Описание четвёртой темы',
   },
 ];
 
-const ForumList: React.FC = () => <>ForumList</>
+const useStyles = makeStyles((theme) => ({
+  root: {
+    width: '100%',
+    backgroundColor: theme.palette.background.paper,
+  },
+  inline: {
+    display: 'inline',
+  },
+}));
 
-/*const ForumList: React.FC = () => (
-  <Row>
-    <Col span={12} offset={6}>
-      <List
-        itemLayout="horizontal"
-        dataSource={data}
-        renderItem={(item) => (
-          <List.Item>
-            <List.Item.Meta
-              title={<Link to={`/forum-page/${item.id}`}>{item.title}</Link>}
-              description={item.description}
-            />
-          </List.Item>
-        )}
-      />
-    </Col>
-  </Row>
-);*/
+const ForumList: React.FC = () => {
+  const classes = useStyles();
+
+  return (
+    <Container component="main" maxWidth="md">
+      <Typography component="h1" variant="h5">
+        Форум
+      </Typography>
+      <List className={classes.root}>
+        {
+          data.map(item =>
+            <ListItem alignItems="flex-start" key={item.id}>
+              <ListItemText
+                primary={
+                  <React.Fragment>
+                    <Link href={`/forum-page/${item.id}`} variant="body2">
+                      {item.title}
+                    </Link>
+                  </React.Fragment>
+                }
+                secondary={item.description}
+              />
+            </ListItem>
+          )
+        }
+      </List>
+
+    </Container>
+  )
+}
 
 export default ForumList;

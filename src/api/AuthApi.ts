@@ -6,7 +6,6 @@ import { buildUrl } from '@helpers/ApiHelpers';
 
 class AuthApi {
     static signUp = async (data: SignUpRequest): Promise<void> => {
-      console.log('signUp');
       const url = buildUrl('auth/signup');
       const response = await axios.post(url, data);
 
@@ -14,7 +13,6 @@ class AuthApi {
     }
 
     static signIn = async (data: SignUser): Promise<void> => {
-      console.log('signIn');
       const url = buildUrl('auth/signin');
       const response = await axios.post(url, data, { withCredentials: true });
 
@@ -29,14 +27,12 @@ class AuthApi {
     }
 
     static logout = async (): Promise<void> => {
-      console.log('logout');
       const url = buildUrl('auth/loguot');
 
       return await axios.post(url);
     }
 
     static getServiceId = async (): Promise<IServiceId> => {
-      console.log('getServiceId');
       const url = buildUrl('oauth/yandex/service-id');
       const response = await axios.get(url);
 
@@ -44,7 +40,6 @@ class AuthApi {
     }
 
     static oAuth = async (code: string): Promise<string> => {
-      console.log('oAuth');
       const url = buildUrl('oauth/yandex');
       const response = await axios.post(url, {
         code,

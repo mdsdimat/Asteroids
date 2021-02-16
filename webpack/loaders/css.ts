@@ -8,35 +8,22 @@ const cssnano = require('cssnano');
 
 const { IS_DEV } = require('../env');
 
-const resolverOptions = {
-  alias: { styles: path.resolve('src/styles') },
-  mergeExtensions: 'extend',
-};
-
 export default {
   client: {
-    test: /\.(less|css)$/,
-    loader: 'null-loader',
-    /*use: [
+    test: /\.less$/,
+    use: [
       IS_DEV && 'css-hot-loader',
-      MiniCssExtractPlugin.loader,
-      'css-loader',
+      { loader: MiniCssExtractPlugin.loader },
+      { loader: 'css-loader', options: { modules: 'global' } },
       {
-        loader: 'postcss-loader',
+        loader: 'less-loader',
         options: {
-          plugins: [
-            postcssImport({
-              resolve: postcssImportAliasResolver(
-                resolverOptions,
-              ),
-            }),
-            postcssCustomMedia(),
-            postcssNested(),
-            !IS_DEV && cssnano({ preset: 'default' }),
-          ].filter(Boolean),
+          lessOptions: {
+            javascriptEnabled: true,
+          },
         },
       },
-    ].filter(Boolean),*/
+    ],
   },
   server: {
     test: /\.(less|css)$/,

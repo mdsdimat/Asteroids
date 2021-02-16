@@ -10,6 +10,17 @@ export interface SignUpRequest {
   phone: string;
 }
 
+export interface ProfileUser {
+  first_name?: string,
+  second_name?: string,
+  display_name?: string,
+  login?: string,
+  phone?: string,
+  email?: string,
+  oldPassword?: string,
+  newPassword?: string
+}
+
 export interface SignUser {
   login: string;
   password: string;

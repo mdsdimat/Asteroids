@@ -1,17 +1,34 @@
-import path from 'path';
-import express from 'express';
+import webpack from 'webpack';
+import cookieParser from 'cookie-parser';
+import express, { Request, Response } from 'express';
 import compression from 'compression';
+
+import routes from './routes';
+
 import 'babel-polyfill';
 import serverRenderMiddleware from './server-render-middleware';
 
+import webpackConfig from '../webpack/client.config';
+
 const app = express();
 
-// Рекомендую использовать только для разработки
-// А в production раздавать статику через Nginx или CDN
 app.use(compression())
-  .use(express.static(path.resolve(__dirname, '../dist')))
-  .use(express.static(path.resolve(__dirname, '../static')));
+  .use(cookieParser());
 
-app.get('/*', serverRenderMiddleware);
+const compiler = webpack({ ...webpackConfig, mode: 'development' });
+
+app.use(require('webpack-dev-middleware')(compiler, {
+  publicPath: webpackConfig.output!.publicPath!
+}));
+
+app.use(require('webpack-hot-middleware')(compiler));
+
+const paths = routes.map(v => v.path);
+
+app.get(paths, serverRenderMiddleware);
+
+app.use((_req: Request, res: Response, next) => {
+  res.sendStatus(404);
+});
 
 export { app };
