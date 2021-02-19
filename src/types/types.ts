@@ -94,3 +94,7 @@ export interface IYandexOAuth {
   type: string,
   code: string
 }
+
+export interface CookiesType {
+    [property: string]: any
+}

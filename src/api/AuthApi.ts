@@ -1,8 +1,9 @@
 import axios from 'axios';
 import {
-  IServiceId, SignUpRequest, SignUser, UserResponse,
+  IServiceId, SignUpRequest, SignUser, UserResponse, CookiesType
 } from '../types/types';
 import { buildUrl } from '@helpers/ApiHelpers';
+import CookieToString from '@helpers/CookieToString';
 
 class AuthApi {
     static signUp = async (data: SignUpRequest): Promise<void> => {
@@ -19,9 +20,18 @@ class AuthApi {
       return response.data;
     }
 
-    static getUser = async (): Promise<UserResponse> => {
+    static getUser = async (cookies: CookiesType | null): Promise<UserResponse> => {
       const url = buildUrl('auth/user');
-      const response = await axios.get(url, { withCredentials: true });
+
+      const params = { withCredentials: true };
+
+      if (cookies) {
+        params.headers = {
+          Cookie: CookieToString(cookies),
+        };
+      }
+
+      const response = await axios.get(url, params);
 
       return response.data;
     }
