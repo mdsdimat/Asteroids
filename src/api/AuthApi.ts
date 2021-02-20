@@ -20,7 +20,7 @@ class AuthApi {
       return response.data;
     }
 
-    static getUser = async (cookies: CookiesType | null): Promise<UserResponse> => {
+    static getUser = async (cookies?: CookiesType): Promise<UserResponse> => {
       const url = buildUrl('auth/user');
 
       const params = { withCredentials: true };

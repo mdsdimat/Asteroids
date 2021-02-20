@@ -98,3 +98,8 @@ export interface IYandexOAuth {
 export interface CookiesType {
     [property: string]: any
 }
+
+export interface UserAsync {
+  cookies?: CookiesType,
+  [property: string]: any
+}

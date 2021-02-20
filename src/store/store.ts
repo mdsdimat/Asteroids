@@ -33,6 +33,7 @@ export function configureStore(initialState: State, url = '/') {
     initialState,
     applyMiddleware(...middlewares),
   ) as AppStore;
+
   store.dispatch({ type: '@@redux/INIT' });
 
   store.runSaga = sagaMiddleware.run;

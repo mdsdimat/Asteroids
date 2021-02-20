@@ -14,11 +14,9 @@ import App from './App';
 import { configureStore } from './store/store';
 import watchLogin from './store/sagas/auth';
 import getInitialState from './store/getInitialState';
-import { getUser } from './store/actionCreators/auth';
+import { getUserServer } from './store/actionCreators/auth';
 
 import theme from './theme';
-
-import AuthApi from './api/AuthApi';
 
 export default (req: Request, res: Response) => {
   const location = req.url;
@@ -69,7 +67,12 @@ export default (req: Request, res: Response) => {
   const dataRequirements: (Promise<void> | void)[] = [];
 
   return Promise.all(dataRequirements)
-    .then(() => store.close())
+    .then(() => {
+      store.dispatch(getUserServer(req.cookies));
+    })
+    .then(() => {
+      store.close()
+    })
     .catch(err => {
       throw err;
     });
