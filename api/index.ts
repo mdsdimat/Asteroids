@@ -1,7 +1,7 @@
 import https from 'https';
 import fs from 'fs';
 import app from './app';
-import sequelize from './dbconn';
+// import sequelize from './dbconn';
 
 const port = process.env.PORT || 9001;
 const IS_DEV = process.env.NODE_ENV !== 'production';

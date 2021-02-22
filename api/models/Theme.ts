@@ -1,5 +1,5 @@
 import {
-  Model, Table, DataType, AutoIncrement, PrimaryKey, Column, AllowNull,
+  Model, Table, DataType, AutoIncrement, PrimaryKey, Column, AllowNull, Unique,
 } from 'sequelize-typescript';
 
 import sequelize from '../dbconn';
@@ -8,18 +8,24 @@ import sequelize from '../dbconn';
   timestamps: false,
   paranoid: true,
   tableName: 'theme',
+  underscored: true,
 })
-class ThemeModel extends Model<ThemeModel> {
+class Theme extends Model {
   @AutoIncrement
   @PrimaryKey
   @Column(DataType.INTEGER)
   id: number;
 
+  @Unique
   @AllowNull(false)
   @Column(DataType.STRING)
   name: string;
+
+  @AllowNull(false)
+  @Column(DataType.STRING)
+  params: string;
 }
 
-sequelize.addModels([ThemeModel]);
+sequelize.addModels([Theme]);
 
-export { ThemeModel };
+export default Theme;

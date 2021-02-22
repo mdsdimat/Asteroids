@@ -8,6 +8,7 @@ const auth = async (req: Request, _res: Response, next: NextFunction) => {
 
   if (!req.cookies || !req.cookies.authCookie || !req.cookies.uuid) {
     next();
+    return;
   }
 
   try {
