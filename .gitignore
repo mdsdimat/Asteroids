@@ -2,3 +2,7 @@
 /.idea
 yarn.lock
 package-lock.json
+dist/
+*.pem
+.env
+package-lock.json
