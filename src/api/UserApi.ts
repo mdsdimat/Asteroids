@@ -42,6 +42,8 @@ class UserApi {
         withCredentials: true,
         data,
       });
+
+      return response.data;
     }
 
     static getUser = async (id: string): Promise<UserResponse> => {

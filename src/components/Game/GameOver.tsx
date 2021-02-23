@@ -3,7 +3,8 @@ import {useSelector} from "react-redux";
 import authSelector from "../../store/selectors/auth";
 import {IAddUserLeaderboard} from "../../types/types";
 import LeaderboardApi from "../../api/LeaderboardApi";
-import {openNotificationWithIcon} from "@helpers/NotificationHelper";
+import { useSnackbar } from 'notistack';
+
 
 type GameOverProps = {
   score: number;
@@ -13,6 +14,7 @@ type GameOverProps = {
 const GameOver: React.FC<GameOverProps> = (props: GameOverProps) => {
   const { score, handlerStart } = props;
   const selector = useSelector(authSelector);
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   useEffect(() => {
     if (score !== 0 && selector.isAuth) {
@@ -25,7 +27,13 @@ const GameOver: React.FC<GameOverProps> = (props: GameOverProps) => {
       }
       LeaderboardApi.addLeaderboard(data)
         .catch(() => {
-          openNotificationWithIcon('error', 'Ошибка', 'Не удалось сохранить результат');
+          enqueueSnackbar('Не удалось сохранить результат', {
+            variant: 'error',
+            anchorOrigin: {
+              horizontal: 'right',
+              vertical: 'top',
+            },
+          });
         });
     }
   }, []);

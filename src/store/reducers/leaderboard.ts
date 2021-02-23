@@ -6,12 +6,18 @@ interface BaseActionType {
   error: Record<string, unknown>
 }
 
-const initialState = {
+export interface LeaderboardState {
+  readonly data: {name: string}[];
+  readonly loading: boolean;
+  readonly error: boolean;
+}
+
+export const initialState: LeaderboardState = {
   data: [],
   loading: false,
   error: false,
 };
-const leaderboardReducer = (state = initialState, action: BaseActionType): Record<string, unknown> => {
+const leaderboardReducer = (state = initialState, action: BaseActionType): LeaderboardState => {
   switch (action.type) {
     case leaderboardActions.requested:
       return {
