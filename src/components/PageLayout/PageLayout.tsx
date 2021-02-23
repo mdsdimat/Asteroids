@@ -1,64 +1,78 @@
 import React from 'react';
-import { Col, Layout, Menu } from 'antd';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { Content, Footer, Header } from 'antd/es/layout/layout';
+
+import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
+import Toolbar from '@material-ui/core/Toolbar';
+import Link from '@material-ui/core/Link';
+
 import IsAuth from '@helpers/IsAuth';
 
-const PageLayout: React.FC = ({ children }) => (
-  <Layout>
-    <Col span={12} offset={6}>
-      <Header>
-        <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">
-            Играть
-            <Link to="/" />
-          </Menu.Item>
-          {!IsAuth()
-            && (
-            <Menu.Item key="2">
-              Вход
-              <Link to="/login" />
-            </Menu.Item>
-            )}
-          {!IsAuth()
-            && (
-            <Menu.Item key="3">
-              Регистрация
-              <Link to="/register" />
-            </Menu.Item>
-            )}
-          {IsAuth()
-            && (
-            <Menu.Item key="4">
-              Профиль
-              <Link to="/profile" />
-            </Menu.Item>
-            )}
-          {IsAuth()
-            && (
-            <Menu.Item key="5">
-              Доска почета
-              <Link to="/dashboard" />
-            </Menu.Item>
-            )}
-          {IsAuth()
-            && (
-            <Menu.Item key="6">
-              Форум
-              <Link to="/forum" />
-            </Menu.Item>
-            )}
-        </Menu>
-      </Header>
-    </Col>
-    <Content>
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  toolbarTitle: {
+    flex: 1,
+  },
+  toolbarSecondary: {
+    justifyContent: 'space-between',
+    overflowX: 'auto',
+  },
+  toolbarLink: {
+    padding: theme.spacing(1),
+    flexShrink: 0,
+  },
+}));
+
+const PageLayout: React.FC = ({ children }) => {
+  const classes = useStyles();
+  let sections;
+
+  if (IsAuth()) {
+    sections = [
+      { title: 'Играть', url: '/' },
+      { title: 'Профиль', url: '/profile' },
+      { title: 'Доска почета', url: '/dashboard' },
+      { title: 'Форум', url: '/forum' },
+    ];
+  } else {
+    sections = [
+      { title: 'Играть', url: '/' },
+      { title: 'Вход', url: '/login' },
+      { title: 'Регистрация', url: '/register' },
+      //временно
+      { title: 'Профиль', url: '/profile' },
+      { title: 'Форум', url: '/forum' },
+      { title: 'Доска почета', url: '/dashboard' },
+    ];
+  }
+
+  return (
+    <>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
+          {sections.map((section) => (
+            <Link
+              color="inherit"
+              noWrap
+              key={section.title}
+              variant="body2"
+              href={section.url}
+              className={classes.toolbarLink}
+            >
+              {section.title}
+            </Link>
+          ))}
+        </Toolbar>
+      </Container>
+
       {children}
 
-    </Content>
-    <Footer style={{ textAlign: 'center' }}>Game &copy; 2020 Created by Helsinki</Footer>
-  </Layout>
-);
+    </>
+  );
+};
 
 // Exports
 export default PageLayout;

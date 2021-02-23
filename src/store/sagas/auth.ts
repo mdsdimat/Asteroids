@@ -1,7 +1,7 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import AuthApi from '../../api/AuthApi';
-import { IYandexOAuth, SignUser } from '../../types/types';
+import { IYandexOAuth, SignUser, UserAsync } from '../../types/types';
 import authActions from '../actions/auth';
 import {
   getUserSuccess, requestAuth, requestAuthError, requestAuthSuccess, yandexAuthSuccess,
@@ -35,10 +35,10 @@ function* loginAsync(sagaData: IAuthSaga) {
   }
 }
 
-function* getUserAsync() {
+function* getUserAsync(sagaData: UserAsync) {
   try {
     yield put(requestAuth());
-    const data = yield call(() => AuthApi.getUser()
+    const data = yield call(() => AuthApi.getUser(sagaData.cookies)
       .then(
         (data) => data,
       ));

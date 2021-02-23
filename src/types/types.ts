@@ -10,6 +10,17 @@ export interface SignUpRequest {
   phone: string;
 }
 
+export interface ProfileUser {
+  first_name?: string,
+  second_name?: string,
+  display_name?: string,
+  login?: string,
+  phone?: string,
+  email?: string,
+  oldPassword?: string,
+  newPassword?: string
+}
+
 export interface SignUser {
   login: string;
   password: string;
@@ -82,4 +93,13 @@ export interface IServiceId {
 export interface IYandexOAuth {
   type: string,
   code: string
+}
+
+export interface CookiesType {
+    [property: string]: any
+}
+
+export interface UserAsync {
+  cookies?: CookiesType,
+  [property: string]: any
 }

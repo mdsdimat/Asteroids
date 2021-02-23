@@ -1,6 +1,8 @@
 // Core
 import React from 'react';
 import { useSelector } from 'react-redux';
+import Helmet from 'react-helmet';
+import NoSsr from '@material-ui/core/NoSsr';
 
 import Game from '../../components/Game';
 
@@ -17,7 +19,14 @@ const GamePage: React.FC = () => {
     authUser();
   }, [selector]);
 
-  return (<Game />);
+  return (
+    <>
+      <Helmet>
+        <title>Asteroids</title>
+      </Helmet>
+      <NoSsr><Game /></NoSsr>
+    </>
+  );
 };
 
 // Exports
