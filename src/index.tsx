@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, createContext } from 'react';
 import ReactDOM from 'react-dom';
 import 'babel-polyfill';
 import ErrorBoundary from '@components/ErrorBoundary';
@@ -6,7 +6,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { SnackbarProvider } from 'notistack';
 
-import { ThemeProvider } from '@material-ui/core/styles';
+import CustomThemeProvider from './CustomThemeProvider';
 
 import App from './App';
 import { configureStore } from './store/store';
@@ -29,7 +29,7 @@ if ('serviceWorker' in navigator) {
 }
 
 const Main: React.FC = () => {
-  React.useEffect(() => {
+  useEffect(() => {
     const jssStyles = document.getElementById('jss-server-side');
     if (jssStyles && jssStyles.parentElement) {
       jssStyles.parentElement.removeChild(jssStyles);
@@ -40,11 +40,11 @@ const Main: React.FC = () => {
     <ErrorBoundary>
       <Provider store={store}>
         <Router>
-          <ThemeProvider theme={theme}>
+          <CustomThemeProvider>
             <SnackbarProvider>
               <App />
             </SnackbarProvider>
-          </ThemeProvider>
+          </CustomThemeProvider>
         </Router>
       </Provider>
     </ErrorBoundary>

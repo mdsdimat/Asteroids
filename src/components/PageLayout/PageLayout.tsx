@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Container from '@material-ui/core/Container';
 import Toolbar from '@material-ui/core/Toolbar';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import SwitchUI from '@material-ui/core/Switch';
 import Link from '@material-ui/core/Link';
 
 import IsAuth from '@helpers/IsAuth';
+import { CustomThemeContext } from '../../CustomThemeProvider';
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
@@ -29,6 +32,19 @@ const PageLayout: React.FC = ({ children }) => {
   const classes = useStyles();
   let sections;
 
+  const { currentTheme, setTheme } = useContext(CustomThemeContext);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    if (currentTheme === 'dark') {
+      setIsDark(true);
+      setTheme('dark');
+    } else {
+      setTheme('light');
+      setIsDark(false);
+    }
+  }, ['currentTheme']);
+
   if (IsAuth()) {
     sections = [
       { title: 'Играть', url: '/' },
@@ -41,12 +57,24 @@ const PageLayout: React.FC = ({ children }) => {
       { title: 'Играть', url: '/' },
       { title: 'Вход', url: '/login' },
       { title: 'Регистрация', url: '/register' },
-      //временно
+      // временно
       { title: 'Профиль', url: '/profile' },
       { title: 'Форум', url: '/forum' },
       { title: 'Доска почета', url: '/dashboard' },
     ];
   }
+
+  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+
+    if (checked) {
+      setIsDark(true);
+      setTheme('dark');
+    } else {
+      setIsDark(false);
+      setTheme('light');
+    }
+  };
 
   return (
     <>
@@ -65,6 +93,10 @@ const PageLayout: React.FC = ({ children }) => {
               {section.title}
             </Link>
           ))}
+          <FormControlLabel
+            control={<SwitchUI checked={isDark} onChange={handleThemeChange} />}
+            label="Сумерки"
+          />
         </Toolbar>
       </Container>
 

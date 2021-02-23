@@ -112,7 +112,6 @@
     "start:webpack": "webpack --mode=development --watch",
     "start:server": "nodemon index.js --watch dist/server.js",
     "start": "NODE_ENV=development npm-run-all --print-label --parallel start:*",
-    "start:webpack:client": "webpack --config=./webpack/client.config.ts --mode=development --watch",
     "api": "ts-node --project api/tsconfig.json ./api/index.ts "
   }
 }
