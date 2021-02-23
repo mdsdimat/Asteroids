@@ -3,8 +3,8 @@ import axios from 'axios';
 
 import CookieToString from '../../src/helpers/CookieToString';
 
-const auth = async (req: Request, _res: Response, next: NextFunction) => {
-  _res.locals.user = null;
+const auth = async (req: Request, res: Response, next: NextFunction): Promise<any> => {
+  res.locals.user = null;
 
   if (!req.cookies || !req.cookies.authCookie || !req.cookies.uuid) {
     next();
@@ -19,7 +19,7 @@ const auth = async (req: Request, _res: Response, next: NextFunction) => {
       withCredentials: true,
     });
 
-    _res.locals.user = data;
+    res.locals.user = data;
   } catch (err) {
     console.log(err);
   }

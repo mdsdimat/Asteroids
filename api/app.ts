@@ -11,6 +11,7 @@ const app = express();
 
 app
   .disable('x-powered-by')
+  .use(bodyParser.urlencoded({ extended: true }))
   .use(bodyParser.json())
   .use(catchError)
   .use(cookieParser())

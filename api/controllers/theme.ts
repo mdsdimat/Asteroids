@@ -1,21 +1,14 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import Theme from '../models/Theme';
 import UserTheme from '../models/UserTheme';
 
-const getThemes = async (req: Request, res: Response, next: NextFunction) => {
-  /* if (!_res.locals.user) {
-    _res.json({ reason: 'Cookie is not valid' });
-  } */
-
+const getThemes = async (req: Request, res: Response): Promise<any> => {
   const data = await Theme.findAll({ raw: true });
 
   res.json(data);
 };
 
-const getTheme = async (req: Request, res: Response) => {
-  /* if (!res.locals.user) {
-    _res.json({ reason: 'Cookie is not valid' });
-  } */
+const getTheme = async (req: Request, res: Response): Promise<any> => {
   const { user } = res.locals;
 
   let theme = {};
@@ -50,4 +43,50 @@ const getTheme = async (req: Request, res: Response) => {
   res.json(theme);
 };
 
-export { getThemes, getTheme };
+type answerType = {
+  [key: string]: string | boolean
+}
+
+const changeTheme = async (req: Request, res: Response): Promise<any> => {
+  const { user } = res.locals;
+  const { theme } = req.body;
+
+  let error = false;
+  const answer: answerType = {
+    ok: false,
+    message: '',
+  };
+
+  if (!user) {
+    error = true;
+    answer.message = 'Cookie is not valid';
+  }
+
+  if (!theme) {
+    error = true;
+    answer.message = 'Theme not set';
+  }
+
+  let themeId = null;
+  if (user && theme) {
+    const arTheme = await Theme.findOne({ where: { id: theme } });
+    if (!arTheme) {
+      error = true;
+      answer.message = 'Theme not found';
+    } else {
+      themeId = arTheme.id;
+    }
+  }
+
+  if (!error) {
+    await UserTheme.destroy({ where: { user_id: user.id } });
+    await UserTheme.create({ user_id: user.id, theme_id: themeId });
+
+    answer.ok = true;
+    answer.message = 'Theme change';
+  }
+
+  res.json(answer);
+};
+
+export { getThemes, getTheme, changeTheme };
