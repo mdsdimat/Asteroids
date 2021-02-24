@@ -4,7 +4,7 @@
 
 **_Here we go_** with Asteroids game from [Yandex](https://yandex.ru/) Practicun Helsinki Team. <br>
 In this project our team will create game similar to Asteroids (1979). Our main goal is to build
-our team app and improve our skills. 
+our team app and improve our skills.
 
 ## Install
 
@@ -14,7 +14,7 @@ To install the app you should download repo and run
 ```
 > npm install
 ```
-or 
+or
 ```
 > yarn install
 ```
@@ -55,7 +55,7 @@ https://games.aarp.org/games/atari-asteroids
 	- Стрельба
 
 Объекты:
-### 
+###
     - Корабль:
         Корабль с включенным двигателем (Игрок делает “вперёд”)
         (Корабль с включенным форсажем (Фиксировать как долго игрок зажимает "вперёд", после определенного количества времени увеличивается скорость движения, увеличивается расстояние, на которое смещается корабль))`
@@ -68,8 +68,27 @@ https://games.aarp.org/games/atari-asteroids
 	- Снаряд попадает в астероид, снаряд и астероид исчезают (астероид распадается на мелкие астероиды) игрок увеличивает очки.
 	- Астероид попадает в корабль, игра закончена, отображается таблица с результатом.
 
-Все объекты за исключением корабля исчезают, если выходят за пределы поля. 
+Все объекты за исключением корабля исчезают, если выходят за пределы поля.
 
 ![Схема игры](game_references/shema.png)
-		 
 
+
+## Примечание
+
+В хостах надо прописать
+127.0.0.1 local.ya-praktikum.tech
+
+Игра запускается npm run start
+https://local.ya-praktikum.tech:3000/
+Api запускается npm run api
+https://local.ya-praktikum.tech:9001/
+
+Если запустить команду
+(async () => {
+  await UserTheme.sync({ force: true });
+})();
+
+создаётся таблица в базе данных
+
+Надо установить Postgres
+Параметры подключения к базе в файле .env в корне
