@@ -69,7 +69,7 @@ const changeTheme = async (req: Request, res: Response): Promise<any> => {
 
   let themeId = null;
   if (user && theme) {
-    const arTheme = await Theme.findOne({ where: { id: theme } });
+    const arTheme = await Theme.findOne({ where: { name: theme } });
     if (!arTheme) {
       error = true;
       answer.message = 'Theme not found';

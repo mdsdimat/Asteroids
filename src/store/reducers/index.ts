@@ -4,6 +4,7 @@ import { History } from 'history';
 
 import leaderboardReducer from './leaderboard';
 import authReducer from './auth';
+import themeReducer from './theme';
 import { State } from '../../types';
 
 export default (history: History) =>
@@ -11,5 +12,6 @@ export default (history: History) =>
   combineReducers<State>({
     auth: authReducer,
     leaderboard: leaderboardReducer,
+    theme: themeReducer,
     router: connectRouter(history),
   });

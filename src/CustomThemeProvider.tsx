@@ -1,6 +1,10 @@
 import React, { createContext, useState } from 'react';
+import { useDispatch } from 'react-redux';
+
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import { isServer } from './helpers/isServer';
+
+import { setThemeSaga } from './store/actionCreators/theme';
 
 export const CustomThemeContext = createContext({
   currentTheme: 'light',
@@ -9,6 +13,9 @@ export const CustomThemeContext = createContext({
 
 const CustomThemeProvider: React.FC = (props) => {
   const { children } = props;
+
+  const dispatch = useDispatch();
+
   const currentTheme = !isServer && localStorage.getItem('theme') || 'light';
 
   const [themeName, setThemeName] = useState(currentTheme);
@@ -23,10 +30,8 @@ const CustomThemeProvider: React.FC = (props) => {
   );
 
   const setTheme = (name: string) => {
-    if (!isServer) {
-      localStorage.setItem('theme', name);
-    }
     setThemeName(name);
+    dispatch(setThemeSaga(name));
   };
 
   const contextValue = {

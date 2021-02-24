@@ -1,4 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
+import { useDispatch} from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,6 +8,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import SwitchUI from '@material-ui/core/Switch';
 import Link from '@material-ui/core/Link';
+
+import { getTheme } from '../../store/actionCreators/theme';
 
 import IsAuth from '@helpers/IsAuth';
 import { CustomThemeContext } from '../../CustomThemeProvider';
@@ -32,10 +35,13 @@ const PageLayout: React.FC = ({ children }) => {
   const classes = useStyles();
   let sections;
 
+  const dispatch = useDispatch();
   const { currentTheme, setTheme } = useContext(CustomThemeContext);
   const [isDark, setIsDark] = useState(false);
 
   useEffect(() => {
+    dispatch(getTheme());
+
     if (currentTheme === 'dark') {
       setIsDark(true);
       setTheme('dark');
@@ -70,9 +76,11 @@ const PageLayout: React.FC = ({ children }) => {
     if (checked) {
       setIsDark(true);
       setTheme('dark');
+      localStorage.setItem('theme', 'dark');
     } else {
       setIsDark(false);
       setTheme('light');
+      localStorage.setItem('theme', 'light');
     }
   };
 

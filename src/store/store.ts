@@ -7,6 +7,8 @@ import { isServer } from '../helpers/isServer';
 
 import watchGotLeaderboard from './sagas/leaderboard';
 import watchLogin from './sagas/auth';
+import watchTheme from './sagas/theme';
+
 
 import createRootReducer from './reducers';
 
@@ -41,6 +43,7 @@ export function configureStore(initialState: State, url = '/') {
 
   if (!isServer) {
     sagaMiddleware.run(watchLogin);
+    sagaMiddleware.run(watchTheme);
     sagaMiddleware.run(watchGotLeaderboard);
   }
 
