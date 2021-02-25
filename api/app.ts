@@ -12,7 +12,6 @@ const app = express();
 
 app
   .disable('x-powered-by')
-
   .use(cors({
     credentials: true,
     origin: 'https://local.ya-praktikum.tech:3000',

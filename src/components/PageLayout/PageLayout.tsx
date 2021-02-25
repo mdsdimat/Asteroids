@@ -57,6 +57,7 @@ const PageLayout: React.FC = ({ children }) => {
       { title: 'Профиль', url: '/profile' },
       { title: 'Доска почета', url: '/dashboard' },
       { title: 'Форум', url: '/forum' },
+      { title: 'Обратная связь', url: '/feedback' },
     ];
   } else {
     sections = [
@@ -67,6 +68,7 @@ const PageLayout: React.FC = ({ children }) => {
       { title: 'Профиль', url: '/profile' },
       { title: 'Форум', url: '/forum' },
       { title: 'Доска почета', url: '/dashboard' },
+      { title: 'Обратная связь', url: '/feedback' },
     ];
   }
 

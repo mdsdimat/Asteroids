@@ -5,6 +5,7 @@ import RegistrationPage from './pages/RegisterPage/RegistrationPage';
 import LeaderboardTable from './pages/LeaderboardPage/LeaderboardPage';
 import ForumList from './pages/ForumPage/Forum/ForumList';
 import ForumPage from './pages/ForumPage/ForumPage';
+import FeedbackPage from './pages/FeedbackPage/FeedbackPage';
 
 export default [
   {
@@ -40,6 +41,11 @@ export default [
   {
     path: '/forum-page/:id',
     component: ForumPage,
+    exact: true,
+  },
+  {
+    path: '/feedback',
+    component: FeedbackPage,
     exact: true,
   },
 ];
