@@ -78,17 +78,22 @@ https://games.aarp.org/games/atari-asteroids
 В хостах надо прописать
 127.0.0.1 local.ya-praktikum.tech
 
+Сгенерировать key.pem cert.pem
+
+openssl req -x509 -newkey rsa:2048 -keyout keytmp.pem -out cert.pem -days 365
+openssl rsa -in keytmp.pem -out key.pem
+
+и положить в корень проекта
+
+https://medium.com/@nitinpatel_20236/how-to-create-an-https-server-on-localhost-using-express-366435d61f28
+
 Игра запускается npm run start
 https://local.ya-praktikum.tech:3000/
 Api запускается npm run api
 https://local.ya-praktikum.tech:9001/
 
-Если запустить команду
-(async () => {
-  await UserTheme.sync({ force: true });
-})();
+npm run api:dbsync создает/синхронизирует базы по моделям проекта
 
-создаётся таблица в базе данных
 
-Надо установить Postgres
+Postgres пока установил не в докере
 Параметры подключения к базе в файле .env в корне

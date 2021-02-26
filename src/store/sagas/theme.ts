@@ -1,7 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import ThemeApi from '../../api/ThemeApi';
-import { ThemeType } from '../../types/types';
 import themeActions from '../actions/theme';
 import {
   requestThemeSuccess,
@@ -26,10 +25,6 @@ function* setThemeStore(sagaData: IThemeSaga) {
 
 function* getTheme() {
   const data = yield call(() => ThemeApi.getTheme().then((data) => data));
-
-  /*if(data.name) {
-    localStorage.setItem('theme', data.name);
-  }*/
 
   yield put(requestThemeSuccess(data.name));
 }

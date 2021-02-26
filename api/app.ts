@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
@@ -12,7 +11,6 @@ const app = express();
 
 app
   .disable('x-powered-by')
-
   .use(cors({
     credentials: true,
     origin: 'https://local.ya-praktikum.tech:3000',

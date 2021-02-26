@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
-import Theme from '../models/Theme';
-import UserTheme from '../models/UserTheme';
+import { Theme, UserTheme } from '../models';
 
 const getThemes = async (req: Request, res: Response): Promise<any> => {
   const data = await Theme.findAll({ raw: true });

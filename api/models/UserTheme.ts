@@ -4,8 +4,6 @@ import {
 
 import Theme from './Theme';
 
-import sequelize from '../dbconn';
-
 @Table({
   timestamps: false,
   paranoid: true,
@@ -33,12 +31,5 @@ class UserTheme extends Model {
   @BelongsTo(() => Theme)
   theme: Theme;
 }
-
-sequelize.addModels([UserTheme]);
-
-/*(async () => {
-  await UserTheme.sync({ force: true });
-})();*/
-
 
 export default UserTheme;
