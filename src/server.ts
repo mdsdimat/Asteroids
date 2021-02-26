@@ -2,6 +2,9 @@ import webpack from 'webpack';
 import cookieParser from 'cookie-parser';
 import express, { Request, Response } from 'express';
 import compression from 'compression';
+import {
+  expressCspHeader, INLINE, SELF, NONCE, EVAL,
+} from 'express-csp-header';
 
 import routes from './routes';
 
@@ -18,12 +21,22 @@ app.use(compression())
 const compiler = webpack({ ...webpackConfig, mode: 'development' });
 
 app.use(require('webpack-dev-middleware')(compiler, {
-  publicPath: webpackConfig.output!.publicPath!
+  publicPath: webpackConfig.output!.publicPath!,
 }));
 
 app.use(require('webpack-hot-middleware')(compiler));
 
-const paths = routes.map(v => v.path);
+app.use(expressCspHeader({
+  directives: {
+    'connect-src': [SELF, 'local.ya-praktikum.tech:9001', 'ya-praktikum.tech'],
+    'font-src': ['fonts.googleapis.com', 'fonts.gstatic.com'],
+    'script-src': [SELF, NONCE, INLINE, EVAL],
+    'img-src': ['data:', SELF, 'ya-praktikum.tech'],
+    'worker-src': [SELF],
+  },
+}));
+
+const paths = routes.map((v) => v.path);
 
 app.get(paths, serverRenderMiddleware);
 

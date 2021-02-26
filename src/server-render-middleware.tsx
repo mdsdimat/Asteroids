@@ -8,7 +8,7 @@ import Helmet, { HelmetData } from 'react-helmet';
 import { SnackbarProvider } from 'notistack';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { ServerStyleSheets, ThemeProvider } from '@material-ui/core/styles';
+import { ServerStyleSheets } from '@material-ui/core/styles';
 
 import App from './App';
 import { configureStore } from './store/store';
@@ -17,6 +17,11 @@ import getInitialState from './store/getInitialState';
 import { getUserServer } from './store/actionCreators/auth';
 
 import CustomThemeProvider from './CustomThemeProvider';
+
+type dataForHtml = {
+  helmet: helmetData,
+  nonce: string,
+}
 
 export default (req: Request, res: Response) => {
   const location = req.url;
@@ -44,6 +49,11 @@ export default (req: Request, res: Response) => {
     const reduxState = store.getState();
     const helmetData = Helmet.renderStatic();
 
+    const data: dataForHtml = {
+      helmet: helmetData,
+      nonce: req.nonce,
+    };
+
     if (context.url) {
       res.redirect(context.url);
       return;
@@ -53,7 +63,7 @@ export default (req: Request, res: Response) => {
 
     res
       .status(context.statusCode || 200)
-      .send(getHtml(reactHtml, css, reduxState, helmetData));
+      .send(getHtml(reactHtml, css, reduxState, data));
   }
 
   store
@@ -78,7 +88,8 @@ export default (req: Request, res: Response) => {
     });
 };
 
-function getHtml(reactHtml: string, css: string, reduxState = {}, helmetData: HelmetData) {
+function getHtml(reactHtml: string, css: string, reduxState = {}, data: dataForHtml) {
+  const { nonce, helmet } = data;
   return `
     <!DOCTYPE html>
     <html lang="en">
@@ -87,18 +98,19 @@ function getHtml(reactHtml: string, css: string, reduxState = {}, helmetData: He
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
         <link rel="shortcut icon" type="image/png" href="/images/favicon.jpg">
-        <style id="jss-server-side">${css}</style>
+        <meta property="csp-nonce" content=${nonce} />
+        <style id="jss-server-side" nonce="${nonce}">${css}</style>
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
-        ${helmetData.title.toString()}
-        ${helmetData.meta.toString()}
-        <link href="/main.css" rel="stylesheet">
+        ${helmet.title.toString()}
+        ${helmet.meta.toString()}
+        <link href="/main.css" nonce="${nonce}" rel="stylesheet">
     </head>
     <body>
         <div id="root">${reactHtml}</div>
-        <script>
+        <script nonce=${nonce}>
           window.__INITIAL_STATE__ = ${JSON.stringify(reduxState)}
         </script>
-        <script src="/main.js"></script>
+        <script nonce=${nonce} src="/main.js"></script>
     </body>
     </html>
     `;
