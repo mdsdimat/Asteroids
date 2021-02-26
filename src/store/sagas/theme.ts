@@ -1,7 +1,6 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import ThemeApi from '../../api/ThemeApi';
-import { ThemeType } from '../../types/types';
 import themeActions from '../actions/theme';
 import {
   requestThemeSuccess,

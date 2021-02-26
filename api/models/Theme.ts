@@ -2,8 +2,6 @@ import {
   Model, Table, DataType, AutoIncrement, PrimaryKey, Column, AllowNull, Unique,
 } from 'sequelize-typescript';
 
-import sequelize from '../dbconn';
-
 @Table({
   timestamps: false,
   paranoid: true,
@@ -21,11 +19,8 @@ class Theme extends Model {
   @Column(DataType.STRING)
   name: string;
 
-  @AllowNull(false)
   @Column(DataType.STRING)
   params: string;
 }
-
-sequelize.addModels([Theme]);
 
 export default Theme;
