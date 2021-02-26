@@ -3,6 +3,8 @@ import mongoose from 'mongoose';
 import Feedback from '../models/Feedback';
 import { mongoConnect } from '../dbconn';
 
+import escapeHtml from '../../src/helpers/escapeHtml';
+
 type answerType = {
   [key: string]: string | boolean
 }
@@ -27,7 +29,9 @@ const addFeedback = async (req: Request, res: Response): Promise<any> => {
   if (!error) {
     mongoConnect();
 
-    const row = new Feedback({ user_id: userId, message });
+    const escapeMessage = escapeHtml(message);
+
+    const row = new Feedback({ user_id: userId, message: escapeMessage });
 
     try {
       await row.save();
