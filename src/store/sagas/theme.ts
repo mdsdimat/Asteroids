@@ -27,9 +27,5 @@ function* setThemeStore(sagaData: IThemeSaga) {
 function* getTheme() {
   const data = yield call(() => ThemeApi.getTheme().then((data) => data));
 
-  /*if(data.name) {
-    localStorage.setItem('theme', data.name);
-  }*/
-
   yield put(requestThemeSuccess(data.name));
 }
