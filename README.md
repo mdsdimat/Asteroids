@@ -87,6 +87,10 @@ openssl rsa -in keytmp.pem -out key.pem
 
 https://medium.com/@nitinpatel_20236/how-to-create-an-https-server-on-localhost-using-express-366435d61f28
 
+Перед запуском api надо запустить
+npm run api:dbsync
+для создания баз данных и двух пользовательских тем в postgres
+
 Игра запускается npm run start
 https://local.ya-praktikum.tech:3000/
 Api запускается npm run api
