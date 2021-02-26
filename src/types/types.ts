@@ -128,3 +128,7 @@ export interface ThemeResponse {
   name: string,
   params?: string,
 }
+
+export interface FeedbackFields {
+  message: string,
+}

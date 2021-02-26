@@ -1,7 +1,15 @@
 import { Sequelize, SequelizeOptions } from 'sequelize-typescript';
+import mongoose from 'mongoose';
 import { config } from 'dotenv';
 
 config();
+
+export function mongoConnect(): void {
+  mongoose.connect(process.env.MONGODB, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true,
+  });
+}
 
 const sequelizeOptions: SequelizeOptions = {
   host: 'localhost',
