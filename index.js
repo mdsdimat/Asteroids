@@ -2,7 +2,7 @@ const https = require('https');
 const fs = require('fs');
 const { app } = require('./dist/server.js');
 
-const port = process.env.PORT || 9001;
+const port = 3000;
 const IS_DEV = process.env.NODE_ENV !== 'production';
 
 const key = fs.readFileSync('./key.pem');

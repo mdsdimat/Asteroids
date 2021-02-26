@@ -103,3 +103,28 @@ export interface UserAsync {
   cookies?: CookiesType,
   [property: string]: any
 }
+
+export interface ISetTheme {
+  theme: string,
+}
+
+export interface IGetTheme {
+  name: string,
+}
+
+export interface ThemeType {
+  id: number,
+  name: string,
+  params?: string,
+}
+
+export interface ISuccessThemeType {
+  type: string,
+  name?: string,
+}
+
+export interface ThemeResponse {
+  id: boolean,
+  name: string,
+  params?: string,
+}

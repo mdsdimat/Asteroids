@@ -16,7 +16,7 @@ import watchLogin from './store/sagas/auth';
 import getInitialState from './store/getInitialState';
 import { getUserServer } from './store/actionCreators/auth';
 
-import theme from './theme';
+import CustomThemeProvider from './CustomThemeProvider';
 
 export default (req: Request, res: Response) => {
   const location = req.url;
@@ -28,12 +28,12 @@ export default (req: Request, res: Response) => {
     const jsx = (
       <ReduxProvider store={store}>
         <StaticRouter context={context} location={location}>
-          <ThemeProvider theme={theme}>
+          <CustomThemeProvider>
             <SnackbarProvider>
               <CssBaseline />
               <App />
             </SnackbarProvider>
-          </ThemeProvider>
+          </CustomThemeProvider>
         </StaticRouter>
       </ReduxProvider>
     );
