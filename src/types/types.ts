@@ -132,3 +132,8 @@ export interface ThemeResponse {
 export interface FeedbackFields {
   message: string,
 }
+
+export interface TopicAddFields {
+  name: string,
+  description?: string;
+}
