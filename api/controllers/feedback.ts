@@ -24,7 +24,7 @@ const addFeedback = async (req: Request, res: Response): Promise<any> => {
     answer.message = 'Empty message';
   }
 
-  const userId = user.id || 0;
+  const userId = (user && user.id) || 0;
 
   if (!error) {
     mongoConnect();

@@ -11,7 +11,7 @@ interface ILeadBoardSaga {
 }
 
 export default function* watchGotLeaderboard(): SagaIterator {
-  yield takeEvery(leaderboardActions.got_leaderboard, gotLeaderboardAsync);
+  yield takeEvery(leaderboardActions.gotLeaderboard, gotLeaderboardAsync);
 }
 
 function* gotLeaderboardAsync(sagaData: ILeadBoardSaga) {

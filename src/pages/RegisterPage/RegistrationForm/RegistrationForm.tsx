@@ -1,22 +1,15 @@
-// Core
 import React from 'react';
 import { useHistory } from 'react-router';
-import ReactDOM from 'react-dom';
 import { Form } from 'react-final-form';
-import { useDispatch, useSelector } from 'react-redux';
 import { useSnackbar } from 'notistack';
 
-import AuthApi from '../../../api/AuthApi';
+import { RegisterFormFields, SimpleObject } from '@types/types';
 
-import {
-  TextField,
-} from 'mui-rff';
-import {
-
-  Button,
-
-} from '@material-ui/core';
+import { TextField } from 'mui-rff';
+import { Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+
+import AuthApi from '../../../api/AuthApi';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -41,11 +34,10 @@ const useStyles = makeStyles((theme) => ({
 const RegistrationForm: React.FC = () => {
   const classes = useStyles();
 
-  const dispatch = useDispatch();
   const history = useHistory();
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const onSubmit = values => {
+  const onSubmit = (values: RegisterFormFields) => {
     AuthApi.signUp(values)
       .then(() => {
         enqueueSnackbar('Пользователь успешно создан!', {
@@ -68,8 +60,8 @@ const RegistrationForm: React.FC = () => {
       });
   };
 
-  const validate = values => {
-    const errors = {};
+  const validate = (values: RegisterFormFields) => {
+    const errors: SimpleObject = {};
     if (!values.first_name) {
       errors.first_name = 'Заполните поле!';
     }
@@ -91,9 +83,6 @@ const RegistrationForm: React.FC = () => {
     if (!values.first_name) {
       errors.first_name = 'Заполните поле!';
     }
-    if (!values.password) {
-      errors.password = 'Заполните поле!';
-    }
 
     return errors;
   };
@@ -102,7 +91,7 @@ const RegistrationForm: React.FC = () => {
     <Form
       onSubmit={onSubmit}
       validate={validate}
-      render={({ handleSubmit, form, submitting, pristine, values }) => (
+      render={({ handleSubmit, form }) => (
         <form onSubmit={handleSubmit} noValidate>
           <TextField
             variant="outlined"
@@ -168,62 +157,6 @@ const RegistrationForm: React.FC = () => {
       )}
     />
   );
+};
 
-}
-
-/*
-(
-  <>
-    <Form.Item
-      label="Имя"
-      name="first_name"
-      rules={[{ required: true, message: 'Заполните поле!' }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      label="Фамилия"
-      name="second_name"
-      rules={[{ required: true, message: 'Заполните поле!' }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      label="Логин"
-      name="login"
-      rules={[{ required: true, message: 'Заполните поле!' }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      label="Почта"
-      name="email"
-      rules={[{ required: true, type: 'email', message: 'Неверный email' }]}
-    >
-      <Input />
-    </Form.Item>
-
-    <Form.Item
-      label="Телефон"
-      name="phone"
-      rules={[{ required: true, message: 'Заполните поле!' }]}
-    >
-      <Input maxLength={9} addonBefore={PrefixSelector} />
-    </Form.Item>
-
-    <Form.Item
-      label="Пароль"
-      name="password"
-      rules={[{ required: true, message: 'Введите пароль!' }]}
-    >
-      <Input.Password />
-    </Form.Item>
-  </>
-*/
-
-
-// Exports
 export default RegistrationForm;

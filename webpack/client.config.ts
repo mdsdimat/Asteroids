@@ -3,7 +3,7 @@ import webpack, { Configuration, Plugin, Entry } from 'webpack';
 import { TsconfigPathsPlugin } from 'tsconfig-paths-webpack-plugin';
 import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 import CompressionPlugin from 'compression-webpack-plugin';
-import ServiceWorkerPlugin from'serviceworker-webpack-plugin';
+import ServiceWorkerPlugin from 'serviceworker-webpack-plugin';
 
 import { IS_DEV, DIST_DIR, SRC_DIR } from './env';
 import fileLoader from './loaders/file';
@@ -31,6 +31,7 @@ const config: Configuration = {
       '@components': path.resolve(__dirname, './src/components'),
       '@helpers': path.resolve(__dirname, './src/helpers'),
       '@classes': path.resolve(__dirname, './src/classes'),
+      '@types': path.resolve(__dirname, './src/types'),
     },
     modules: ['src', 'node_modules'],
     extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],

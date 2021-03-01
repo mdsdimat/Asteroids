@@ -1,7 +1,7 @@
-import {randomNumBetween, rotatePoint, soundWithInterrupt} from '@helpers/GameHelper';
+import { randomNumBetween, rotatePoint, soundWithInterrupt } from '@helpers/GameHelper';
 import {
   Coord, Vector, renderState, IShipProps, objectGroups, IAudio,
-} from '../../types/game';
+} from '@types/game';
 import Particle from '../Particle/Particle';
 import Bullet from '../Bullet/Bullet';
 
@@ -105,20 +105,18 @@ export default class Ship {
       this.rotate('RIGHT');
     }
 
-    if (state.keys.space) {
-      if (this.lastShot === 0 || Date.now() - this.lastShot > 200) {
-        if (this.audio.audioLaser) {
-          soundWithInterrupt(this.audio.audioLaser)
-        }
-        const bullet = new Bullet({ position: this.position, rotation: this.rotation });
-
-        this.velocity.x += Math.sin(-this.rotation * (Math.PI / 180)) * 0.1;
-        this.velocity.y += Math.cos(-this.rotation * (Math.PI / 180)) * 0.1;
-
-        this.create(bullet, 'bullets');
-
-        this.lastShot = Date.now();
+    if (state.keys.space && (this.lastShot === 0 || Date.now() - this.lastShot > 200)) {
+      if (this.audio.audioLaser) {
+        soundWithInterrupt(this.audio.audioLaser);
       }
+      const bullet = new Bullet({ position: this.position, rotation: this.rotation });
+
+      this.velocity.x += Math.sin(-this.rotation * (Math.PI / 180)) * 0.1;
+      this.velocity.y += Math.cos(-this.rotation * (Math.PI / 180)) * 0.1;
+
+      this.create(bullet, 'bullets');
+
+      this.lastShot = Date.now();
     }
 
     this.position.x += this.velocity.x;

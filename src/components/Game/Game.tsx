@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 import './game.less';
 
@@ -6,15 +6,16 @@ import {
   Asteroid, Ship,
 } from '@classes';
 
-import {randomNumBetween, throttle, maxGameHeight, soundWithInterrupt} from '@helpers/GameHelper';
+import {
+  randomNumBetween, throttle, maxGameHeight, soundWithInterrupt,
+} from '@helpers/GameHelper';
 import useTimer from '@helpers/Timer';
+import {
+  objectsMap, gameObjects, objectGroups, screenType, IAudio,
+} from '@types/game';
 import GameTotal from './GameTotal';
 import GameOver from './GameOver';
 import GamePause from './GamePause';
-
-import {
-  objectsMap, gameObjects, objectGroups, screenType, IAudio,
-} from '../../types/game';
 
 const KEY = {
   LEFT: 'ArrowLeft',
@@ -31,8 +32,8 @@ const KEY = {
 
 const AUDIO_IDS = {
   LASER: 'audio_laser',
-  DETONATION: 'audio_detonation'
-}
+  DETONATION: 'audio_detonation',
+};
 
 const Game: React.FC = () => {
   const [score, setScore] = useState(0);
@@ -42,10 +43,9 @@ const Game: React.FC = () => {
 
   const audio: IAudio = {
     audioLaser: null,
-    audioDetonation: null
-  }
+    audioDetonation: null,
+  };
 
-  // похоже рефов много, как по другому запомнить состояние не разобрался
   const stopGame = useRef(false);
   const endGame = useRef(false);
 
@@ -105,16 +105,15 @@ const Game: React.FC = () => {
   };
 
   const addScore = (s: number): void => {
-    // не нашел простого способа запомнить счет
     scoreRef.current += s;
     setScore(scoreRef.current);
   };
 
   const detonation = (): void => {
     if (audio.audioDetonation) {
-      soundWithInterrupt(audio.audioDetonation)
+      soundWithInterrupt(audio.audioDetonation);
     }
-  }
+  };
 
   const generateAsteroids = (count: number): void => {
     for (let i = 0; i < count; i++) {
@@ -160,7 +159,7 @@ const Game: React.FC = () => {
       },
       create: createObject,
       onDie: gameOver,
-      audio: audio
+      audio,
     });
     createObject(ship, 'ships');
     generateAsteroids(asteroidsCount);
@@ -236,7 +235,6 @@ const Game: React.FC = () => {
     }
   };
 
-  // тут не смог указать gameObjects typescript говорит что тип never
   const createObject = (item: any, group: objectGroups): void => {
     objects[group].push(item);
   };
@@ -320,8 +318,8 @@ const Game: React.FC = () => {
         <GameTotal score={score} seconds={timer.seconds} />
       </div>
 
-      <audio id={AUDIO_IDS.LASER} src="/src/audio/laser.mp3" preload="auto"/>
-      <audio id={AUDIO_IDS.DETONATION} src="/src/audio/detonation.mp3" preload="auto"/>
+      <audio id={AUDIO_IDS.LASER} src="/src/audio/laser.mp3" preload="auto" />
+      <audio id={AUDIO_IDS.DETONATION} src="/src/audio/detonation.mp3" preload="auto" />
       <canvas
         ref={canvasRef}
         tabIndex={0}

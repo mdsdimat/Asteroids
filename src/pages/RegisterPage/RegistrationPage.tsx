@@ -1,4 +1,3 @@
-// Core
 import React from 'react';
 
 import Typography from '@material-ui/core/Typography';
@@ -15,5 +14,4 @@ const RegistrationPage: React.FC = () => (
   </Container>
 );
 
-// Exports
 export default RegistrationPage;

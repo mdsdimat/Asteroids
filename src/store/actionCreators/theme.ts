@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import themeActions from '../actions/theme';
 import {
   IErrorType, ISuccessThemeType, ThemeType, IGetTheme,
-} from '../../types/types';
+} from '@types/types';
 
 export const requestTheme = (): { type: string } => ({ type: themeActions.requested });
 

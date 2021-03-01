@@ -2,7 +2,7 @@ import { randomNumBetween, asteroidVertices } from '../../helpers/GameHelper';
 import Particle from '../Particle/Particle';
 import {
   Coord, Vector, renderState, IAsteroidProps,
-} from '../../types/game';
+} from '@types/game';
 
 export default class Asteroid {
   public position: Coord;

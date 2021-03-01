@@ -1,30 +1,18 @@
-import axios, { AxiosRequestConfig } from 'axios';
-import { apiUrl } from '@helpers/ApiHelpers';
-import CookieToString from '@helpers/CookieToString';
-import {
-  ThemeResponse, CookiesType,
-} from '../types/types';
+import { apiAxios } from './axios';
+import { ThemeResponse, DefaultApiResponse } from '@types/types';
 
 class ThemeApi {
-  static setTheme = async (name: string): Promise<void> => {
-    const url = apiUrl('user/theme');
-    const response = await axios.post(url, { theme: name }, { withCredentials: true });
+  static setTheme = async (name: string): Promise<DefaultApiResponse> => {
+    const response = await apiAxios('user/theme', {
+      method: 'post',
+      data: { theme: name },
+    });
 
     return response.data;
   }
 
-  static getTheme = async (cookies?: CookiesType): Promise<ThemeResponse> => {
-    const url = apiUrl('user/theme');
-
-    const params: AxiosRequestConfig = { withCredentials: true };
-
-    if (cookies) {
-      params.headers = {
-        Cookie: CookieToString(cookies),
-      };
-    }
-
-    const response = await axios.get(url, params);
+  static getTheme = async (): Promise<ThemeResponse> => {
+    const response = await apiAxios('user/theme');
 
     return response.data;
   }

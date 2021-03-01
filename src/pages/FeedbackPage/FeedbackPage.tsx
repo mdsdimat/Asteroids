@@ -1,4 +1,3 @@
-// Core
 import React from 'react';
 import Helmet from 'react-helmet';
 
@@ -6,9 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import Container from '@material-ui/core/Container';
 
-import {
-  Typography,
-} from '@material-ui/core';
+import { Typography } from '@material-ui/core';
 import FeedbackForm from './FeedbackForm/FeedbackForm';
 
 const useStyles = makeStyles((theme) => ({

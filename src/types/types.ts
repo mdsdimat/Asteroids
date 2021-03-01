@@ -6,6 +6,7 @@ export interface SignUpRequest {
   first_name: string;
   second_name: string;
   login: string;
+  email: string;
   password: string;
   phone: string;
 }
@@ -26,6 +27,8 @@ export interface SignUser {
   password: string;
 }
 
+export type SignInResponse = string | BadRequest;
+
 export interface UserResponse {
   id: number;
   first_name: string;
@@ -43,6 +46,13 @@ export interface LeaderboardNewLeaderRequest {
 }
 
 export type UserRequest = Partial<SignUpRequest>;
+
+type BadRequest = {
+  message: string;
+  body: Record<string, unknown>;
+}
+
+export type SignUpResponse = SignUpRequest | BadRequest;
 
 export interface PasswordRequest {
   oldPassword: string;
@@ -129,6 +139,22 @@ export interface ThemeResponse {
   params?: string,
 }
 
+export interface DefaultApiResponse {
+  ok: boolean,
+  message: string,
+}
+
 export interface FeedbackFields {
   message: string,
 }
+
+export interface LoginFormFields {
+  login: string,
+  password: string,
+}
+
+type SimpleObject = {
+  [key: string]: string;
+};
+
+export type RegisterFormFields = SignUpRequest;

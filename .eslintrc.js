@@ -55,10 +55,6 @@ module.exports = {
     'no-underscore-dangle': 0,
     camelcase: 0,
     'linebreak-style': 0,
-    'class-methods-use-this': 0,
-    '@typescript-eslint/no-non-null-assertion': 'off',
-    'no-continue': 0,
-    'no-param-reassign': 0,
     'no-undef': 0,
     'no-loop-func': 0,
     'no-use-before-define': 0,
@@ -70,11 +66,11 @@ module.exports = {
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
     'no-plusplus': 0,
-    "no-restricted-imports": [
-      "error",
+    'no-restricted-imports': [
+      'error',
       {
-        "patterns": ["@material-ui/*/*/*", "!@material-ui/core/test-utils/*"]
-      }
-    ]
+        patterns: ['@material-ui/*/*/*', '!@material-ui/core/test-utils/*'],
+      },
+    ],
   },
 };

@@ -1,6 +1,6 @@
 import {
   Coord, Vector, renderState, IParticleProps,
-} from '../../types/game';
+} from '@types/game';
 
 export default class Particle {
   public position: Coord;

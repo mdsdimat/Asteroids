@@ -1,22 +1,14 @@
-// Core
 import React, { useEffect, useState } from 'react';
 
 import { Form } from 'react-final-form';
-import {
-  TextField,
-} from 'mui-rff';
-import {
-  Button,
-} from '@material-ui/core';
+import { TextField } from 'mui-rff';
+import { Button } from '@material-ui/core';
 
 import { makeStyles } from '@material-ui/core/styles';
-
 import { useSnackbar } from 'notistack';
 
-// Api
+import { FeedbackFields } from '@types/types';
 import FeedbackApi from '../../../api/FeedbackApi';
-
-import { FeedbackFields } from '../../../types/types';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -56,7 +48,7 @@ const ProfileForm: React.FC = () => {
   const onSubmit = (values: FeedbackFields) => {
     const r = FeedbackApi.sendMessage(values);
 
-    r.then(data => {
+    r.then((data) => {
       if (data.ok) {
         webForm.reset();
         enqueueSnackbar('Сообщение отправлено', {
@@ -109,8 +101,8 @@ const ProfileForm: React.FC = () => {
               Отправить
             </Button>
           </form>
-      )
-      } }
+        );
+      }}
     />
   );
 };

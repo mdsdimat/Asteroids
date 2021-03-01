@@ -16,16 +16,19 @@ export default [
   {
     path: '/login',
     component: LoginPage,
+    type: 'unauthorized',
     exact: true,
   },
   {
     path: '/register',
     component: RegistrationPage,
+    type: 'unauthorized',
     exact: true,
   },
   {
     path: '/profile',
     component: ProfilePage,
+    type: 'private',
     exact: true,
   },
   {
@@ -36,11 +39,13 @@ export default [
   {
     path: '/forum',
     component: ForumList,
+    type: 'private',
     exact: true,
   },
   {
     path: '/forum-page/:id',
     component: ForumPage,
+    type: 'private',
     exact: true,
   },
   {

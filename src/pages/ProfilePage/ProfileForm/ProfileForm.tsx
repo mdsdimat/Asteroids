@@ -1,5 +1,4 @@
-// Core
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback, ChangeEvent } from 'react';
 
 import { Form } from 'react-final-form';
 import Box from '@material-ui/core/Box';
@@ -14,11 +13,10 @@ import {
 import Avatar from '@material-ui/core/Avatar';
 import { makeStyles } from '@material-ui/core/styles';
 
-// Api
 import AuthApi from '../../../api/AuthApi';
 import UserApi from '../../../api/UserApi';
 
-import { ProfileUser } from '../../../types/types';
+import { ProfileUser } from '@types/types';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -63,11 +61,16 @@ const ProfileForm: React.FC = () => {
     });
   }, []);
 
-  const onAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) : void => {
-    if (e.target.files) {
-      UserApi.uploadAvatar(e.target.files[0]);
-    }
-  };
+  const onAvatarUpload = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files) {
+        UserApi.uploadAvatar(e.target.files[0]).then((data) => {
+          setAvatar(`https://ya-praktikum.tech${data.avatar}`);
+        });
+      }
+    },
+    [],
+  );
 
   const onSubmit = (values: ProfileUser) => {
     UserApi.editProfile(values);

@@ -15,7 +15,6 @@ import theme from './theme';
 
 const { store, history } = configureStore(window.__INITIAL_STATE__);
 
-// global redeclared types
 declare global {
     interface Window {
         __INITIAL_STATE__: any;

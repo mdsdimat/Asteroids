@@ -1,5 +1,4 @@
-// Core
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
 import { useSnackbar } from 'notistack';
 
@@ -45,7 +44,7 @@ const LeaderboardPage: React.FC = () => {
 
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(gotLeaderboard(leaderboardRequestData));
   }, []);
 
@@ -59,5 +58,4 @@ const LeaderboardPage: React.FC = () => {
   );
 };
 
-// Exports
 export default LeaderboardPage;

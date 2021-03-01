@@ -52,7 +52,6 @@ export interface IParticleProps {
 export interface IAsteroidProps {
   position: {x: number, y: number},
   size: number,
-  // не понимаю почему eslint говорит что параметры не используются. Используются они
   addScore: (s: number) => void,
   create: (item: any, group: objectGroups) => void
   detonation: () => void

@@ -1,4 +1,4 @@
-import { Coord } from '../types/game';
+import { Coord } from '@types/game';
 
 export function rotatePoint(p: Coord, center: Coord, angle: number): Coord {
   return {

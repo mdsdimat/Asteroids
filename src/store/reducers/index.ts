@@ -5,7 +5,7 @@ import { History } from 'history';
 import leaderboardReducer from './leaderboard';
 import authReducer from './auth';
 import themeReducer from './theme';
-import { State } from '../../types';
+import { State } from '@types';
 
 export default (history: History) =>
   // я combineReducers<State> не могу использовать проблемы с типами

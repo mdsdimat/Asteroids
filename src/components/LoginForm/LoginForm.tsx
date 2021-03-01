@@ -1,37 +1,21 @@
-// Core
 import React, { useEffect } from 'react';
-import ReactDOM from 'react-dom';
 import { Form } from 'react-final-form';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  TextField,
-  Checkboxes,
-  Radios,
-  Select,
-  DatePicker,
-  TimePicker,
-} from 'mui-rff';
-import {
-  Typography,
-  Paper,
-  Link,
-  Grid,
-  Button,
-  CssBaseline,
-  MenuItem,
-} from '@material-ui/core';
+import { TextField } from 'mui-rff';
+import { Link, Grid, Button } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import { getOAuthUrl } from '@helpers/ApiHelpers';
-import { openNotificationWithIcon } from '@helpers/NotificationHelper';
-import AuthApi from '../../api/AuthApi';
 
-import { SignUser } from '../../types/types';
+import { useSnackbar } from 'notistack';
+
+import AuthApi from '../../api/AuthApi';
 
 import { login } from '../../store/actionCreators/auth';
 import useAuth from '../../hooks/useAuth';
 import authSelector from '../../store/selectors/auth';
-import { useSnackbar } from 'notistack';
+
+import { LoginFormFields, SimpleObject } from '@types/types';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -54,10 +38,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-type StuffBody = {
-  [key: string]: string;
-};
-
 const LoginForm = (): JSX.Element => {
   const classes = useStyles();
 
@@ -71,12 +51,12 @@ const LoginForm = (): JSX.Element => {
     authUser();
   }, [selector]);
 
-  const onSubmit = values => {
+  const onSubmit = (values: LoginFormFields) => {
     dispatch(login(values));
   };
 
-  const validate = values => {
-    const errors: StuffBody = {};
+  const validate = (values: LoginFormFields) => {
+    const errors: SimpleObject = {};
     if (!values.login) {
       errors.login = 'Заполните поле!';
     }
@@ -86,7 +66,6 @@ const LoginForm = (): JSX.Element => {
 
     return errors;
   };
-
 
   const oAuth = () => {
     AuthApi.getServiceId()
@@ -108,7 +87,7 @@ const LoginForm = (): JSX.Element => {
     <Form
       onSubmit={onSubmit}
       validate={validate}
-      render={({ handleSubmit, form, submitting, pristine, values }) => (
+      render={({ handleSubmit, form }) => (
         <form onSubmit={handleSubmit} noValidate>
           <TextField
             variant="outlined"
@@ -162,5 +141,4 @@ const LoginForm = (): JSX.Element => {
   );
 };
 
-// Exports
 export default LoginForm;

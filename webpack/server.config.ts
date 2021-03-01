@@ -27,6 +27,7 @@ const config: Configuration = {
       '@components': path.resolve(__dirname, './src/components'),
       '@helpers': path.resolve(__dirname, './src/helpers'),
       '@classes': path.resolve(__dirname, './src/classes'),
+      '@types': path.resolve(__dirname, './src/types'),
     },
     modules: ['src', 'node_modules'],
     extensions: ['*', '.js', '.jsx', '.json', '.ts', '.tsx'],

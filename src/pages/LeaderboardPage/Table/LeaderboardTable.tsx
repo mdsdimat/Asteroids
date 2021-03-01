@@ -1,10 +1,7 @@
-// Core
 import React from 'react';
 
-// Components
 import { DataGrid } from '@material-ui/data-grid';
 
-// Types
 export interface IRequestData {
   ratingFieldName: string,
   cursor: number,
@@ -49,5 +46,4 @@ const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }: Leaderboard
   );
 };
 
-// Exports
 export default LeaderboardTable;

@@ -1,45 +1,34 @@
-import axios from 'axios';
-import { PasswordRequest, UserRequest, UserResponse } from '../types/types';
-import { buildUrl } from '../helpers/ApiHelpers';
+import { praktikumAxios } from './axios';
+import { PasswordRequest, UserRequest, UserResponse } from '@types/types';
 
 class UserApi {
     static editProfile = async (data: UserRequest): Promise<UserRequest> => {
-      const url = buildUrl('user/profile');
-
-      const response = await axios({
+      const response = await praktikumAxios('user/profile', {
         method: 'put',
-        url,
-        withCredentials: true,
         data,
       });
 
       return response.data;
     }
 
-    static uploadAvatar = async (avatar: File): Promise<void> => {
-      const url = buildUrl('user/profile/avatar');
-
+    static uploadAvatar = async (avatar: File): Promise<UserResponse> => {
       const formData = new FormData();
       formData.append('avatar', avatar);
 
-      const response = await axios({
+      const response = await praktikumAxios('user/profile/avatar', {
         method: 'put',
         headers: {
           'Content-Type': avatar.type,
         },
-        url,
-        withCredentials: true,
         data: formData,
       });
+
+      return response.data;
     }
 
-    static changePassword = async (data: PasswordRequest): Promise<void> => {
-      const url = buildUrl('user/password');
-
-      const response = await axios({
+    static changePassword = async (data: PasswordRequest): Promise<string> => {
+      const response = await praktikumAxios('user/password', {
         method: 'put',
-        url,
-        withCredentials: true,
         data,
       });
 
@@ -47,15 +36,16 @@ class UserApi {
     }
 
     static getUser = async (id: string): Promise<UserResponse> => {
-      const url = buildUrl(`user/${id}`);
-      const response = await axios.get(url, { withCredentials: true });
+      const response = await praktikumAxios(`user/${id}`);
 
       return response.data;
     }
 
     static findUsers = async (login: string): Promise<UserResponse[]> => {
-      const url = buildUrl('user/search');
-      const response = await axios.post(url, { login });
+      const response = await praktikumAxios('user/search', {
+        method: 'post',
+        data: { login },
+      });
 
       return response.data;
     }

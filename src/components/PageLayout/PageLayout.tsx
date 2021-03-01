@@ -1,5 +1,5 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { useDispatch} from 'react-redux';
+import React, { useContext, useState, useEffect, ChangeEvent } from 'react';
+import { useDispatch } from 'react-redux';
 
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -35,6 +35,8 @@ const PageLayout: React.FC = ({ children }) => {
   const classes = useStyles();
   let sections;
 
+  const isAuth = IsAuth();
+
   const dispatch = useDispatch();
   const { currentTheme, setTheme } = useContext(CustomThemeContext);
   const [isDark, setIsDark] = useState(false);
@@ -49,9 +51,9 @@ const PageLayout: React.FC = ({ children }) => {
       setTheme('light');
       setIsDark(false);
     }
-  }, ['currentTheme']);
+  }, [currentTheme]);
 
-  if (IsAuth()) {
+  if (isAuth) {
     sections = [
       { title: 'Играть', url: '/' },
       { title: 'Профиль', url: '/profile' },
@@ -64,15 +66,11 @@ const PageLayout: React.FC = ({ children }) => {
       { title: 'Играть', url: '/' },
       { title: 'Вход', url: '/login' },
       { title: 'Регистрация', url: '/register' },
-      // временно
-      { title: 'Профиль', url: '/profile' },
-      { title: 'Форум', url: '/forum' },
-      { title: 'Доска почета', url: '/dashboard' },
       { title: 'Обратная связь', url: '/feedback' },
     ];
   }
 
-  const handleThemeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleThemeChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { checked } = event.target;
 
     if (checked) {
@@ -116,5 +114,4 @@ const PageLayout: React.FC = ({ children }) => {
   );
 };
 
-// Exports
 export default PageLayout;

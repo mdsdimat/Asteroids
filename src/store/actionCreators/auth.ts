@@ -2,7 +2,7 @@ import { AxiosError } from 'axios';
 import authActions from '../actions/auth';
 import {
   IAuthSuccess, IErrorType, ILoginResult, ILoginSuccessType, IYandexOAuth, SignUser, CookiesType
-} from '../../types/types';
+} from '@types/types';
 
 export const requestAuth = (): { type: string } => ({ type: authActions.requested });
 

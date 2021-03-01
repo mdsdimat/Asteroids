@@ -1,7 +1,7 @@
 import { SagaIterator } from 'redux-saga';
 import { call, put, takeEvery } from 'redux-saga/effects';
 import AuthApi from '../../api/AuthApi';
-import { IYandexOAuth, SignUser, UserAsync } from '../../types/types';
+import { IYandexOAuth, SignUser, UserAsync } from '@types/types';
 import authActions from '../actions/auth';
 import {
   getUserSuccess, requestAuth, requestAuthError, requestAuthSuccess, yandexAuthSuccess,
@@ -21,10 +21,7 @@ export default function* watchLogin(): SagaIterator {
 function* loginAsync(sagaData: IAuthSaga) {
   try {
     yield put(requestAuth());
-    const data = yield call(() => AuthApi.signIn(sagaData.values)
-      .then(
-        () => true,
-      ));
+    const data = yield call(() => AuthApi.signIn(sagaData.values).then(() => true));
     yield put(requestAuthSuccess(data));
   } catch (error) {
     if (error.response.status === 400 && error.response.data.reason === 'user already in system') {
@@ -38,10 +35,7 @@ function* loginAsync(sagaData: IAuthSaga) {
 function* getUserAsync(sagaData: UserAsync) {
   try {
     yield put(requestAuth());
-    const data = yield call(() => AuthApi.getUser(sagaData.cookies)
-      .then(
-        (data) => data,
-      ));
+    const data = yield call(() => AuthApi.getUser(sagaData.cookies).then((data) => data));
     yield put(getUserSuccess(true, data));
   } catch (error) {
     if (error.response.status !== 401) {
@@ -53,10 +47,7 @@ function* getUserAsync(sagaData: UserAsync) {
 function* yandexAuthAsync(sagaData: IYandexOAuth) {
   try {
     yield put(requestAuth());
-    const data = yield call(() => AuthApi.oAuth(sagaData.code)
-      .then(
-        () => true,
-      ));
+    const data = yield call(() => AuthApi.oAuth(sagaData.code).then(() => true));
     yield put(yandexAuthSuccess(data));
   } catch (error) {
     yield put(requestAuthError(error));
