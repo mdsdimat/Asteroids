@@ -1,4 +1,4 @@
-import { Coord } from '../types/game';
+import { Coord } from '@types/game';
 
 export function rotatePoint(p: Coord, center: Coord, angle: number): Coord {
   return {
@@ -60,4 +60,9 @@ export function throttle(func: () => void, ms: number): () => void {
 
 export function maxGameHeight(): number {
   return document.fullscreenElement ? window.innerHeight : window.innerHeight - 150;
+}
+
+export function soundWithInterrupt (audio: HTMLAudioElement): void {
+  audio.currentTime = 0;
+  audio.play();
 }

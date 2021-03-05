@@ -1,11 +1,11 @@
-// Core
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useHistory } from 'react-router';
+import { useSnackbar } from 'notistack';
 
-import { Col, Row } from 'antd';
+import Typography from '@material-ui/core/Typography';
+import Container from '@material-ui/core/Container';
 
 import { useDispatch, useSelector } from 'react-redux';
-import { openNotificationWithIcon } from '@helpers/NotificationHelper';
 import { gotLeaderboard } from '../../store/actionCreators/leaderboard';
 import LeaderboardTable from './Table/LeaderboardTable';
 import leaderboardSelector from '../../store/selectors/leaderboard';
@@ -24,6 +24,7 @@ export const leaderboardRequestData: ILeadBoardRequestData = {
 
 const LeaderboardPage: React.FC = () => {
   const history = useHistory();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
   const selector = useSelector(leaderboardSelector);
 
@@ -31,24 +32,30 @@ const LeaderboardPage: React.FC = () => {
     if (selector.errorData.response?.status === 401) {
       history.push('/login');
     } else {
-      openNotificationWithIcon('error', 'Ошибка', 'Что-то пошло не так');
+      enqueueSnackbar('Что-то пошло не так', {
+        variant: 'error',
+        anchorOrigin: {
+          horizontal: 'right',
+          vertical: 'top',
+        },
+      });
     }
   }
 
   const dispatch = useDispatch();
 
-  React.useEffect(() => {
+  useEffect(() => {
     dispatch(gotLeaderboard(leaderboardRequestData));
   }, []);
 
   return (
-    <Row>
-      <Col span={12} offset={6}>
-        <LeaderboardTable data={selector.data} />
-      </Col>
-    </Row>
+    <Container component="main" maxWidth="md">
+      <Typography component="h1" variant="h5">
+        Доска почёта
+      </Typography>
+      <LeaderboardTable data={selector.data} />
+    </Container>
   );
 };
 
-// Exports
 export default LeaderboardPage;

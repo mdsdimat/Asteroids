@@ -1,49 +1,52 @@
-import axios from 'axios';
+import CookieToString from '@helpers/CookieToString';
+import { praktikumAxios } from './axios';
 import {
-  IServiceId, SignUpRequest, SignUser, UserResponse,
-} from '../types/types';
-import { buildUrl } from '@helpers/ApiHelpers';
+  IServiceId, SignUpRequest, SignUser, UserResponse, SignUpResponse, SignInResponse, CookiesType,
+} from '@types/types';
 
 class AuthApi {
-    static signUp = async (data: SignUpRequest): Promise<void> => {
-      const url = buildUrl('auth/signup');
-      const response = await axios.post(url, data);
+    static signUp = async (data: SignUpRequest): Promise<SignUpResponse> => {
+      const response = await praktikumAxios('auth/signup', {
+        method: 'post',
+        data,
+      });
 
       return response.data;
     }
 
-    static signIn = async (data: SignUser): Promise<void> => {
-      const url = buildUrl('auth/signin');
-      const response = await axios.post(url, data, { withCredentials: true });
+    static signIn = async (data: SignUser): Promise<SignInResponse> => {
+      const response = await praktikumAxios('auth/signin', {
+        method: 'post',
+        data,
+      });
 
       return response.data;
     }
 
-    static getUser = async (): Promise<UserResponse> => {
-      const url = buildUrl('auth/user');
-      const response = await axios.get(url, { withCredentials: true });
+    static getUser = async (cookies?: CookiesType): Promise<UserResponse> => {
+      const params = cookies ? { headers: { Cookie: CookieToString(cookies) } } : {};
+      const response = await praktikumAxios('auth/user', params);
 
       return response.data;
     }
 
-    static logout = async (): Promise<void> => {
-      const url = buildUrl('auth/loguot');
+    static logout = async (): Promise<string> => {
+      const response = await praktikumAxios('auth/loguot');
 
-      return await axios.post(url);
+      return response.data;
     }
 
     static getServiceId = async (): Promise<IServiceId> => {
-      const url = buildUrl('oauth/yandex/service-id');
-      const response = await axios.get(url);
+      const response = await praktikumAxios('oauth/yandex/service-id');
 
       return response.data;
     }
 
     static oAuth = async (code: string): Promise<string> => {
-      const url = buildUrl('oauth/yandex');
-      const response = await axios.post(url, {
-        code,
-      }, { withCredentials: true });
+      const response = await praktikumAxios('oauth/yandex', {
+        method: 'post',
+        data: { code },
+      });
 
       return response.data;
     }

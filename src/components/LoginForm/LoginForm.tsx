@@ -1,59 +1,144 @@
-// Core
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Form } from 'react-final-form';
+import { useDispatch, useSelector } from 'react-redux';
+import { TextField } from 'mui-rff';
+import { Link, Grid, Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-// Components
-import {
-  Button, Form, Input, Space,
-} from 'antd';
-import { Link } from 'react-router-dom';
 import { getOAuthUrl } from '@helpers/ApiHelpers';
-import { openNotificationWithIcon } from '@helpers/NotificationHelper';
+
+import { useSnackbar } from 'notistack';
+
 import AuthApi from '../../api/AuthApi';
 
+import { login } from '../../store/actionCreators/auth';
+import useAuth from '../../hooks/useAuth';
+import authSelector from '../../store/selectors/auth';
+
+import { LoginFormFields, SimpleObject } from '@types/types';
+
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
+
+
 const LoginForm = (): JSX.Element => {
+  const classes = useStyles();
+
+  const dispatch = useDispatch();
+  const [authUser] = useAuth();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+
+  const selector = useSelector(authSelector);
+
+  useEffect(() => {
+    authUser();
+  }, [selector]);
+
+  const onSubmit = (values: LoginFormFields) => {
+    dispatch(login(values));
+  };
+
+  const validate = (values: LoginFormFields) => {
+    const errors: SimpleObject = {};
+    if (!values.login) {
+      errors.login = 'Заполните поле!';
+    }
+    if (!values.password) {
+      errors.password = 'Заполните поле!';
+    }
+
+    return errors;
+  };
+
   const oAuth = () => {
     AuthApi.getServiceId()
       .then((res) => {
         window.location.assign(getOAuthUrl(res.service_id));
       })
       .catch(() => {
-        openNotificationWithIcon('error', 'Ошибка', 'Действие временно недоступно');
+        enqueueSnackbar('Действие временно недоступно', {
+          variant: 'error',
+          anchorOrigin: {
+            horizontal: 'right',
+            vertical: 'top',
+          },
+        });
       });
   };
+
   return (
+    <Form
+      onSubmit={onSubmit}
+      validate={validate}
+      render={({ handleSubmit, form }) => (
+        <form onSubmit={handleSubmit} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Логин"
+            name="login"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Пароль"
+            type="password"
+            autoComplete="current-password"
+          />
 
-    <>
-      <Form.Item
-        label="Логин"
-        name="login"
-        rules={[{ required: true, message: 'Заполните поле!' }]}
-      >
-        <Input />
-      </Form.Item>
-
-      <Form.Item
-        label="Пароль"
-        name="password"
-        rules={[{ required: true, message: 'Заполните поле!' }]}
-      >
-        <Input.Password />
-      </Form.Item>
-      <Space>
-        <Link to="/register">
-          <Button htmlType="button">
-            Нет аккаунта?
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+            className={classes.submit}
+          >
+            Войти
           </Button>
-        </Link>
-        <Button type="primary" htmlType="submit">
-          Войти
-        </Button>
-        <Button type="dashed" onClick={oAuth}>
-          Войти через Яндекс
-        </Button>
-      </Space>
-    </>
+
+          <Button
+            fullWidth
+            variant="contained"
+            onClick={oAuth}
+            className={classes.submit}
+          >
+            Войти через Яндекс
+          </Button>
+
+          <Grid container>
+            <Grid item xs>
+              <Link href="/register" variant="body2">
+                Нет аккаунта?
+              </Link>
+            </Grid>
+          </Grid>
+        </form>
+      )}
+    />
   );
 };
 
-// Exports
 export default LoginForm;

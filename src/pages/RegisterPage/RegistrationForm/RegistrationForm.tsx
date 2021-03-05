@@ -1,67 +1,162 @@
-// Core
 import React from 'react';
+import { useHistory } from 'react-router';
+import { Form } from 'react-final-form';
+import { useSnackbar } from 'notistack';
 
-// Components
-import { Form, Input } from 'antd';
-import PhonePrefixSelector from '@components/PhonePrefixSelector';
+import { RegisterFormFields, SimpleObject } from '@types/types';
 
-const PrefixSelector = (
-  <Form.Item name="prefix" noStyle>
-    <PhonePrefixSelector />
-  </Form.Item>
-);
+import { TextField } from 'mui-rff';
+import { Button } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-const RegistrationForm: React.FC = () => (
-  <>
-    <Form.Item
-      label="Имя"
-      name="first_name"
-      rules={[{ required: true, message: 'Заполните поле!' }]}
-    >
-      <Input />
-    </Form.Item>
+import AuthApi from '../../../api/AuthApi';
 
-    <Form.Item
-      label="Фамилия"
-      name="second_name"
-      rules={[{ required: true, message: 'Заполните поле!' }]}
-    >
-      <Input />
-    </Form.Item>
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
+  form: {
+    width: '100%', // Fix IE 11 issue.
+    marginTop: theme.spacing(1),
+  },
+  submit: {
+    margin: theme.spacing(3, 0, 2),
+  },
+}));
 
-    <Form.Item
-      label="Логин"
-      name="login"
-      rules={[{ required: true, message: 'Заполните поле!' }]}
-    >
-      <Input />
-    </Form.Item>
+const RegistrationForm: React.FC = () => {
+  const classes = useStyles();
 
-    <Form.Item
-      label="Почта"
-      name="email"
-      rules={[{ required: true, type: 'email', message: 'Неверный email' }]}
-    >
-      <Input />
-    </Form.Item>
+  const history = useHistory();
+  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-    <Form.Item
-      label="Телефон"
-      name="phone"
-      rules={[{ required: true, message: 'Заполните поле!' }]}
-    >
-      <Input maxLength={9} addonBefore={PrefixSelector} />
-    </Form.Item>
+  const onSubmit = (values: RegisterFormFields) => {
+    AuthApi.signUp(values)
+      .then(() => {
+        enqueueSnackbar('Пользователь успешно создан!', {
+          variant: 'error',
+          anchorOrigin: {
+            horizontal: 'right',
+            vertical: 'top',
+          },
+        });
+        history.push('/');
+      })
+      .catch((err) => {
+        enqueueSnackbar(err.response.data.reason, {
+          variant: 'error',
+          anchorOrigin: {
+            horizontal: 'right',
+            vertical: 'top',
+          },
+        });
+      });
+  };
 
-    <Form.Item
-      label="Пароль"
-      name="password"
-      rules={[{ required: true, message: 'Введите пароль!' }]}
-    >
-      <Input.Password />
-    </Form.Item>
-  </>
-);
+  const validate = (values: RegisterFormFields) => {
+    const errors: SimpleObject = {};
+    if (!values.first_name) {
+      errors.first_name = 'Заполните поле!';
+    }
+    if (!values.second_name) {
+      errors.second_name = 'Заполните поле!';
+    }
+    if (!values.login) {
+      errors.login = 'Заполните поле!';
+    }
+    if (!values.email) {
+      errors.email = 'Заполните поле!';
+    }
+    if (!values.phone) {
+      errors.phone = 'Заполните поле!';
+    }
+    if (!values.password) {
+      errors.password = 'Заполните поле!';
+    }
+    if (!values.first_name) {
+      errors.first_name = 'Заполните поле!';
+    }
 
-// Exports
+    return errors;
+  };
+
+  return (
+    <Form
+      onSubmit={onSubmit}
+      validate={validate}
+      render={({ handleSubmit, form }) => (
+        <form onSubmit={handleSubmit} noValidate>
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Имя"
+            name="first_name"
+            autoFocus
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Фамилия"
+            name="second_name"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Логин"
+            name="login"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            type="email"
+            label="Почта"
+            name="email"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Телефон"
+            name="phone"
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            label="Пароль"
+            name="password"
+          />
+
+          <Button
+            type="submit"
+            fullWidth
+            variant="contained"
+            color="primary"
+          >
+            Зарегистрироваться
+          </Button>
+
+        </form>
+      )}
+    />
+  );
+};
+
 export default RegistrationForm;

@@ -6,15 +6,16 @@ import {
   Asteroid, Ship,
 } from '@classes';
 
-import { randomNumBetween, throttle, maxGameHeight } from '@helpers/GameHelper';
+import {
+  randomNumBetween, throttle, maxGameHeight, soundWithInterrupt,
+} from '@helpers/GameHelper';
 import useTimer from '@helpers/Timer';
+import {
+  objectsMap, gameObjects, objectGroups, screenType, IAudio,
+} from '@types/game';
 import GameTotal from './GameTotal';
 import GameOver from './GameOver';
 import GamePause from './GamePause';
-
-import {
-  objectsMap, gameObjects, objectGroups, screenType,
-} from '../../types/game';
 
 const KEY = {
   LEFT: 'ArrowLeft',
@@ -29,13 +30,22 @@ const KEY = {
   F: ['f', 'а'],
 };
 
+const AUDIO_IDS = {
+  LASER: 'audio_laser',
+  DETONATION: 'audio_detonation',
+};
+
 const Game: React.FC = () => {
   const [score, setScore] = useState(0);
   const [isGameOver, setIsGameOver] = useState(false);
 
   const [isPause, setIsPause] = useState(false);
 
-  // похоже рефов много, как по другому запомнить состояние не разобрался
+  const audio: IAudio = {
+    audioLaser: null,
+    audioDetonation: null,
+  };
+
   const stopGame = useRef(false);
   const endGame = useRef(false);
 
@@ -95,9 +105,14 @@ const Game: React.FC = () => {
   };
 
   const addScore = (s: number): void => {
-    // не нашел простого способа запомнить счет
     scoreRef.current += s;
     setScore(scoreRef.current);
+  };
+
+  const detonation = (): void => {
+    if (audio.audioDetonation) {
+      soundWithInterrupt(audio.audioDetonation);
+    }
   };
 
   const generateAsteroids = (count: number): void => {
@@ -110,6 +125,7 @@ const Game: React.FC = () => {
         },
         create: createObject,
         addScore,
+        detonation,
       });
       createObject(asteroid, 'asteroids');
     }
@@ -143,6 +159,7 @@ const Game: React.FC = () => {
       },
       create: createObject,
       onDie: gameOver,
+      audio,
     });
     createObject(ship, 'ships');
     generateAsteroids(asteroidsCount);
@@ -218,7 +235,6 @@ const Game: React.FC = () => {
     }
   };
 
-  // тут не смог указать gameObjects typescript говорит что тип never
   const createObject = (item: any, group: objectGroups): void => {
     objects[group].push(item);
   };
@@ -270,6 +286,8 @@ const Game: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener('resize', resizeThrottle);
+    audio.audioLaser = document.querySelector(`#${AUDIO_IDS.LASER}`);
+    audio.audioDetonation = document.querySelector(`#${AUDIO_IDS.DETONATION}`);
 
     return () => window.removeEventListener('resize', resizeThrottle);
   });
@@ -300,6 +318,8 @@ const Game: React.FC = () => {
         <GameTotal score={score} seconds={timer.seconds} />
       </div>
 
+      <audio id={AUDIO_IDS.LASER} src="/src/audio/laser.mp3" preload="auto" />
+      <audio id={AUDIO_IDS.DETONATION} src="/src/audio/detonation.mp3" preload="auto" />
       <canvas
         ref={canvasRef}
         tabIndex={0}

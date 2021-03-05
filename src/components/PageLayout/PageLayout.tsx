@@ -1,64 +1,117 @@
-import React from 'react';
-import { Col, Layout, Menu } from 'antd';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
-import { Content, Footer, Header } from 'antd/es/layout/layout';
-import IsAuth from '@helpers/IsAuth';
+import React, { useContext, useState, useEffect, ChangeEvent } from 'react';
+import { useDispatch } from 'react-redux';
 
-const PageLayout: React.FC = ({ children }) => (
-  <Layout>
-    <Col span={12} offset={6}>
-      <Header>
-        <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['1']}>
-          <Menu.Item key="1">
-            Играть
-            <Link to="/" />
-          </Menu.Item>
-          {!IsAuth()
-            && (
-            <Menu.Item key="2">
-              Вход
-              <Link to="/login" />
-            </Menu.Item>
-            )}
-          {!IsAuth()
-            && (
-            <Menu.Item key="3">
-              Регистрация
-              <Link to="/register" />
-            </Menu.Item>
-            )}
-          {IsAuth()
-            && (
-            <Menu.Item key="4">
-              Профиль
-              <Link to="/profile" />
-            </Menu.Item>
-            )}
-          {IsAuth()
-            && (
-            <Menu.Item key="5">
-              Доска почета
-              <Link to="/dashboard" />
-            </Menu.Item>
-            )}
-          {IsAuth()
-            && (
-            <Menu.Item key="6">
-              Форум
-              <Link to="/forum" />
-            </Menu.Item>
-            )}
-        </Menu>
-      </Header>
-    </Col>
-    <Content>
+import { makeStyles } from '@material-ui/core/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Container from '@material-ui/core/Container';
+import Toolbar from '@material-ui/core/Toolbar';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import SwitchUI from '@material-ui/core/Switch';
+import Link from '@material-ui/core/Link';
+
+import { getTheme } from '../../store/actionCreators/theme';
+
+import IsAuth from '@helpers/IsAuth';
+import { CustomThemeContext } from '../../CustomThemeProvider';
+
+const useStyles = makeStyles((theme) => ({
+  toolbar: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  toolbarTitle: {
+    flex: 1,
+  },
+  toolbarSecondary: {
+    justifyContent: 'space-between',
+    overflowX: 'auto',
+  },
+  toolbarLink: {
+    padding: theme.spacing(1),
+    flexShrink: 0,
+  },
+}));
+
+const PageLayout: React.FC = ({ children }) => {
+  const classes = useStyles();
+  let sections;
+
+  const isAuth = IsAuth();
+
+  const dispatch = useDispatch();
+  const { currentTheme, setTheme } = useContext(CustomThemeContext);
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    dispatch(getTheme());
+
+    if (currentTheme === 'dark') {
+      setIsDark(true);
+      setTheme('dark');
+    } else {
+      setTheme('light');
+      setIsDark(false);
+    }
+  }, [currentTheme]);
+
+  if (isAuth) {
+    sections = [
+      { title: 'Играть', url: '/' },
+      { title: 'Профиль', url: '/profile' },
+      { title: 'Доска почета', url: '/dashboard' },
+      { title: 'Форум', url: '/forum' },
+      { title: 'Обратная связь', url: '/feedback' },
+    ];
+  } else {
+    sections = [
+      { title: 'Играть', url: '/' },
+      { title: 'Вход', url: '/login' },
+      { title: 'Регистрация', url: '/register' },
+      { title: 'Обратная связь', url: '/feedback' },
+    ];
+  }
+
+  const handleThemeChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = event.target;
+
+    if (checked) {
+      setIsDark(true);
+      setTheme('dark');
+      localStorage.setItem('theme', 'dark');
+    } else {
+      setIsDark(false);
+      setTheme('light');
+      localStorage.setItem('theme', 'light');
+    }
+  };
+
+  return (
+    <>
+      <CssBaseline />
+      <Container maxWidth="lg">
+        <Toolbar component="nav" variant="dense" className={classes.toolbarSecondary}>
+          {sections.map((section) => (
+            <Link
+              color="inherit"
+              noWrap
+              key={section.title}
+              variant="body2"
+              href={section.url}
+              className={classes.toolbarLink}
+            >
+              {section.title}
+            </Link>
+          ))}
+          <FormControlLabel
+            control={<SwitchUI checked={isDark} onChange={handleThemeChange} />}
+            label="Сумерки"
+          />
+        </Toolbar>
+      </Container>
+
       {children}
 
-    </Content>
-    <Footer style={{ textAlign: 'center' }}>Game &copy; 2020 Created by Helsinki</Footer>
-  </Layout>
-);
+    </>
+  );
+};
 
-// Exports
 export default PageLayout;

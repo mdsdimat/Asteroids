@@ -1,8 +1,8 @@
 import { AxiosError } from 'axios';
 import authActions from '../actions/auth';
 import {
-  IAuthSuccess, IErrorType, ILoginResult, ILoginSuccessType, IYandexOAuth, SignUser,
-} from '../../types/types';
+  IAuthSuccess, IErrorType, ILoginResult, ILoginSuccessType, IYandexOAuth, SignUser, CookiesType
+} from '@types/types';
 
 export const requestAuth = (): { type: string } => ({ type: authActions.requested });
 
@@ -22,6 +22,11 @@ export const login = (values: SignUser): ILoginResult => ({
 
 export const getUser = (): { type: string } => ({
   type: authActions.getUser,
+});
+
+export const getUserServer = (cookies: CookiesType): { type: string, cookies: CookiesType } => ({
+  type: authActions.getUser,
+  cookies
 });
 
 export const getUserSuccess = (isAuth: boolean, userData: Record<string, unknown>)

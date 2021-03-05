@@ -1,57 +1,35 @@
-// Core
 import React from 'react';
 
-// Components
-import { useForm } from 'antd/es/form/Form';
-import {
-  Card, Col, Form, Row,
-} from 'antd';
-import { useDispatch, useSelector } from 'react-redux';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+
 import LoginForm from '../../components/LoginForm/LoginForm';
 
-// Types
-import { SignUser } from '../../types/types';
-
-// Helpers
-import useAuth from '../../hooks/useAuth';
-import { login } from '../../store/actionCreators/auth';
-import authSelector from '../../store/selectors/auth';
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    marginTop: theme.spacing(8),
+    display: 'flex',
+    flexDirection: 'column',
+    alignItems: 'center',
+  },
+}));
 
 const LoginPage: React.FC = () => {
-  const [form] = useForm();
-
-  const dispatch = useDispatch();
-
-  const [authUser] = useAuth();
-
-  const selector = useSelector(authSelector);
-
-  const onFinish = (values: SignUser) => {
-    dispatch(login(values));
-  };
-
-  React.useEffect(() => {
-    authUser();
-  }, [selector]);
+  const classes = useStyles();
 
   return (
-    <Form
-      name="basic"
-      onFinish={onFinish}
-      layout="vertical"
-      hideRequiredMark
-      form={form}
-    >
-      <Row>
-        <Col span={12} offset={6}>
-          <Card title="Авторизация">
-            <LoginForm />
-          </Card>
-        </Col>
-      </Row>
-    </Form>
+    <Container component="main" maxWidth="xs">
+      <div className={classes.paper}>
+        <Typography component="h1" variant="h5">
+          Авторизация
+        </Typography>
+
+        <LoginForm />
+
+      </div>
+    </Container>
   );
 };
 
-// Exports
 export default LoginPage;

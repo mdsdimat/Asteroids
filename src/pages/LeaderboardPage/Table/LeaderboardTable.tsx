@@ -1,10 +1,7 @@
-// Core
 import React from 'react';
 
-// Components
-import { Table } from 'antd';
+import { DataGrid } from '@material-ui/data-grid';
 
-// Types
 export interface IRequestData {
   ratingFieldName: string,
   cursor: number,
@@ -25,34 +22,28 @@ interface LeaderboardTableProps {
 
 const columns = [
   {
-    title: 'Name',
-    dataIndex: 'name',
+    field: 'id',
+    headerName: 'N',
+    width: 70,
   },
   {
-    title: 'Points',
-    dataIndex: 'points',
-    sorter: {
-      compare: (a: ColumnType, b: ColumnType) => a.points - b.points,
-      multiple: 2,
-    },
+    field: 'name', sortable: false, headerName: 'Имя игрока', width: 300,
   },
-  {
-    title: 'Date',
-    dataIndex: 'date',
-    sorter: {
-      compare: (a: ColumnType, b: ColumnType) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-      multiple: 1,
-    },
-  },
-  {
-    title: 'Country',
-    dataIndex: 'country',
-  },
+  { field: 'points', headerName: 'Очки', width: 200 },
+  { field: 'date', headerName: 'Дата', width: 200 },
 ];
 
-const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }) => (
-  <Table columns={columns} dataSource={data} />
-);
+const LeaderboardTable: React.FC<LeaderboardTableProps> = ({ data }: LeaderboardTableProps) => {
+  let i = 1;
+  data.forEach(item => {
+    item.id = i++;
+  });
 
-// Exports
+  return (
+    <div style={{ height: 500 }}>
+      <DataGrid columns={columns} rows={data} disableColumnMenu hideFooter />
+    </div>
+  );
+};
+
 export default LeaderboardTable;

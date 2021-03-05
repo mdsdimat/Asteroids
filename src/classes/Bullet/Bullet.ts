@@ -1,6 +1,6 @@
 import {
   Coord, Vector, renderState, IBulletProps,
-} from '../../types/game';
+} from '@types/game';
 import { rotatePoint } from '../../helpers/GameHelper';
 
 export default class Bullet {
