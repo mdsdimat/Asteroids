@@ -2,7 +2,7 @@
 /.idea
 yarn.lock
 package-lock.json
+/postgresdata
+.env
 /dist/
 *.pem
-.env
-package-lock.json
