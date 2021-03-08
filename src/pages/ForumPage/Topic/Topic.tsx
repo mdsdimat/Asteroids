@@ -1,8 +1,11 @@
 import React from 'react';
-import {Post as PostType} from "../../../types/types";
+import {Post as PostType, TopicPostAddFields} from "../../../types/types";
 import ForumApi from "../../../api/ForumApi";
 import {Button, ListItem, ListItemText} from "@material-ui/core";
 import Post from '../Post';
+import {FormApi} from "final-form";
+import axios from "axios";
+import PostForm from "../Forms/PostForm";
 
 interface TopicProps {
   id: number;
@@ -18,11 +21,16 @@ const Topic: React.FC<TopicProps> = ({ name, id, description }) => {
     ForumApi.getPosts(id).then(setPosts)
   }, []);
 
+  const addPost = React.useCallback((post: TopicPostAddFields, form: FormApi) => {
+    ForumApi.addPost(id, post).then(() => {
+      form.reset();
+      setPosts(posts => [...posts, post as PostType]);
+    })
+  }, [id]);
+
   return (
     <ListItem>
-      <ListItemText> {name} </ListItemText>
-
-      {description}
+      <ListItemText primary={name} secondary={description}> {name} </ListItemText>
 
       <div>
         { posts.slice(expanded? 0 : -3).map(post => <Post {...post}/>) }
@@ -33,6 +41,7 @@ const Topic: React.FC<TopicProps> = ({ name, id, description }) => {
           </Button>
         }
       </div>
+      <PostForm onSubmit={addPost} />
     </ListItem>
   )
 };

@@ -11,7 +11,7 @@ class ForumApi {
     return response.data;
   }
 
-  static addTopic = async (topic: TopicAddFields): Promise<void> => {
+  static addTopic = async (topic: TopicAddFields): Promise<string> => {
     const url = apiUrl('forum/topic');
 
     const response = await axios.post(url, topic, { withCredentials: true });
@@ -31,7 +31,7 @@ class ForumApi {
     return response.data;
   }
 
-  static addPost = async (topic_id: string, post: TopicPostAddFields): Promise<void> => {
+  static addPost = async (topic_id: number, post: TopicPostAddFields): Promise<void> => {
     const url = apiUrl('forum/posts');
 
     const response = await axios.post(url, {topic_id, ...post}, { withCredentials: true });

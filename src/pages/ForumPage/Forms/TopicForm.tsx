@@ -1,22 +1,17 @@
 // Core
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Form } from 'react-final-form';
-import {
-  TextField,
-} from 'mui-rff';
-import {
-  Button,
-} from '@material-ui/core';
-
-import { makeStyles } from '@material-ui/core/styles';
-
+import { TextField } from 'mui-rff';
+import { Button, makeStyles } from '@material-ui/core';
 import { useSnackbar } from 'notistack';
 
 // Api
-import ForumApi from '../../../../api/ForumApi';
+import ForumApi from '../../../api/ForumApi';
 
-import {FeedbackFields, TopicAddFields} from '../../../../types/types';
+// Types
+import { TopicAddFields } from '../../../types/types';
+import { FormApi } from "final-form";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -46,19 +41,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ForumTopicForm: React.FC = () => {
+interface TopicFormProps {
+  refresh: () => void;
+}
+
+const TopicForm: React.FC<TopicFormProps> = ({ refresh }) => {
   const classes = useStyles();
 
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const $form = React.useRef<FormApi | null>(null)
 
-  let webForm: any;
+  const { enqueueSnackbar } = useSnackbar();
 
   const onSubmit = (values: TopicAddFields) => {
-    const r = ForumApi.addTopic(values);
-
-    r.then((data) => {
-      if (data.ok) {
-        webForm.reset();
+    ForumApi.addTopic(values)
+      .then((data) => {
+      if (data && $form.current) {
+        $form.current.reset();
+        refresh();
         enqueueSnackbar('Сообщение отправлено', {
           variant: 'success',
           anchorOrigin: {
@@ -85,7 +84,7 @@ const ForumTopicForm: React.FC = () => {
       onSubmit={onSubmit}
       validate={validate}
       render={({ handleSubmit, form }) => {
-        webForm = form;
+        $form.current = form;
 
         return (
           <form onSubmit={handleSubmit} noValidate>
@@ -98,6 +97,7 @@ const ForumTopicForm: React.FC = () => {
               label="Название темы"
               name="name"
             />
+
             <TextField
               variant="outlined"
               margin="normal"
@@ -107,6 +107,7 @@ const ForumTopicForm: React.FC = () => {
               label="Описание темы"
               name="description"
             />
+
             <Button
               type="submit"
               fullWidth
@@ -123,4 +124,4 @@ const ForumTopicForm: React.FC = () => {
   );
 };
 
-export default ForumTopicForm;
+export default TopicForm;

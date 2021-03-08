@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { ForumTopic, ForumPost } from '../models';
+import {InfoRounded} from "@material-ui/icons";
 
 const getTopics = async (req: Request, res: Response): Promise<any> => {
   const data = await ForumTopic.findAll({ raw: true });
@@ -20,6 +21,10 @@ const getTopicPosts = async (req: Request, res: Response): Promise<any> => {
     raw: true,
   });
 
+  if (!data) {
+    res.sendStatus(400);
+  }
+
   res.json(data);
 };
 
@@ -32,26 +37,19 @@ const addTopic = async (req: Request, res: Response): Promise<any> => {
   const { name, description } = req.body;
 
   let error = false;
-  const answer: answerType = {
-    ok: false,
-    message: '',
-  };
 
   if (!name) {
     error = true;
-    answer.message = 'Name topic not be empty';
+    res.sendStatus(400).send('Name topic not be empty');
   }
 
   const user_id = user?.id || 0;
 
   if (!error) {
     await ForumTopic.create({ name, description, user_id });
-
-    answer.ok = true;
-    answer.message = 'Topic created';
   }
 
-  res.json(answer);
+  res.send('Topic created');
 };
 
 const addTopicPost = async (req: Request, res: Response): Promise<any> => {
@@ -63,6 +61,22 @@ const addTopicPost = async (req: Request, res: Response): Promise<any> => {
     ok: false,
     message: '',
   };
+
+  if (!topic_id) {
+    res.sendStatus(400).send('topic_id is required')
+  }
+
+  const topic = await ForumTopic.findOne({
+    where: {
+      topic_id: {
+        [Op.eq]: topic_id,
+      },
+    }
+  })
+
+  if (!topic) {
+    res.sendStatus(400)
+  }
 
   //TODO: Написать нормальлную валидацию или подрубить библиотечку по типу YUP
   Object.keys({ name, message }).forEach(fieldName => {
@@ -84,9 +98,12 @@ const addTopicPost = async (req: Request, res: Response): Promise<any> => {
 
     answer.ok = true;
     answer.message = 'Post created';
+
+    res.json(answer);
+  } else {
+    res.sendStatus(400).send(answer.message);
   }
 
-  res.json(answer);
 };
 
 export { addTopicPost, addTopic, getTopicPosts, getTopics };

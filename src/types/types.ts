@@ -154,7 +154,6 @@ export interface TopicAddFields {
 }
 
 export interface TopicPostAddFields {
-  name?: string,
   message?: string,
 }
 
