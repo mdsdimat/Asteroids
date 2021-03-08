@@ -16,7 +16,7 @@ import { useSnackbar } from 'notistack';
 // Api
 import ForumApi from '../../../../api/ForumApi';
 
-import { TopicAddFields } from '../../../types/types';
+import {FeedbackFields, TopicAddFields} from '../../../../types/types';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -51,9 +51,9 @@ const ForumTopicForm: React.FC = () => {
 
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  let webForm;
+  let webForm: any;
 
-  const onSubmit = (values: FeedbackFields) => {
+  const onSubmit = (values: TopicAddFields) => {
     const r = ForumApi.addTopic(values);
 
     r.then((data) => {

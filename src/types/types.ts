@@ -149,6 +149,18 @@ export interface FeedbackFields {
 }
 
 export interface TopicAddFields {
-  name: string,
+  name?: string,
   description?: string;
+}
+
+export interface TopicPostAddFields {
+  name?: string,
+  message?: string,
+}
+
+export interface Topic {
+  id: number;
+  name: string;
+  description: string;
+  user_id: number;
 }

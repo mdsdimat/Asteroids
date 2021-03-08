@@ -1,35 +1,9 @@
 import React from 'react';
 import { Form } from 'react-final-form';
-
-import { makeStyles } from '@material-ui/core/styles';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
-
-import {
-  TextField,
-} from 'mui-rff';
-
-import {
-  Button,
-} from '@material-ui/core';
-
-const data = [
-  {
-    id: 1,
-    text: 'Сообщение пользателя холивар холивар холивар.',
-  },
-  {
-    id: 2,
-    text: 'Сообщение пользателя холивар холивар холивар.',
-  },
-  {
-    id: 3,
-    text: 'Сообщение пользателя холивар холивар холивар.',
-  },
-];
+import { List, ListItem, ListItemText, Typography, Container, Button, makeStyles } from '@material-ui/core'
+import { TextField } from 'mui-rff';
+import ForumApi from "../../api/ForumApi";
+import {Topic} from "../../types/types";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -44,10 +18,16 @@ const useStyles = makeStyles((theme) => ({
 const ForumPage: React.FC = () => {
   const classes = useStyles();
 
+  const [data, setData] = React.useState<Topic[]>([]);
+
+  React.useEffect(() => {
+    ForumApi.getTopics().then(setData);
+  }, [])
+
   const renderData = () => data.map((message): JSX.Element => (
     <ListItem alignItems="flex-start" key={message.id}>
       <ListItemText
-        primary={message.text}
+        primary={message.description}
       />
     </ListItem>
   ));

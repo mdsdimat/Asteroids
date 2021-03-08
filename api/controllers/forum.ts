@@ -2,14 +2,15 @@ import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { ForumTopic, ForumPost } from '../models';
 
-const getForumTopics = async (req: Request, res: Response): Promise<any> => {
+const getTopics = async (req: Request, res: Response): Promise<any> => {
   const data = await ForumTopic.findAll({ raw: true });
 
   res.json(data);
 };
 
-const getForumTopicPosts = async (req: Request, res: Response): Promise<any> => {
-  const { topic_id } = req.body;
+const getTopicPosts = async (req: Request, res: Response): Promise<any> => {
+  const { topic_id } = req.query;
+
   const data = await ForumTopic.findAll({
     where: {
       topic_id: {
@@ -26,7 +27,7 @@ type answerType = {
   [key: string]: string | boolean
 }
 
-const addForumTopic = async (req: Request, res: Response): Promise<any> => {
+const addTopic = async (req: Request, res: Response): Promise<any> => {
   const { user } = res.locals;
   const { name, description } = req.body;
 
@@ -41,8 +42,10 @@ const addForumTopic = async (req: Request, res: Response): Promise<any> => {
     answer.message = 'Name topic not be empty';
   }
 
+  const user_id = user?.id || 0;
+
   if (!error) {
-    await ForumTopic.create({ name, description, user_id: user.id });
+    await ForumTopic.create({ name, description, user_id });
 
     answer.ok = true;
     answer.message = 'Topic created';
@@ -51,7 +54,7 @@ const addForumTopic = async (req: Request, res: Response): Promise<any> => {
   res.json(answer);
 };
 
-const addForumPost = async (req: Request, res: Response): Promise<any> => {
+const addTopicPost = async (req: Request, res: Response): Promise<any> => {
   const { user } = res.locals;
   const { name, message, topic_id } = req.body;
 
@@ -61,14 +64,22 @@ const addForumPost = async (req: Request, res: Response): Promise<any> => {
     message: '',
   };
 
-  if (!name) {
-    error = true;
-    answer.message = 'Name topic not be empty';
-  }
+  //TODO: Написать нормальлную валидацию или подрубить библиотечку по типу YUP
+  Object.keys({ name, message }).forEach(fieldName => {
+    if (!req.body[fieldName]) {
+      error = true;
+      answer.message = (`Post's ${fieldName} is required`);
+    }
+  })
+
+  const user_id = user?.id || 0;
 
   if (!error) {
     await ForumPost.create({
-      name, message, topic_id, user_id: user.id,
+      name,
+      message,
+      topic_id,
+      user_id,
     });
 
     answer.ok = true;
@@ -78,6 +89,4 @@ const addForumPost = async (req: Request, res: Response): Promise<any> => {
   res.json(answer);
 };
 
-export {
-  getForumTopics, addForumTopic, addForumPost, getForumTopicPosts,
-};
+export { addTopicPost, addTopic, getTopicPosts, getTopics };

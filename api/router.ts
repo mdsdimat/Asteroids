@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getForumTopics, getForumTopicPosts, addForumTopic } from './controllers/forum';
+import { addTopicPost, addTopic, getTopicPosts, getTopics } from './controllers/forum';
 import { getThemes, getTheme, changeTheme } from './controllers/theme';
 import { addFeedback } from './controllers/feedback';
 
@@ -11,8 +11,9 @@ router.post('/user/theme', changeTheme);
 
 router.post('/feedback', addFeedback);
 
-router.get('/forum/topics', getForumTopics);
-router.get('/forum/topic/posts', getForumTopicPosts);
-router.post('/forum/topic', addForumTopic);
+router.get('/forum/topics', getTopics);
+router.get('/forum/posts', getTopicPosts);
+router.post('/forum/topic', addTopic);
+router.post('/forum/posts', addTopicPost);
 
 export default router;
