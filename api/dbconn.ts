@@ -12,7 +12,7 @@ export function mongoConnect(): void {
 }
 
 const sequelizeOptions: SequelizeOptions = {
-  host: 'localhost',
+  host: 'postgres',
   port: 5432,
   username: process.env.POSTGRES_USER,
   password: process.env.POSTGRES_PASSWORD,
