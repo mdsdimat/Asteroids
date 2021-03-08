@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { apiUrl } from '@helpers/ApiHelpers';
-import {Topic, TopicAddFields, TopicPostAddFields} from '../types/types';
+import {Post, Topic, TopicAddFields, TopicPostAddFields} from '../types/types';
 
 class ForumApi {
   static getTopics = async (): Promise<Topic[]> => {
@@ -19,7 +19,7 @@ class ForumApi {
     return response.data;
   }
 
-  static getPosts = async (topic_id: string) => {
+  static getPosts = async (topic_id: number): Promise<Post[]> => {
     const url = apiUrl('forum/posts');
 
     const response = await axios({

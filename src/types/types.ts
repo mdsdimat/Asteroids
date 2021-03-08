@@ -164,3 +164,10 @@ export interface Topic {
   description: string;
   user_id: number;
 }
+
+export interface Post {
+  id: number;
+  message: string;
+  user_id: number;
+  topic_id: number;
+}
