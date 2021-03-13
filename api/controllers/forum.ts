@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { Op } from 'sequelize';
 import { ForumTopic, ForumPost } from '../models';
-import {InfoRounded} from "@material-ui/icons";
 
 const getTopics = async (req: Request, res: Response): Promise<any> => {
   const data = await ForumTopic.findAll({ raw: true });
@@ -12,7 +11,7 @@ const getTopics = async (req: Request, res: Response): Promise<any> => {
 const getTopicPosts = async (req: Request, res: Response): Promise<any> => {
   const { topic_id } = req.query;
 
-  const data = await ForumTopic.findAll({
+  const data = await ForumPost.findAll({
     where: {
       id: {
         [Op.eq]: topic_id,
