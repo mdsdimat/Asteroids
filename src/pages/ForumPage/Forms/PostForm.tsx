@@ -37,7 +37,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSubmit }) => {
   return (
     <Form
       onSubmit={submit}
-      validate={validate}
+      // validate={validate}
       render={({handleSubmit, form}) => {
         $form.current = form;
 

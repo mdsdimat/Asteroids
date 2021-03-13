@@ -14,7 +14,7 @@ const getTopicPosts = async (req: Request, res: Response): Promise<any> => {
 
   const data = await ForumTopic.findAll({
     where: {
-      topic_id: {
+      id: {
         [Op.eq]: topic_id,
       },
     },
@@ -54,7 +54,7 @@ const addTopic = async (req: Request, res: Response): Promise<any> => {
 
 const addTopicPost = async (req: Request, res: Response): Promise<any> => {
   const { user } = res.locals;
-  const { name, message, topic_id } = req.body;
+  const { message, topic_id } = req.body;
 
   let error = false;
   const answer: answerType = {
@@ -68,7 +68,7 @@ const addTopicPost = async (req: Request, res: Response): Promise<any> => {
 
   const topic = await ForumTopic.findOne({
     where: {
-      topic_id: {
+      id: {
         [Op.eq]: topic_id,
       },
     }
@@ -79,7 +79,7 @@ const addTopicPost = async (req: Request, res: Response): Promise<any> => {
   }
 
   //TODO: Написать нормальлную валидацию или подрубить библиотечку по типу YUP
-  Object.keys({ name, message }).forEach(fieldName => {
+  Object.keys({ message }).forEach(fieldName => {
     if (!req.body[fieldName]) {
       error = true;
       answer.message = (`Post's ${fieldName} is required`);
@@ -90,7 +90,6 @@ const addTopicPost = async (req: Request, res: Response): Promise<any> => {
 
   if (!error) {
     await ForumPost.create({
-      name,
       message,
       topic_id,
       user_id,
