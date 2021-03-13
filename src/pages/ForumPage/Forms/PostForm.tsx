@@ -4,10 +4,6 @@ import React from 'react';
 import { Form } from 'react-final-form';
 import { TextField } from 'mui-rff';
 import { Button, makeStyles } from '@material-ui/core';
-import { useSnackbar } from 'notistack';
-
-// Api
-import ForumApi from '../../../api/ForumApi';
 
 // Types
 import {TopicAddFields, TopicPostAddFields} from '../../../types/types';
@@ -37,7 +33,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSubmit }) => {
   return (
     <Form
       onSubmit={submit}
-      // validate={validate}
+      validate={validate}
       render={({handleSubmit, form}) => {
         $form.current = form;
 
@@ -50,7 +46,7 @@ const PostForm: React.FC<PostFormProps> = ({ onSubmit }) => {
               required
               fullWidth
               label="Название темы"
-              name="name"
+              name="message"
             />
 
             <Button
