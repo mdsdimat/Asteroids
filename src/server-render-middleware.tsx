@@ -78,6 +78,7 @@ export default (req: Request, res: Response) => {
 
   return Promise.all(dataRequirements)
     .then(() => {
+      console.log(req.cookies);
       store.dispatch(getUserServer(req.cookies));
     })
     .then(() => {
