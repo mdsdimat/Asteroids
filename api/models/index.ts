@@ -10,5 +10,4 @@ sequelize.addModels([Theme, UserTheme, ForumTopic, ForumPost]);
 Theme.hasMany(UserTheme);
 UserTheme.belongsTo(Theme);
 
-export default sequelize;
 export { Theme, UserTheme, ForumTopic, ForumPost };

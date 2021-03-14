@@ -13,11 +13,10 @@ const getTopicPosts = async (req: Request, res: Response): Promise<any> => {
 
   const data = await ForumPost.findAll({
     where: {
-      id: {
+      topic_id: {
         [Op.eq]: topic_id,
       },
     },
-    raw: true,
   });
 
   if (!data) {
