@@ -148,13 +148,25 @@ export interface FeedbackFields {
   message: string,
 }
 
-export interface LoginFormFields {
-  login: string,
-  password: string,
+export interface TopicAddFields {
+  name?: string,
+  description?: string;
 }
 
-type SimpleObject = {
-  [key: string]: string;
-};
+export interface TopicPostAddFields {
+  message?: string,
+}
 
-export type RegisterFormFields = SignUpRequest;
+export interface Topic {
+  id: number;
+  name: string;
+  description: string;
+  user_id: number;
+}
+
+export interface Post {
+  id: number;
+  message: string;
+  user_id: number;
+  topic_id: number;
+}

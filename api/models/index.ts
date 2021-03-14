@@ -2,10 +2,12 @@ import sequelize from '../dbconn';
 import Theme from './Theme';
 import UserTheme from './UserTheme';
 
-sequelize.addModels([Theme, UserTheme]);
+import ForumTopic from './ForumTopic';
+import ForumPost from './ForumPost';
+
+sequelize.addModels([Theme, UserTheme, ForumTopic, ForumPost]);
 
 Theme.hasMany(UserTheme);
 UserTheme.belongsTo(Theme);
 
-export default sequelize;
-export { Theme, UserTheme };
+export { Theme, UserTheme, ForumTopic, ForumPost };

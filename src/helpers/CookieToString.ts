@@ -2,14 +2,10 @@ interface CookiesType {
     [property: string]: any
 }
 
-const CookieToString = (cookies: CookiesType): string => {
-  let str = '';
-
-  Object.keys(cookies).forEach(cookie => {
-    str += `${cookie}=${cookies[cookie]}; `;
-  });
-
-  return str;
-};
+const CookieToString = (cookies: CookiesType): string => Object.keys(cookies)
+  .reduce(
+    (str, cookie) => str + `${cookie}=${cookies[cookie]};`,
+    '',
+  )
 
 export default CookieToString;

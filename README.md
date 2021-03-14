@@ -74,7 +74,6 @@ https://games.aarp.org/games/atari-asteroids
 
 
 ## Примечание
-## Docker
 
 В хостах надо прописать
 127.0.0.1 local.ya-praktikum.tech
