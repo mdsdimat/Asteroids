@@ -1,0 +1,23 @@
+name: CICD
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Instal dependensies
+        run: npm install
+
+      - name: Tests
+        run: echo "no tests" #npm run test
+
+      - name: build
+        run: docker build
