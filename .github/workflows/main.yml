@@ -33,4 +33,4 @@ jobs:
           tags: mdsdimat/node-prakt:latest
           
       - name: Fetch docker image to server and run
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ${{ secrets.SSH_PRIVATE_KEY }} "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
+        run: ssh -tt ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ${{ secrets.SSH_PRIVATE_KEY }} "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
