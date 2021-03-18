@@ -13,24 +13,24 @@ jobs:
     steps:
       - uses: actions/checkout@v1
 
-      - name: Instal dependensies
-        run: npm install
+     # - name: Instal dependensies
+     #   run: npm install
 
       - name: Tests
         run: echo "no tests" #npm run test
 
-      - name: Login to DockerHub
-        uses: docker/login-action@v1 
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+      #- name: Login to DockerHub
+      #  uses: docker/login-action@v1 
+      #  with:
+      #    username: ${{ secrets.DOCKER_USERNAME }}
+      #    password: ${{ secrets.DOCKER_PASSWORD }}
       
-      - name: Build and push
-        id: docker_build
-        uses: docker/build-push-action@v2
-        with:
-          push: true
-          tags: mdsdimat/node-prakt:latest
+      #- name: Build and push
+      #  id: docker_build
+      #  uses: docker/build-push-action@v2
+      #  with:
+      #    push: true
+      #    tags: mdsdimat/node-prakt:latest
           
       - name: Fetch docker image to server and run
-        run: echo ${{ secrets.SSH_PRIVATE_KEY }} > ./file.txt && chmod 600 && ssh -tt ${{ secrets.SSH_SER }}@${{ secrets.SSH_IP }} -i ./file.txt "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
+        run: echo ${{ secrets.SSH_PRIVATE_KEY }} > ./file.txt && chmod 600 && ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ./file.txt "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
