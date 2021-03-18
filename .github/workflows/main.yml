@@ -36,5 +36,5 @@ jobs:
       #    tags: mdsdimat/node-prakt:latest
           
       #- name: Fetch docker image to server and run
-      - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./file.txt && chmod 600
+      - run: echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./file.txt && chmod 600 ./file.txt
       - run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ./file.txt "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
