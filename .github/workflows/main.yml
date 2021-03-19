@@ -41,7 +41,7 @@ jobs:
           mkdir -p ~/.Ssh/
           echo "$DO_GITHUB_PRIVATE_KEY" > ../github_do.key
           sudo chmod 600 ../github_do.key
-          ssh-keyscan -H ${{secrets.DEPLOY_SERVER}} > ~/.Ssh/known_hosts
+          ssh-keyscan -H  -t ecdsa  ${{secrets.DEPLOY_SERVER}} > ~/.Ssh/known_hosts
         shell: bash
 
       #- name: Fetch docker image to server and run
