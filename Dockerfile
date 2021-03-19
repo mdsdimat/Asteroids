@@ -3,4 +3,4 @@ ARG BUILD
 ARG VERSION
 COPY ./ /var/www/html/
 WORKDIR /var/www/html
-RUN npm install
+RUN npm install && npm run api:dbsync && npm run start
