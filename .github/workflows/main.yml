@@ -46,7 +46,12 @@ jobs:
           #shell: bash
 
       #- name: Fetch docker image to server and run
-      - run: |
-         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ./github_do.key
-         sudo chmod 600 ./github_do.key
+      - name: multiple command
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SSH_IP }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: 22
+          script: ls -la
       - run: ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ./github_do.key "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
