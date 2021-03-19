@@ -50,5 +50,5 @@ jobs:
             docker pull mdsdimat/node-prakt
             docker-compose stop
             docker-compose build
-            docker-compose up
+            docker-compose up -d
       #- run: ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ./github_do.key " && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
