@@ -21,37 +21,32 @@ jobs:
      # - name: Instal dependensies
      #   run: npm install
 
-      - name: Tests
-        run: echo "no tests" #npm run test
+     # - name: Tests
+     #  run: echo "no tests" #npm run test
 
-      #- name: Login to DockerHub
-      #  uses: docker/login-action@v1 
-      #  with:
-      #    username: ${{ secrets.DOCKER_USERNAME }}
-      #    password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
       
-      #- name: Build and push
-      #  id: docker_build
-      #  uses: docker/build-push-action@v2
-      #  with:
-      #    push: true
-      #    tags: mdsdimat/node-prakt:latest
-      #- name: Create known hosts
-       # run: |
-        #  mkdir -p ~/.ssh/
-         # sudo touch ~/.ssh/known_hosts
-          #echo "${{ secrets.SSH_PRIVATE_KEY }}" > ../github_do.key
-          #chmod 600 ../github_do.key
-          #ssh-keyscan -v46 -p 22 -t rsa -T 100 ${{secrets.DEPLOY_SERVER}} > ~/.ssh/known_hosts 
-          #shell: bash
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v2
+        with:
+          push: true
+          tags: mdsdimat/node-prakt:latest
 
-      #- name: Fetch docker image to server and run
-      - name: multiple command
+      - name: Fetch docker image to server and run
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SSH_IP }}
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
-          script: ls -la
-      - run: ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ./github_do.key "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
+          script: |
+            cd /var/www/html
+            docker pull mdsdimat/node-prakt
+            docker stop html_app_1
+            docker run html_app_1
+      #- run: ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ./github_do.key " && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
