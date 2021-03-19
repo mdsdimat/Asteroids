@@ -23,7 +23,6 @@ services:
       DATABASE_URL: postgres://postgres:newPassword@postgres:5432/asteroids
       NODE_ENV: development
       PORT: 9001
-    working_dir: ${APP_PATH_CONTANIER}
     ports:
       - "9001:9001"
     command: npm run api

@@ -1,4 +1,4 @@
-FROM node:14.15.4-alpine
+FROM node:14.15
 ARG BUILD
 ARG VERSION
 COPY ./ /var/www/html/
