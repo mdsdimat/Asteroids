@@ -36,14 +36,17 @@ jobs:
       #  with:
       #    push: true
       #    tags: mdsdimat/node-prakt:latest
-      - name: Create known hosts
-        run: |
-          mkdir -p ~/.ssh/
-          sudo touch ~/.ssh/known_hosts
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ../github_do.key
-          chmod 600 ../github_do.key
-          ssh-keyscan -v46 -p 22 -t rsa -T 100 ${{secrets.DEPLOY_SERVER}} > ~/.ssh/known_hosts 
-          shell: bash
+      #- name: Create known hosts
+       # run: |
+        #  mkdir -p ~/.ssh/
+         # sudo touch ~/.ssh/known_hosts
+          #echo "${{ secrets.SSH_PRIVATE_KEY }}" > ../github_do.key
+          #chmod 600 ../github_do.key
+          #ssh-keyscan -v46 -p 22 -t rsa -T 100 ${{secrets.DEPLOY_SERVER}} > ~/.ssh/known_hosts 
+          #shell: bash
 
       #- name: Fetch docker image to server and run
-      - run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ~/.Ssh/known_hosts.txt "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
+      - run: |
+         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ../github_do.key
+         sudo chmod 600 ../github_do.key
+      - run: ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ~/.Ssh/known_hosts.txt "cd /var/www/html && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
