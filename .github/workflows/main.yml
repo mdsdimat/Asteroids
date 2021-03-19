@@ -39,9 +39,10 @@ jobs:
       - name: Create known hosts
         run: |
           mkdir -p ~/.ssh/
+          sudo touch ~/.ssh/known_hosts
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ../github_do.key
           sudo chmod 600 ../github_do.key
-          ssh-keyscan -v46 -p 22 -t rsa -f ~/.ssh/known_hosts -T 100 ${{secrets.DEPLOY_SERVER}} 
+          ssh-keyscan -v46 -p 22 -t rsa -T 100 ${{secrets.DEPLOY_SERVER}} > ~/.ssh/known_hosts 
           shell: bash
 
       #- name: Fetch docker image to server and run
