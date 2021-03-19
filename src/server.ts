@@ -28,7 +28,7 @@ app.use(require('webpack-hot-middleware')(compiler));
 
 app.use(expressCspHeader({
   directives: {
-    'connect-src': [SELF, 'local.ya-praktikum.tech:9001', 'ya-praktikum.tech'],
+    'connect-src': [SELF, 'helsinki-asteroids-02.ya-praktikum.tech:9001', 'ya-praktikum.tech'],
     'font-src': ['fonts.googleapis.com', 'fonts.gstatic.com'],
     'script-src': [SELF, NONCE, INLINE, EVAL],
     'img-src': ['data:', SELF, 'ya-praktikum.tech'],
