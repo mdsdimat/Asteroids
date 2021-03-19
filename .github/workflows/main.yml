@@ -48,6 +48,7 @@ jobs:
             cd /var/www/html
             docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }} 
             docker pull mdsdimat/node-prakt
-            docker stop html_app_1
-            docker run html_app_1
+            docker-compose stop
+            docker-compose build
+            docker-compose up
       #- run: ssh -vvv ${{ secrets.SSH_USER }}@${{ secrets.SSH_IP }} -i ./github_do.key " && docker pull mdsdimat/node-prakt && docker stop html_app_1 && docker run html_app_1" 
