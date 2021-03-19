@@ -40,6 +40,9 @@ const paths = routes.map((v) => v.path);
 
 app.get(paths, serverRenderMiddleware);
 
+app.use(express.static('src/audio'));
+app.use(express.static('src/dist'));
+
 app.use((_req: Request, res: Response, next) => {
   res.sendStatus(404);
 });
