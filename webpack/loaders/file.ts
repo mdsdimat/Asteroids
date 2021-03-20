@@ -1,4 +1,4 @@
-const fileRegex = /^(?!.*\.inline).*\.(svg|jpe?g|png|gif|eot|woff2?|ttf)$/;
+const fileRegex = /^(?!.*\.inline).*\.(svg|jpe?g|png|gif|mp3|eot|woff2?|ttf)$/;
 
 export default {
     client: {
