@@ -5,7 +5,7 @@ import { config } from 'dotenv';
 config();
 
 export function mongoConnect(): void {
-  mongoose.connect(process.env.MONGODB, {
+  mongoose.connect('mongodb://root:example@mongo:27017/', {
     useUnifiedTopology: true,
     useNewUrlParser: true,
   });
