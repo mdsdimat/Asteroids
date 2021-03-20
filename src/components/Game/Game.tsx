@@ -17,9 +17,6 @@ import GameTotal from './GameTotal';
 import GameOver from './GameOver';
 import GamePause from './GamePause';
 
-const laserSound = require('../../audio/laser.mp3').default;
-const detonationSound = require('../../audio/detonation.mp3').default;
-
 const KEY = {
   LEFT: 'ArrowLeft',
   RIGHT: 'ArrowRight',
@@ -289,8 +286,8 @@ const Game: React.FC = () => {
 
   useEffect(() => {
     window.addEventListener('resize', resizeThrottle);
-    audio.audioLaser = new Audio(laserSound);
-    audio.audioDetonation = new Audio(detonationSound);
+    audio.audioLaser = document.querySelector(`#${AUDIO_IDS.LASER}`);
+    audio.audioDetonation = document.querySelector(`#${AUDIO_IDS.DETONATION}`);
 
     return () => window.removeEventListener('resize', resizeThrottle);
   });
@@ -321,6 +318,8 @@ const Game: React.FC = () => {
         <GameTotal score={score} seconds={timer.seconds} />
       </div>
 
+      <audio id={AUDIO_IDS.LASER} src="/src/audio/laser.mp3" preload="auto" />
+      <audio id={AUDIO_IDS.DETONATION} src="/src/audio/detonation.mp3" preload="auto" />
       <canvas
         ref={canvasRef}
         tabIndex={0}
