@@ -23,9 +23,9 @@ declare global {
 
 const worker = require('serviceworker-webpack-plugin/lib/runtime');
 
-if ('serviceWorker' in navigator) {
+/*if ('serviceWorker' in navigator) {
   worker.register();
-}
+}*/
 
 const Main: React.FC = () => {
   useEffect(() => {
