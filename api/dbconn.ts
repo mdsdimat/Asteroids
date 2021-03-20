@@ -8,7 +8,8 @@ export function mongoConnect(): void {
   mongoose.connect('mongodb://root:example@mongo:27017/', {
     useUnifiedTopology: true,
     useNewUrlParser: true,
-  });
+  })
+    .catch(console.warn);
 }
 
 const sequelizeOptions: SequelizeOptions = {
